@@ -1,23 +1,11 @@
 #pragma once
+#include "Common/common.h"
 #include <memory>
 #include <queue>
 
+class BaseScene;
 class BattleManager;
 class Character;
-
-enum class Scene {
-	Title, Town, Dungeon, Battle, None
-};
-
-enum class EventType {
-	KeyDown,
-	Quit
-};
-
-struct Event {
-	EventType type;
-	int key_code;
-};
 
 class GameManager
 {
@@ -33,25 +21,33 @@ public:
 	void Init();
 	void Run();
 	void Release();
+	void PushEvent(const Event& ev);
+
+
+	Character* GetPlayer() const;
+	BattleManager* GetBattleManager() const;
 
 private:
 	bool is_running = true;
-	std::unique_ptr<Character> player;
+	Character* player = nullptr;
 	std::unique_ptr<BattleManager> battle_manager;
+
+	// 씬 관련
+	std::vector<std::unique_ptr<BaseScene>> scene_stack;
+	SceneOp scene_op;
+	SceneType next_scene;
+
+	// 이벤트 큐
 	std::queue<Event> event_queue;
-	Scene scene = Scene::Battle;
+
 
 	GameManager();
 	~GameManager();
 
-	void GenerateMonsters();
-	void Battle();
-	void DisplayInventory();
 	void ProcessInput();
-	void ProcessEvent(const Event& ev);
-	void Update(float delta_time);
-	void Render();
+	void ProcessScene();
+	std::unique_ptr<BaseScene> CreateScene(SceneType type);
 
-	void ProcessBattleScene(int key_code);
+	//void GenerateMonsters();
 };
 

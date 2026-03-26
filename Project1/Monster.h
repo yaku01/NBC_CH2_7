@@ -14,11 +14,18 @@ public:
 
 	int GetAttack() const { return attack; }
 	int GetHealth() const { return hp; }
+	std::string GetName() const { return name; }
 
+	void SetVisible(bool visible) { is_visible = visible; }
+
+	bool IsDead() const { return (hp <= 0); }
+	bool IsVisible() const { return is_visible; }
 
 private:
 	int attack = 3;
 	int hp = 20;
 	int max_hp = 20;
+	std::string name = "orc";
+	bool is_visible = false;
 };
 

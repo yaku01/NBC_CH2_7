@@ -103,6 +103,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -124,18 +125,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BattleManager.cpp" />
-    <ClCompile Include="GameManager.cpp" />
-    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="BattleScene.cpp" />
+    <ClCompile Include="Characters\Character.cpp" />
+    <ClCompile Include="Core\GameManager.cpp" />
+    <ClCompile Include="Core\RenderSystem.cpp" />
+    <ClCompile Include="GamePlay\Battle\BattleManager.cpp" />
+    <ClCompile Include="Items\AttackBoost.cpp" />
+    <ClCompile Include="Items\HealthPotioin.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Scene\BaseScene.cpp" />
+    <ClCompile Include="Scene\DungeonScene.cpp" />
+    <ClCompile Include="Scene\TitleScene.cpp" />
+    <ClCompile Include="Scene\TownScene.cpp" />
+    <ClCompile Include="UI\BaseUI.cpp" />
+    <ClCompile Include="UI\GameUI.cpp" />
+    <ClCompile Include="UI\UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BattleManager.h" />
-    <ClInclude Include="Character.h" />
-    <ClInclude Include="common.h" />
-    <ClInclude Include="GameManager.h" />
-    <ClInclude Include="Item.h" />
+    <ClInclude Include="BattleScene.h" />
+    <ClInclude Include="Characters\Character.h" />
+    <ClInclude Include="Common\common.h" />
+    <ClInclude Include="Core\GameManager.h" />
+    <ClInclude Include="Core\RenderSystem.h" />
+    <ClInclude Include="GamePlay\Battle\BattleManager.h" />
+    <ClInclude Include="Items\AttackBoost.h" />
+    <ClInclude Include="Items\HealthPotion.h" />
+    <ClInclude Include="Items\Item.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="Scene\BaseScene.h" />
+    <ClInclude Include="Scene\DungeonScene.h" />
+    <ClInclude Include="Scene\TitleScene.h" />
+    <ClInclude Include="Scene\TownScene.h" />
+    <ClInclude Include="UI\BaseUI.h" />
+    <ClInclude Include="UI\GameUI.h" />
+    <ClInclude Include="UI\UIManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
