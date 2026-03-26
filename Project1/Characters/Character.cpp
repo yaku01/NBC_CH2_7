@@ -49,6 +49,11 @@ void Character::LevelUp()
 
 void Character::AddItem(std::unique_ptr<IItem> item)
 {
+	if (!item)
+	{
+		std::cout << "잘못된 아이템 아이디 입니다." << std::endl;
+		return;
+	}
 	inventory.push_back(std::move(item));
 }
 
