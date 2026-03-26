@@ -7,7 +7,7 @@
 
 #include "Item.h"
 
-Character::Character(std::string name) : name(name), level(1), health(100), max_health(100), attack(10), experience(0), gold(0) {}
+Character::Character(std::string name) : name(name), level(1), health(200), max_health(200), attack(30), experience(0), gold(0) {}
 
 // 싱글톤
 Character& Character::GetInstance(const std::string& name)
@@ -37,10 +37,14 @@ void Character::DisplayInventory() const
 
 void Character::LevelUp()
 {
+	if (level >= 10)
+	{
+		return;
+	}
 	level++;
-	max_health += 20;
-	health = max_health;	// 체력을 최대치로 회복
-	attack += 5;			// 공격력 증가
+	max_health += level * 20;		// 레벨에 비례하여 상승
+	health = max_health;			// 체력을 최대치로 회복
+	attack += level * 5;			// 공격력 증가
 }
 
 void Character::AddItem(std::unique_ptr<IItem> item)
