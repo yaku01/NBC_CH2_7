@@ -125,7 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-<<<<<<< HEAD
+
     <ClInclude Include="DropTable.h" />
     <ClInclude Include="Goblin.h" />
     <ClInclude Include="Item.h" />
@@ -136,11 +136,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Goblin.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Orc.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="Troll.cpp" />
-=======
+
     <ClCompile Include="Items\AttackBoost.cpp" />
     <ClCompile Include="Characters\Character.cpp" />
     <ClCompile Include="Items\HealthPotioin.cpp" />
@@ -153,7 +152,7 @@
     <ClInclude Include="Items\HealthPotion.h" />
     <ClInclude Include="Items\Item.h" />
     <ClInclude Include="Items\ItemFactory.h" />
->>>>>>> 66fa6f291e3f3c97c27bae2ad947a7436f97c94c
+
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
