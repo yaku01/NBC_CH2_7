@@ -12,9 +12,7 @@ BattleManager::BattleManager(Character* p) : player(p)
 {
 }
 
-BattleManager::~BattleManager()
-{
-}
+BattleManager::~BattleManager() = default;
 
 void BattleManager::Release()
 {
@@ -27,9 +25,13 @@ void BattleManager::Release()
 	monsters.clear();
 }
 
-void BattleManager::Init(const std::vector<Monster*>& monsters)
+void BattleManager::Init(const std::vector<std::unique_ptr<Monster>>& monsters)
 {
-	this->monsters = monsters;
+	this->monsters.clear();
+	for (const auto& monster : monsters) {
+		this->monsters.push_back(monster.get());
+	}
+
 	total_exp = 0;
 	total_gold = 0;
 	items.clear();
@@ -45,7 +47,7 @@ void BattleManager::PlayerAttack(size_t target)
 	if (target >= monsters.size()) {
 		return;
 	}
-
+	
 	Monster* monster = monsters[target];
 
 	// 몬스터 유효성 검사
@@ -55,24 +57,31 @@ void BattleManager::PlayerAttack(size_t target)
 
 	int damage = player->GetAttack();
 	monster->TakeDamage(damage);
-
+	
 	UIManager::GetInstance().AddMessage(UIType::Log,
 		"[공격] " + std::string(monster->GetName()) + "[" + std::to_string(target + 1) +
 		"]에게 " + std::to_string(damage) + "데미지를 입혔습니다!");
 
 	// 몬스터 사망 시
 	if (monster->IsDead()) {
-
+		
 		// 킬보드에 킬 추가
 		UIManager::GetInstance().OnMonsterKilled(monster->GetName());  
 
 		// 보상 누적
 		total_exp += 20;
 		total_gold += RandomUtil::GetRange(10, 20);
-
+		
 		// [임시] 아이템 30퍼 확률로 지급
-		if (RandomUtil::CheckProbability(30)) {
-			items.push_back(std::make_unique<HealthPotion>());
+		if (RandomUtil::IsSuccess(1.0)) {
+			for (int i = 0; i < 7; ++i) {
+				if (RandomUtil::IsSuccess(0.5)) {
+					items.push_back(std::make_unique<HealthPotion>());
+				}
+				else {
+					items.push_back(std::make_unique<AttackBoost>());
+				}
+			}
 		}
 
 		monster->SetVisible(false);

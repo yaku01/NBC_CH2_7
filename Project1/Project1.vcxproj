@@ -125,6 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+<<<<<<< HEAD
 
     <ClInclude Include="DropTable.h" />
     <ClInclude Include="Goblin.h" />
@@ -141,18 +142,48 @@
     <ClCompile Include="Troll.cpp" />
 
     <ClCompile Include="Items\AttackBoost.cpp" />
+=======
+>>>>>>> bff7a7b964f8f65079d3f1612d1e57d0fc919098
     <ClCompile Include="Characters\Character.cpp" />
+    <ClCompile Include="Common\common.cpp" />
+    <ClCompile Include="Core\GameManager.cpp" />
+    <ClCompile Include="Core\RenderSystem.cpp" />
+    <ClCompile Include="GamePlay\Battle\BattleManager.cpp" />
+    <ClCompile Include="Items\AttackBoost.cpp" />
     <ClCompile Include="Items\HealthPotioin.cpp" />
-    <ClCompile Include="Items\ItemFactory.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Scene\BaseScene.cpp" />
+    <ClCompile Include="Scene\BattleScene.cpp" />
+    <ClCompile Include="Scene\DungeonScene.cpp" />
+    <ClCompile Include="Scene\TitleScene.cpp" />
+    <ClCompile Include="Scene\TownScene.cpp" />
+    <ClCompile Include="UI\BaseUI.cpp" />
+    <ClCompile Include="UI\GameUI.cpp" />
+    <ClCompile Include="UI\UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Items\AttackBoost.h" />
     <ClInclude Include="Characters\Character.h" />
+    <ClInclude Include="Common\common.h" />
+    <ClInclude Include="Core\GameManager.h" />
+    <ClInclude Include="Core\RenderSystem.h" />
+    <ClInclude Include="GamePlay\Battle\BattleManager.h" />
+    <ClInclude Include="Items\AttackBoost.h" />
     <ClInclude Include="Items\HealthPotion.h" />
     <ClInclude Include="Items\Item.h" />
+<<<<<<< HEAD
     <ClInclude Include="Items\ItemFactory.h" />
 
+=======
+    <ClInclude Include="Monster.h" />
+    <ClInclude Include="Scene\BaseScene.h" />
+    <ClInclude Include="Scene\BattleScene.h" />
+    <ClInclude Include="Scene\DungeonScene.h" />
+    <ClInclude Include="Scene\TitleScene.h" />
+    <ClInclude Include="Scene\TownScene.h" />
+    <ClInclude Include="UI\BaseUI.h" />
+    <ClInclude Include="UI\GameUI.h" />
+    <ClInclude Include="UI\UIManager.h" />
+>>>>>>> bff7a7b964f8f65079d3f1612d1e57d0fc919098
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

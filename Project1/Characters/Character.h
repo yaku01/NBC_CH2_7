@@ -61,6 +61,10 @@ public:
 
 	int GetGold() const { return gold; }
 
+	const std::string& GetName() const { return name; }
+
+	const std::vector<std::unique_ptr<IItem>>& GetInventory() const { return inventory; }
+
 	// setters
 	void SetLevel(int new_level) { level = new_level; }
 
