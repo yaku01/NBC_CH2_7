@@ -1,5 +1,5 @@
 #include "BaseUI.h"
-#include <fstream>
+#include "Core/ResourceManager.h"
 
 BaseUI::BaseUI(int x, int y, int w, int h) :
     start_x(x), start_y(y), width(w), height(h), is_visible(true)
@@ -22,16 +22,7 @@ void BaseUI::AddContents(std::string_view msg)
 
 void BaseUI::LoadAsciiArt(const std::string& path)
 {
-    contents.clear();
-    
-    std::ifstream in(path);
-    if (in.is_open()) {
-        std::string s;
-
-        while (std::getline(in, s)) {
-            contents.push_back(s);
-        }
-    }
+    contents = ResourceManager::GetInstance().GetResource(path);
 }
 
 void BaseUI::Clear()

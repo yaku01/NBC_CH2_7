@@ -20,3 +20,8 @@ void Orc::TakeDamage(int damage) {
     if (health < 0)health = 0;
 
 }
+
+string Orc::GetAsciiArtPath() const
+{
+    return "Resource/Orc.txt";
+}

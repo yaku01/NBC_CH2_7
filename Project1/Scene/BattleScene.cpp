@@ -33,14 +33,14 @@ void BattleScene::Init()
 	// -----------
 	//배경
 	auto bg = std::make_unique<AsciiUI>(0, 0);
-	bg->LoadAsciiArt("bg.txt");
+	bg->LoadAsciiArt("Resource/bg.txt");
 	scene_uis.push_back(std::move(bg));
 
 
 	// ----------------
 	// 플레이어 아스키 아트  x : 5, y : 30
 	player_ui = std::make_unique<CharacterUI>(5, 20);
-	player_ui->LoadAsciiArt("img/Player.txt");    
+	player_ui->LoadAsciiArt("Resource/Player.txt");    
 	player_ui->SetTarget(&Character::GetInstance()); 
 
 	// 몬스터 아스키 아트  x : 45, y : 10 + (diff)
@@ -48,7 +48,7 @@ void BattleScene::Init()
 	int diff = 10;
 	for (int i = 0; i < monster_count; ++i) {
 		auto monster_ui = std::make_unique<MonsterUI>(45, monster_y);
-		monster_ui->LoadAsciiArt("img/Monster.txt");
+		monster_ui->LoadAsciiArt(monsters[i]->GetAsciiArtPath());
 		monster_ui->SetTarget(monsters[i].get());
 		monster_uis.push_back(std::move(monster_ui));
 		monster_y += diff;

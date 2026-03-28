@@ -19,7 +19,7 @@ void ExitPopUpScene::Init()
 	int y = static_cast<int>(h * 0.15);
 
 	auto pop_up = std::make_unique<AsciiUI>(x, y);
-	pop_up->LoadAsciiArt("img/ExitPopup.txt");
+	pop_up->LoadAsciiArt("Resource/ExitPopup.txt");
 	scene_uis.push_back(std::move(pop_up));
 }
 

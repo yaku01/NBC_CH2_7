@@ -3,7 +3,7 @@
 using namespace std;
 
 Troll::Troll(int level) : Monster(level) {
-    name = "Goblin";
+    name = "Troll";
     maxhealth = level * 80;
     health = maxhealth;
     attack = level * 10;
@@ -19,4 +19,9 @@ void Troll::TakeDamage(int damage) {
     health -= damage;
     if (health < 0)health = 0;
 
+}
+
+string Troll::GetAsciiArtPath() const
+{
+    return "Resource/Troll.txt";
 }

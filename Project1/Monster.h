@@ -15,7 +15,7 @@ public:
     vector<ItemID> GetDropItems() {
         return droptable.drop();
     }
-
+    virtual string GetAsciiArtPath() const = 0;
     
 
     bool IsDead() const { return health <= 0; };
@@ -75,5 +75,6 @@ protected:
     DropTable droptable;
     bool is_active;
     int maxhealth;
+    string file_path;
 };
 

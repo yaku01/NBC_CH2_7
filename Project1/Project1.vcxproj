@@ -127,6 +127,7 @@
   <ItemGroup>
     <ClInclude Include="DropTable.h" />
     <ClInclude Include="MonsterFactory.h" />
+    <ClInclude Include="Core\ResourceManager.h" />
     <ClInclude Include="Scene\ExitPopUpScene.h" />
     <ClInclude Include="Goblin.h" />
     <ClInclude Include="Monster.h" />
@@ -136,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MonsterFactory.cpp" />
+    <ClCompile Include="Core\ResourceManager.cpp" />
     <ClCompile Include="Scene\ExitPopUpScene.cpp" />
     <ClCompile Include="Goblin.cpp" />
     <ClCompile Include="Items\ItemFactory.cpp" />

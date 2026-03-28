@@ -3,7 +3,7 @@
 using namespace std;
 
 Slime::Slime(int level) : Monster(level) {
-    name = "Goblin";
+    name = "Slime";
     maxhealth = level * 30;
     health = maxhealth;
     attack = level * 5;
@@ -19,4 +19,9 @@ void Slime::TakeDamage(int damage) {
     if (health < 0)health = 0;
 
 
+}
+
+string Slime::GetAsciiArtPath() const
+{
+    return "Resource/Slime.txt";
 }
