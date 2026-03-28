@@ -3,7 +3,7 @@
 
 namespace RandomUtil {
 	int GetRange(int min, int max);
-	bool IsSuccess(double percent);
+	bool IsSuccess(double probability);
 }
 
 enum class UIType {
@@ -31,6 +31,7 @@ enum class SceneType {
 	Town,
 	Dungeon,
 	Battle,
+	Exit,
 	None
 };
 
@@ -42,4 +43,13 @@ struct Event {
 		int key_code;
 		SceneType next_scene;
 	};
+};
+
+
+enum class MonsterType {
+	Slime, 
+	Troll,
+	Goblin,
+	Orc,
+	None
 };

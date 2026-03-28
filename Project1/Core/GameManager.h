@@ -47,7 +47,5 @@ private:
 	void ProcessInput();
 	void ProcessScene();
 	std::unique_ptr<BaseScene> CreateScene(SceneType type);
-
-	//void GenerateMonsters();
 };
 

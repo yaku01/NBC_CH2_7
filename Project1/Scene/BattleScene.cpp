@@ -4,7 +4,7 @@
 #include "UI/UIManager.h"
 #include "Characters/Character.h"
 #include "Monster.h"
-#include "Orc.h"
+#include "MonsterFactory.h"
 
 constexpr int MIN_MONSTER_COUNT = 1;
 constexpr int MAX_MONSTER_COUNT = 3;
@@ -19,7 +19,7 @@ void BattleScene::Init()
 
 	int monster_count = RandomUtil::GetRange(MIN_MONSTER_COUNT, MAX_MONSTER_COUNT);
 	for (int i = 0; i < monster_count; ++i) {
-		monsters.push_back(std::make_unique<Orc>(player->GetLevel()));
+		monsters.push_back(MonsterFactory::RandomCreateMonster(player->GetLevel()));
 	}
 
 	if (!battle_manager || monsters.empty()) {
@@ -38,19 +38,20 @@ void BattleScene::Init()
 
 
 	// ----------------
-	// 플레이어 아스키 아트  x : 5, y : 10
-	player_ui = std::make_unique<CharacterUI>(5, 10);
-	player_ui->LoadAsciiArt("player.txt");    
+	// 플레이어 아스키 아트  x : 5, y : 30
+	player_ui = std::make_unique<CharacterUI>(5, 20);
+	player_ui->LoadAsciiArt("img/Player.txt");    
 	player_ui->SetTarget(&Character::GetInstance()); 
 
-	// 몬스터 아스키 아트  x : 45, y : 5
-	int monster_y = 5;
+	// 몬스터 아스키 아트  x : 45, y : 10 + (diff)
+	int monster_y = 10;
+	int diff = 10;
 	for (int i = 0; i < monster_count; ++i) {
 		auto monster_ui = std::make_unique<MonsterUI>(45, monster_y);
-		monster_ui->LoadAsciiArt("monster_slime.txt");
+		monster_ui->LoadAsciiArt("img/Monster.txt");
 		monster_ui->SetTarget(monsters[i].get());
 		monster_uis.push_back(std::move(monster_ui));
-		monster_y += 5;
+		monster_y += diff;
 	}
 
 	// ----------------
@@ -60,12 +61,12 @@ void BattleScene::Init()
 
 void BattleScene::SetMenu()
 {
-	UIManager::GetInstance().ClearMessage(UIType::Menu);
+	UIManager::GetInstance().ClearContent(UIType::Menu);
 
 	switch (current_state) {
 	case BattleState::Act:
-		UIManager::GetInstance().AddMessage(UIType::Menu, "1. 공격한다   0. 도망친다");
-		UIManager::GetInstance().AddMessage(UIType::Menu, "전투 행동을 선택하세요: ");
+		UIManager::GetInstance().AddContent(UIType::Menu, "1. 공격한다   0. 도망친다");
+		UIManager::GetInstance().AddContent(UIType::Menu, "전투 행동을 선택하세요: ");
 		break;
 
 	case BattleState::TargetEnemy:
@@ -78,8 +79,8 @@ void BattleScene::SetMenu()
 		}
 		msg += "0. 취소";
 
-		UIManager::GetInstance().AddMessage(UIType::Menu, msg);
-		UIManager::GetInstance().AddMessage(UIType::Menu, "공격할 대상을 선택하세요: ");
+		UIManager::GetInstance().AddContent(UIType::Menu, msg);
+		UIManager::GetInstance().AddContent(UIType::Menu, "공격할 대상을 선택하세요: ");
 		break;
 	}
 
@@ -149,7 +150,7 @@ void BattleScene::ProcessActPhase(int key_code)
 		break;
 
 	case '0':
-		UIManager::GetInstance().AddMessage(UIType::Log, "[도망] 무사히 도망쳤습니다.");
+		UIManager::GetInstance().AddContent(UIType::Log, "[도망] 무사히 도망쳤습니다.");
 		PopScene(); // 도망 -> 이전 씬으로 복귀!
 		return;
 
@@ -184,7 +185,7 @@ void BattleScene::ProcessTargetPhase(int key_code)
 		if (battle_manager->IsBattleOver()) {
 			// 플레이어 사망으로 종료라면
 			if (player->IsDead()) {
-				UIManager::GetInstance().AddMessage(UIType::Log, "게임 오버! 타이틀로 돌아갑니다...");
+				UIManager::GetInstance().AddContent(UIType::Log, "게임 오버! 타이틀로 돌아갑니다...");
 				ChangeScene(SceneType::Title);
 				return;
 			}

@@ -4,11 +4,12 @@ using namespace std;
 
 Slime::Slime(int level) : Monster(level) {
     name = "Goblin";
-    health = level * 30;
+    maxhealth = level * 30;
+    health = maxhealth;
     attack = level * 5;
 
-    droptable.addItem(ItemID::HealthPotion, 0.5);
-    droptable.addItem(ItemID::AttackBoost, 0.5);
+    droptable.addItem(ItemID::HealthPotion, 0.3);
+    droptable.addItem(ItemID::AttackBoost, 0.3);
 }
 
 

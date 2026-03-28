@@ -6,11 +6,12 @@ using namespace std;
 
 Goblin::Goblin(int level) : Monster(level){
     name = "Goblin";
-    health = level*100;
+    maxhealth = level * 100;
+    health = maxhealth;
     attack = level*15;
 
-    droptable.addItem(ItemID::HealthPotion, 0.5);
-    droptable.addItem(ItemID::AttackBoost, 0.5);
+    droptable.addItem(ItemID::HealthPotion, 0.3);
+    droptable.addItem(ItemID::AttackBoost, 0.3);
 }
 
 void Goblin::TakeDamage(int damage) {

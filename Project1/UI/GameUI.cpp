@@ -227,12 +227,14 @@ void MonsterUI::Render()
 {
     AsciiUI::Render();
 
-    // 체력 출력
+    // 이름 + 체력 출력
     if (target) {
+        int info_y = start_y + static_cast<int>(contents.size()) + 1;
+
+        RenderSystem::GetInstance().PrintText(start_x, info_y++, target->GetName());
+
         std::string hp_info = "HP: " + std::to_string(target->GetHealth()) +
             " / " + std::to_string(target->GetMaxHealth());
-
-        int info_y = start_y + static_cast<int>(contents.size()) + 1;
         RenderSystem::GetInstance().PrintText(start_x, info_y, hp_info);
     }
 }

@@ -7,7 +7,7 @@ RenderSystem::RenderSystem()
         NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
     screen_buffers[1] = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0,
         NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
-
+    
     // 두 버퍼 모두 깜빡이는 커서 숨기기
     CONSOLE_CURSOR_INFO cci;
     cci.dwSize = 1;

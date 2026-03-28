@@ -49,7 +49,7 @@ UIManager::~UIManager()
 {
 }
 
-void UIManager::AddMessage(UIType type, std::string_view msg)
+void UIManager::AddContent(UIType type, std::string_view msg)
 {
     size_t idx = static_cast<size_t>(type);
 
@@ -58,7 +58,7 @@ void UIManager::AddMessage(UIType type, std::string_view msg)
     }
 }
 
-void UIManager::ClearMessage(UIType type)
+void UIManager::ClearContent(UIType type)
 {
     size_t idx = static_cast<size_t>(type);
 

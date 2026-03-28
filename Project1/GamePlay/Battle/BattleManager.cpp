@@ -4,9 +4,7 @@
 #include "Items/Item.h"
 #include "UI/UIManager.h"
 #include "Common/common.h"
-#include "Items/HealthPotion.h"
-#include "Items/AttackBoost.h"
-#include "Orc.h"
+#include "Items/ItemFactory.h"
 
 
 BattleManager::BattleManager(Character* p) : player(p)
@@ -19,7 +17,7 @@ void BattleManager::Release()
 {
 	for (auto& monster : monsters) {
 		if (monster) {
-			monster->SetVisible(false);
+			monster->SetActive(false);
 		}
 	}
 
@@ -59,7 +57,7 @@ void BattleManager::PlayerAttack(size_t target)
 	int damage = player->GetAttack();
 	monster->TakeDamage(damage);
 	
-	UIManager::GetInstance().AddMessage(UIType::Log,
+	UIManager::GetInstance().AddContent(UIType::Log,
 		"[공격] " + std::string(monster->GetName()) + "[" + std::to_string(target + 1) +
 		"]에게 " + std::to_string(damage) + "데미지를 입혔습니다!");
 
@@ -73,19 +71,16 @@ void BattleManager::PlayerAttack(size_t target)
 		total_exp += 20;
 		total_gold += RandomUtil::GetRange(10, 20);
 		
-		// [임시] 아이템 30퍼 확률로 지급
-		if (RandomUtil::IsSuccess(1.0)) {
-			for (int i = 0; i < 7; ++i) {
-				if (RandomUtil::IsSuccess(0.5)) {
-					items.push_back(std::make_unique<HealthPotion>());
-				}
-				else {
-					items.push_back(std::make_unique<AttackBoost>());
-				}
+		// 아이템 드롭테이블에서 받아와서 추가
+		auto item_ids = monster->GetDropItems();
+		for (const auto& item_id : item_ids) {
+			auto item = ItemFactory::CreateItem(item_id);
+			if (item) {
+				items.push_back(std::move(item));
 			}
 		}
 
-		monster->SetVisible(false);
+		monster->SetActive(false);
 	}
 }
 
@@ -100,11 +95,11 @@ void BattleManager::MonstersAttack()
 			int damage = monster->GetAttack();
 			player->TakeDamage(damage);
 
-			UIManager::GetInstance().AddMessage(UIType::Log,
+			UIManager::GetInstance().AddContent(UIType::Log,
 				"[피격] " + std::string(monster->GetName()) + "에게 " + std::to_string(damage) + "의 피해를 받았습니다!");
 
 			if (player->IsDead()) {
-				UIManager::GetInstance().AddMessage(UIType::Log,
+				UIManager::GetInstance().AddContent(UIType::Log,
 					"[사망] " + std::string(monster->GetName()) + "에 의해 사망하였습니다...");
 				break;
 			}
@@ -140,12 +135,12 @@ void BattleManager::DistributedReward()
 	player->GainExp(total_exp);
 	player->GainGold(total_gold);
 
-	UIManager::GetInstance().AddMessage(UIType::Log,
+	UIManager::GetInstance().AddContent(UIType::Log,
 		"[보상] 경험치를 " + std::to_string(total_exp) + ", 골드를 " + std::to_string(total_gold) + "획득하였습니다!");
 
 
 	for (auto& item : items) {
-		UIManager::GetInstance().AddMessage(UIType::Log,
+		UIManager::GetInstance().AddContent(UIType::Log,
 			"[보상] " + item->GetName() + "을 획득하였습니다!");
 
 		player->AddItem(std::move(item));

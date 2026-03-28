@@ -125,21 +125,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-
     <ClInclude Include="DropTable.h" />
+    <ClInclude Include="MonsterFactory.h" />
+    <ClInclude Include="Scene\ExitPopUpScene.h" />
     <ClInclude Include="Goblin.h" />
-    <ClInclude Include="Item.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Orc.h" />
     <ClInclude Include="Slime.h" />
     <ClInclude Include="Troll.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MonsterFactory.cpp" />
+    <ClCompile Include="Scene\ExitPopUpScene.cpp" />
     <ClCompile Include="Goblin.cpp" />
+    <ClCompile Include="Items\ItemFactory.cpp" />
     <ClCompile Include="Orc.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="Troll.cpp" />
-
     <ClCompile Include="Items\AttackBoost.cpp" />
     <ClCompile Include="Characters\Character.cpp" />
     <ClCompile Include="Common\common.cpp" />
@@ -175,7 +177,6 @@
     <ClInclude Include="UI\BaseUI.h" />
     <ClInclude Include="UI\GameUI.h" />
     <ClInclude Include="UI\UIManager.h" />
-
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

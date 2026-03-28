@@ -1,4 +1,5 @@
 #include "BaseUI.h"
+#include <fstream>
 
 BaseUI::BaseUI(int x, int y, int w, int h) :
     start_x(x), start_y(y), width(w), height(h), is_visible(true)
@@ -22,12 +23,15 @@ void BaseUI::AddContents(std::string_view msg)
 void BaseUI::LoadAsciiArt(const std::string& path)
 {
     contents.clear();
+    
+    std::ifstream in(path);
+    if (in.is_open()) {
+        std::string s;
 
-    // -- 임시로 채운 내용
-    contents.push_back("@@");
-    //
-
-    // 파일 읽어서 아스키 아트 내용 채우기
+        while (std::getline(in, s)) {
+            contents.push_back(s);
+        }
+    }
 }
 
 void BaseUI::Clear()

@@ -9,16 +9,17 @@ using namespace std;
 
 class Monster {
 public:
-	Monster(int level) : level(level), health(1), attack(1), maxhealth(1),Isvisible(true){}
+	Monster(int level) : level(level), health(1), attack(1), maxhealth(1),is_active(false){}
     virtual ~Monster(){}
     virtual void TakeDamage(int damage) = 0;
-    virtual vector<ItemID> getDropItems() {
+    vector<ItemID> GetDropItems() {
         return droptable.drop();
     }
 
     
 
     bool IsDead() const { return health <= 0; };
+    bool IsActive() const { return is_active; }
 
     //getter 함수
 
@@ -44,8 +45,8 @@ public:
 
     // setter 함수
 
-    void SetVisible(bool visible) {
-        this->Isvisible = visible;
+    void SetActive(bool active) {
+        this->is_active = active;
     };
 
     void SetName(const string &name) {
@@ -72,7 +73,7 @@ protected:
     int attack;
     int level;
     DropTable droptable;
-    bool Isvisible;
+    bool is_active;
     int maxhealth;
 };
 
