@@ -1,0 +1,20 @@
+#include "ItemDataBase.h"
+
+std::unordered_map<ItemID, ItemData> ItemDataBase::data;
+
+void ItemDataBase::Initialize()
+{
+	data[ItemID::HealthPotion] = { "HealthPotion", "체력을 50 회복합니다.", 1 };
+	data[ItemID::AttackBoost] = { "AttackBoost", "다음 전투에서 공격력이 10 증가합니다.", 1 };
+}
+
+const ItemData& ItemDataBase::GetData(ItemID id)
+{
+	return data[id];
+}
+
+int ItemDataBase::GetSellPrice(ItemID id)
+{
+	const ItemData& data = GetData(id);
+	return std::max(1, static_cast<int>(data.price * SELL_RATIO));
+}

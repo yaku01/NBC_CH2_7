@@ -4,7 +4,7 @@
 
 #include "Character.h" 
 
-HealthPotion::HealthPotion() : name("Health Potion"), id(ItemID::AttackBoost), health_restore(50) 
+HealthPotion::HealthPotion() : name("Health Potion"), id(ItemID::HealthPotion), health_restore(50) 
 {
 	
 	description = "체력을" + std::to_string(health_restore) + " 회복합니다";

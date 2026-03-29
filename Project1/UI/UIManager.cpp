@@ -1,6 +1,7 @@
 #include "UIManager.h"
 #include "UI/GameUI.h"
 #include "Core/RenderSystem.h"
+#include "Characters/Character.h"
 
 UIManager::UIManager()
 {
@@ -35,7 +36,7 @@ UIManager::UIManager()
 
     // 아이템
     int item_height = h - info_height - log_height;
-    uis.push_back(std::make_unique<ItemUI>(right_area_x, info_height, right_area_width, item_height));
+    uis.push_back(std::make_unique<InventoryUI>(right_area_x, info_height, right_area_width, item_height));
 
     // 킬보드 UI 추가
     int kill_width = static_cast<int>(w * 0.15f);
@@ -108,13 +109,14 @@ void UIManager::SetAllVisible(bool value)
 
 void UIManager::NextPageItemUI()
 {
-    auto* item_ui = static_cast<ItemUI*>(uis[static_cast<int>(UIType::Item)].get());
-    item_ui->NextPage();
+    auto* item_ui = static_cast<InventoryUI*>(uis[static_cast<int>(UIType::Inventory)].get());
+    int total_items = static_cast<int>(Character::GetInstance().GetInventory().size());
+    item_ui->NextPage(total_items);
 }
 
 void UIManager::PrevPageItemUI()
 {
-    auto* item_ui = static_cast<ItemUI*>(uis[static_cast<int>(UIType::Item)].get());
+    auto* item_ui = static_cast<InventoryUI*>(uis[static_cast<int>(UIType::Inventory)].get());
     item_ui->PrevPage();
 }
 
@@ -125,18 +127,18 @@ void UIManager::OnMonsterKilled(const std::string& monster_name)    // 킬보드에 
 
 void UIManager::ToggleItemUI()
 {
-    auto* item_ui = static_cast<ItemUI*>(uis[static_cast<int>(UIType::Item)].get());
+    auto* item_ui = static_cast<InventoryUI*>(uis[static_cast<int>(UIType::Inventory)].get());
     item_ui->ToggleActive();
 }
 
 int UIManager::GetItemUICurrentPage() const
 {
-    auto* item_ui = static_cast<ItemUI*>(uis[static_cast<int>(UIType::Item)].get());
+    auto* item_ui = static_cast<InventoryUI*>(uis[static_cast<int>(UIType::Inventory)].get());
     return item_ui->GetCurrentPage();
 }
 
 int UIManager::GetItemUIItemsPerPage() const
 {
-    auto* item_ui = static_cast<ItemUI*>(uis[static_cast<int>(UIType::Item)].get());
+    auto* item_ui = static_cast<InventoryUI*>(uis[static_cast<int>(UIType::Inventory)].get());
     return item_ui->GetItemsPerPage();
 }

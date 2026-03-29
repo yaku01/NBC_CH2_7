@@ -126,6 +126,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DropTable.h" />
+    <ClInclude Include="Core\ItemDataBase.h" />
     <ClInclude Include="Scene\ItemUsableScene.h" />
     <ClInclude Include="MonsterFactory.h" />
     <ClInclude Include="Core\ResourceManager.h" />
@@ -139,6 +140,7 @@
     <ClInclude Include="Troll.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Core\ItemDataBase.cpp" />
     <ClCompile Include="Scene\ItemUsableScene.cpp" />
     <ClCompile Include="MonsterFactory.cpp" />
     <ClCompile Include="Core\ResourceManager.cpp" />

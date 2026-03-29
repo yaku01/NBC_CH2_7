@@ -48,6 +48,8 @@ public:
 
 	void IncreaseAttack(int amount);
 
+	void RemoveItem(size_t index);
+
 	// getters
 	int GetLevel() const { return level; }
 

@@ -7,6 +7,7 @@
 #include "Core/RenderSystem.h"
 #include "Scene/SceneFactory.h"
 #include "Items/ItemFactory.h"
+#include "ItemDataBase.h"
 #include <thread>
 #include <conio.h>
 
@@ -20,6 +21,8 @@ GameManager::~GameManager() = default;
 void GameManager::Init()
 {
 	UIManager::GetInstance().SetAllVisible(true);
+
+	ItemDataBase::Initialize();
 
 	ItemFactory::Initialize();
 	player = &Character::GetInstance();

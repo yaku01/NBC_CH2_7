@@ -111,3 +111,10 @@ void Character::IncreaseAttack(int amount)
 {
 	attack += amount;
 }
+
+void Character::RemoveItem(size_t index)
+{
+	if (index < inventory.size()) {
+		inventory.erase(inventory.begin() + index);
+	}
+}

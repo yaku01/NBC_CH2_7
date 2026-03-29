@@ -12,10 +12,10 @@ void ItemUsableScene::Init()
 	int w = RenderSystem::GetInstance().GetScreenWidth();
 	int h = RenderSystem::GetInstance().GetScreenHeight();
 
-	int width = static_cast<int>(w * 0.4f);
-	int height = 8;
 	int x = static_cast<int>(w * 0.2f);
 	int y = static_cast<int>(h * 0.2f);
+	int width = static_cast<int>(w * 0.4f);
+	int height = 8;
 
 	item_popup_ui = std::make_unique<ItemConfirmUI>(x, y, width, height);
 }
@@ -118,7 +118,8 @@ void ItemUsableScene::ProcessInventoryMode(const  Event& e)
 			input_state = InputState::ItemConfirm;
 
 			// ÆË¾÷ ¶ç¿ï ¾ÆÀÌÅÛ Å¸°ÔÆÃ
-			item_popup_ui->SetTarget(inventory[target_idx].get());
+			item_popup_ui->SetTarget(inventory[target_idx]->GetID());
+			item_popup_ui->SetActionText("»ç¿ëÇÏ½Ã°Ú½À´Ï±î?");
 		}
 		
 		break;
@@ -135,13 +136,13 @@ void ItemUsableScene::ProcessItemConfirm(const  Event& e)
 		Character::GetInstance().UseItem(item_index);
 		UIManager::GetInstance().AddContent(UIType::Log, "[»ç¿ë] ¾ÆÀÌÅÛÀ» »ç¿ëÇß½À´Ï´Ù.");
 
-		item_popup_ui->SetTarget(nullptr); // ÆË¾÷ ´Ý±â
+		item_popup_ui->SetTarget(ItemID::None); // ÆË¾÷ ´Ý±â
 		input_state = InputState::InventoryMode;
 		break;
 
 	case 'n':
 	case 'N':
-		item_popup_ui->SetTarget(nullptr); // ÆË¾÷ ´Ý±â
+		item_popup_ui->SetTarget(ItemID::None);
 		input_state = InputState::InventoryMode;
 		break;
 	}

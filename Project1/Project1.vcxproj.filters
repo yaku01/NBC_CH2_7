@@ -28,6 +28,7 @@
     <ClCompile Include="UI\GameUI.cpp" />
     <ClCompile Include="UI\UIManager.cpp" />
     <ClCompile Include="Scene\ItemUsableScene.cpp" />
+    <ClCompile Include="Core\ItemDataBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DropTable.h" />
@@ -59,5 +60,6 @@
     <ClInclude Include="UI\GameUI.h" />
     <ClInclude Include="UI\UIManager.h" />
     <ClInclude Include="Scene\ItemUsableScene.h" />
+    <ClInclude Include="Core\ItemDataBase.h" />
   </ItemGroup>
 </Project>

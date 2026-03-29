@@ -1,6 +1,9 @@
 #pragma once
 #include "BaseUI.h"
+#include "Items/Item.h"
 #include <unordered_map>  // 킬보드에서 몬스터 이름과 킬 수를 매핑하기 위해 추가
+#include <vector>
+#include <string>
 
 class Character;
 class Monster;
@@ -44,35 +47,71 @@ public:
 };
 
 
-class ItemUI : public BorderUI
+class ItemListUI : public BorderUI
 {
 public:
-	ItemUI(int x, int y, int w, int h);
-	~ItemUI() = default;
+	ItemListUI(int x, int y, int w, int h);
+	virtual ~ItemListUI() = default;
 
-	void Render() override;
-	void NextPage();
+	void NextPage(int total_items);
 	void PrevPage();
-	void ToggleActive();
-	bool IsActive() const;
 	int GetCurrentPage() const;
 	int GetItemsPerPage() const;
 
-private:
+protected:
 	int current_page = 0;
 	const int ITEMS_PER_PAGE = 9;
+
+	void RenderTitle(const std::string& title);
+	void RenderPage(int total_items);
+	int GetStartIndex() const;
+	int GetEndIndex(int total_items) const;
+};
+
+
+class InventoryUI : public ItemListUI
+{
+public:
+	InventoryUI(int x, int y, int w, int h);
+	~InventoryUI() = default;
+
+	void Render() override;
+	void ToggleActive();
+	bool IsActive() const;
+
+private:
 	bool is_active = false;
 };
 
 
-class ItemConfirmUI : public BorderUI {
+class ShopUI : public ItemListUI
+{
 public:
-	ItemConfirmUI(int x, int y, int w, int h);
+	ShopUI(int x, int y, int w, int h);
+	~ShopUI() = default;
+
 	void Render() override;
-	void SetTarget(const IItem* item);
+	void SetMode(bool is_buy_mode, const std::vector<ItemID>* item_ids = nullptr);
 
 private:
-	const IItem* target = nullptr;
+	bool is_buy_mode = true;
+	const std::vector<ItemID>* shop_items = nullptr;
+};
+
+
+class ItemConfirmUI : public BorderUI 
+{
+public:
+	ItemConfirmUI(int x, int y, int w, int h);
+	~ItemConfirmUI() = default;
+
+	void Render() override;
+	void SetTarget(ItemID id);
+	void SetActionText(const std::string& action);
+
+private:
+	ItemID target = ItemID::None;
+	std::string action_text;
 };
 
 

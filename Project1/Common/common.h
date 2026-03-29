@@ -10,7 +10,7 @@ enum class UIType {
 	Menu,
 	CharacterInfo,
 	Log,
-	Item,
+	Inventory,
 	KillLog,
 	COUNT
 };
