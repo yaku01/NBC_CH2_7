@@ -31,4 +31,5 @@ int main()
 	GameManager::GetInstance().Run();
 
 	GameManager::GetInstance().Release();
+
 }

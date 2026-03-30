@@ -10,6 +10,7 @@
 #include "ItemDataBase.h"
 #include <thread>
 #include <conio.h>
+#include "SaveLoadManager.h"
 
 GameManager::GameManager() : scene_op(SceneOp::None), next_scene(SceneType::None),
 	is_running(true)
@@ -20,6 +21,7 @@ GameManager::~GameManager() = default;
 
 void GameManager::Init()
 {
+	SaveLoadManager sm;
 	UIManager::GetInstance().SetAllVisible(true);
 
 	ItemDataBase::Initialize();
@@ -28,6 +30,7 @@ void GameManager::Init()
 
 	battle_manager = std::make_unique<BattleManager>();
 	
+	sm.Load(*player);
 	// 초기 씬 = 타이틀
 	scene_stack.push_back(SceneFactory::CreateScene(SceneType::Title));
 	scene_stack.back()->Init();
@@ -106,6 +109,9 @@ void GameManager::Release()
 		scene_stack.back()->Release();
 		scene_stack.pop_back();
 	}
+
+	SaveLoadManager sm;
+	sm.Save(*player);
 }
 
 void GameManager::PushEvent(const Event& ev)

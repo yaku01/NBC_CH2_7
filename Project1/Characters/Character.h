@@ -29,6 +29,8 @@ public:
 	Character& operator=(const Character&) = delete;
 	static Character& GetInstance(const std::string& name = "Player");
 
+	void ClearInventory();
+
 	void DisplayStatus() const;
 
 	void DisplayInventory() const;

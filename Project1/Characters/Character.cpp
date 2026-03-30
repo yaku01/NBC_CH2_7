@@ -9,8 +9,10 @@
 #include "Equippable/EquippableItem.h"
 
 Character::Character(std::string name) 
+
 	: name(name), level(1), health(200), max_health(200), attack(30), bonus_attack(0), experience(0),
 	gold(0), equipped_weapon(nullptr), equipped_armor(nullptr) {}
+
 
 // 싱글톤
 Character& Character::GetInstance(const std::string& name)
@@ -225,6 +227,7 @@ std::unique_ptr<IItem> Character::UnequipArmor()
 	return std::move(equipped_armor); // 이전에 장착했던 방어구 반환
 }
 
+<<<<<<< HEAD
 void Character::ApplyAttackBuff(int amount)
 {
 	bonus_attack = std::max(bonus_attack, amount);
@@ -235,3 +238,4 @@ void Character::ClearBuffs()
 	// 일회용 버프 초기화
 	bonus_attack = 0;
 }
+
