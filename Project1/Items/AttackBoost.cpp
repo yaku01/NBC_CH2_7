@@ -5,25 +5,7 @@
 #include "Character.h"
 
 
-AttackBoost::AttackBoost() : name("Attack Boost"), id(ItemID::AttackBoost), attack_increase(10) 
-{
-	description = "다음 전투에서 공격력이 10 증가합니다.";
-}
-
-std::string AttackBoost::GetName() const 
-{
-	return name;
-}
-
-ItemID AttackBoost::GetID() const 
-{
-	return id;
-}
-
-std::string AttackBoost::GetDesc() const
-{
-	return description;
-}
+AttackBoost::AttackBoost() : attack_increase(10), ConsumableItem("Attack Boost", ItemID::AttackBoost, "다음 전투에서 공격력이 "+ std::to_string(attack_increase) + " 증가합니다.") {}
 
 void AttackBoost::Use(Character& target) 
 {
