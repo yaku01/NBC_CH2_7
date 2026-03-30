@@ -1,8 +1,11 @@
 #include "TitleScene.h"
 #include "Core/GameManager.h"
 #include "Common/common.h"
+#include "Characters/Character.h"
 #include "UI/UIManager.h"
 #include "UI/GameUI.h"
+
+constexpr int MAX_NAME_LENGTH = 10;
 
 void TitleScene::Init()
 {
@@ -13,6 +16,7 @@ void TitleScene::Init()
     scene_uis.push_back(std::move(bg));
 
     UIManager::GetInstance().SetAllVisible(false);
+    UIManager::GetInstance().SetVisible(UIType::Menu, true);
 
     SetMenu();
 }
@@ -20,8 +24,7 @@ void TitleScene::Init()
 void TitleScene::SetMenu()
 {
     UIManager::GetInstance().ClearContent(UIType::Menu);
-    UIManager::GetInstance().AddContent(UIType::Menu, "1. 게임 시작   2. 게임 종료");
-    UIManager::GetInstance().AddContent(UIType::Menu, "원하는 메뉴의 번호를 입력하세요: ");
+    UIManager::GetInstance().AddContent(UIType::Menu, "이름을 입력하세요 : " + name);
 }
 
 void TitleScene::ProcessEvent(const Event& e)
@@ -32,14 +35,29 @@ void TitleScene::ProcessEvent(const Event& e)
 
     SetMenu();
     
-    switch (e.key_code) {
-    case '1':
-        ChangeScene(SceneType::Town);
-        break;
-    
-    default:
+    // 알파벳 입력시 이름 입력
+   if ((e.key_code >= 'a' && e.key_code <= 'z') || (e.key_code >= 'A' && e.key_code <= 'Z')) {
+        if (name.size() < MAX_NAME_LENGTH) {
+            name += char(e.key_code);
+        }
+        SetMenu();
+    }
+    // 엔터 입력 시 로그인 시도
+    else if (e.key_code == '\r') {
+       if (!name.empty()) {
+           Character::GetInstance(name);
+           ChangeScene(SceneType::Town);
+       }
+    }
+    // 백스페이스 입력 시 이름 지우기
+    else if (e.key_code == '\b') {
+        if (!name.empty()) {
+            name.pop_back();
+        }
+        SetMenu();
+    }
+    else {
         UIManager::GetInstance().AddContent(UIType::Menu, "잘못 입력하셨습니다. 다시 입력해주세요.");
-        break;
     }
 }
 

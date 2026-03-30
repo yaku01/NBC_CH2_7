@@ -4,7 +4,6 @@
 
 BaseScene::BaseScene()
 {
-	player = GameManager::GetInstance().GetPlayer();
 }
 
 BaseScene::~BaseScene() = default;

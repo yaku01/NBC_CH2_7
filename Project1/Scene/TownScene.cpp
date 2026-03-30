@@ -63,13 +63,14 @@ void TownScene::Update(float delta_time)
 // private 함수
 void TownScene::EnterInn()
 {
-    if (player->GetGold() >= cost) {
+    auto& player = Character::GetInstance();
+    if (player.GetGold() >= cost) {
         UIManager::GetInstance().AddContent(UIType::Log, "[휴식] 여관에서 푹 쉬었습니다. (HP 회복)");
         
         std::string inn_text = "[소비] 여관에 " + std::to_string(cost) + "G 를 지불하였습니다.";
         UIManager::GetInstance().AddContent(UIType::Log, inn_text);
-        player->GainGold(-cost);
-        player->RestoreHealth(player->GetMaxHealth());
+        player.GainGold(-cost);
+        player.RestoreHealth(player.GetMaxHealth());
     }
     else {
         UIManager::GetInstance().AddContent(UIType::Log, "[실패] 골드가 모자랍니다!");

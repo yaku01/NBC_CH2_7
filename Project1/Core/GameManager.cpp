@@ -25,8 +25,8 @@ void GameManager::Init()
 	ItemDataBase::Initialize();
 
 	ItemFactory::Initialize();
-	player = &Character::GetInstance();
-	battle_manager = std::make_unique<BattleManager>(player);
+
+	battle_manager = std::make_unique<BattleManager>();
 	
 	// 초기 씬 = 타이틀
 	scene_stack.push_back(SceneFactory::CreateScene(SceneType::Title));
@@ -154,11 +154,6 @@ void GameManager::Release()
 void GameManager::PushEvent(const Event& ev)
 {
 	event_queue.push(ev);
-}
-
-Character* GameManager::GetPlayer() const
-{
-	return player;
 }
 
 BattleManager* GameManager::GetBattleManager() const

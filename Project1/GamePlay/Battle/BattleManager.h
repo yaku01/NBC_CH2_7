@@ -2,7 +2,6 @@
 #include <vector>
 #include <memory>
 
-class Character;
 class IItem;
 class Monster;
 class IItem;
@@ -10,7 +9,7 @@ class IItem;
 class BattleManager
 {
 public:
-	BattleManager(Character* p);
+	BattleManager();
 	~BattleManager();
 
 	void Release();
@@ -23,7 +22,6 @@ public:
 	void DistributedReward();
 
 private:
-	Character* player = nullptr;
 	std::vector<Monster*> monsters;
 	std::vector<std::unique_ptr<IItem>> items;
 	int total_gold = 0;

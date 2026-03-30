@@ -30,6 +30,5 @@ public:
 protected:
 	std::vector<std::unique_ptr<BaseUI>> scene_uis;
 	bool is_opaque = true;
-	Character* player = nullptr;
 };
 

@@ -6,7 +6,6 @@
 
 class BaseScene;
 class BattleManager;
-class Character;
 
 class GameManager
 {
@@ -24,13 +23,10 @@ public:
 	void Release();
 	void PushEvent(const Event& ev);
 
-
-	Character* GetPlayer() const;
 	BattleManager* GetBattleManager() const;
 
 private:
 	bool is_running = true;
-	Character* player = nullptr;
 	std::unique_ptr<BattleManager> battle_manager;
 
 	// ¾À °ü·Ã
