@@ -7,54 +7,71 @@
 
 void TownScene::Init()
 {
+    ItemUsableScene::Init();
+
+    // 일단 1휴식 = 100골드
+    cost = 100;
     SetMenu();
 }
 
 void TownScene::SetMenu()
 {
-    UIManager::GetInstance().ClearMessage(UIType::Menu); // 메뉴 비우기
-    UIManager::GetInstance().AddMessage(UIType::Menu, "1. 여관에서 휴식  2. 던전으로 ");
-    UIManager::GetInstance().AddMessage(UIType::Menu, "원하는 행동을 선택하세요: ");
+    UIManager::GetInstance().ClearContent(UIType::Menu); // 메뉴 비우기
+
+    std::string menu_text = "1. 여관에서 휴식(" + std::to_string(cost) + "G)   2. 상점 진입   3. 던전 진입";
+    UIManager::GetInstance().AddContent(UIType::Menu, menu_text);
+    UIManager::GetInstance().AddContent(UIType::Menu, "원하는 행동을 선택하세요: ");
 }
 
-void TownScene::ProcessEvent(const Event& e)
+void TownScene::ProcessNormalEvent(const Event& e)
 {
-    if (e.type == EventType::KeyDown) {
-        SetMenu();
-
-        switch (e.key_code) {
-        case '1':
-            UIManager::GetInstance().AddMessage(UIType::Log, "[휴식] 여관에서 푹 쉬었습니다. (HP 회복)");
-            // 회복 처리
-            break;
-
-        case '2':
-            UIManager::GetInstance().AddMessage(UIType::Log, "[이동] 어두운 던전으로 향합니다...");
-            ChangeScene(SceneType::Dungeon);
-            break;
-
-        case 'q':
-        case 'Q':
-            UIManager::GetInstance().PrevPageItemUI();
-            break;
-
-        case 'e':
-        case 'E':
-            UIManager::GetInstance().NextPageItemUI();
-            break;
-
-        default:
-            UIManager::GetInstance().AddMessage(UIType::Menu, "잘못된 입력입니다.");
-            break;
-        }
+    if (e.type != EventType::KeyDown) {
+        return;
     }
+
+    SetMenu();
+
+    switch (e.key_code) {
+    case '1':
+        EnterInn(); // 여관에서 휴식 시도
+        break;
+
+    case '2':
+    {
+        UIManager::GetInstance().AddContent(UIType::Log, "[이동] 상점에 들어갑니다");
+        PushScene(SceneType::Shop, "Resource/Shop/Novice Village.txt");
+        break;
+    }
+
+    case '3':
+        UIManager::GetInstance().AddContent(UIType::Log, "[이동] 어두운 던전으로 향합니다...");
+        ChangeScene(SceneType::Dungeon);
+        break;
+
+    default:
+        UIManager::GetInstance().AddContent(UIType::Menu, "잘못된 입력입니다.");
+        break;
+    }
+    
 }
 
 void TownScene::Update(float delta_time)
 {
 }
 
-void TownScene::Release()
-{
 
+// private 함수
+void TownScene::EnterInn()
+{
+    if (player->GetGold() >= cost) {
+        UIManager::GetInstance().AddContent(UIType::Log, "[휴식] 여관에서 푹 쉬었습니다. (HP 회복)");
+        
+        std::string inn_text = "[소비] 여관에 " + std::to_string(cost) + "G 를 지불하였습니다.";
+        UIManager::GetInstance().AddContent(UIType::Log, inn_text);
+        player->GainGold(-cost);
+        player->RestoreHealth(player->GetMaxHealth());
+    }
+    else {
+        UIManager::GetInstance().AddContent(UIType::Log, "[실패] 골드가 모자랍니다!");
+    }
 }

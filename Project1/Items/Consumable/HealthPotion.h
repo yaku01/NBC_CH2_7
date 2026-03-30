@@ -1,22 +1,17 @@
 #pragma once
 #include "Item.h"
+#include "ConsumableItem.h"
 
 #include <string>
 
 class Character;
 
-class HealthPotion : public IItem 
+class HealthPotion : public ConsumableItem
 {
 private:
-	std::string name;
-	ItemID id;
 	int health_restore;
 
 public:
 	HealthPotion();
-
-	std::string GetName() const override;
-	ItemID GetID() const override;
-
 	void Use(Character& target) override;
 };

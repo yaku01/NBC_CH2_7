@@ -3,7 +3,7 @@
 #include "Characters/Character.h"
 #include "Monster.h"
 #include "Items/Item.h"
-#include <fstream>
+#include "Core/ItemDataBase.h"
 
 
 BorderUI::BorderUI(int x, int y, int w, int h) : BaseUI(x, y, w, h)
@@ -38,6 +38,14 @@ void BorderUI::Render()
 
     // 하단 경계선
     RenderSystem::GetInstance().PrintText(start_x, start_y + height - 1, bottom_border);
+}
+
+void BorderUI::ClearBackGround()
+{
+    std::string blank(width, ' ');
+    for (int i = 0; i < height; ++i) {
+        RenderSystem::GetInstance().PrintText(start_x, start_y + i, blank);
+    }
 }
 
 
@@ -97,40 +105,98 @@ void CharacterInfoUI::Render()
 
 
 
-ItemUI::ItemUI(int x, int y, int w, int h) : BorderUI(x, y, w, h)
+ItemListUI::ItemListUI(int x, int y, int w, int h) : BorderUI(x, y, w, h)
 {
 }
 
-void ItemUI::Render()
+void ItemListUI::NextPage(int total_items)
+{
+    int max_page = std::max(1, (total_items + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE);
+
+    if (current_page < max_page - 1) {
+        ++current_page;
+    }
+}
+
+void ItemListUI::PrevPage()
+{
+    if (current_page > 0) {
+        --current_page;
+    }
+}
+
+int ItemListUI::GetCurrentPage() const
+{
+    return current_page;
+}
+
+int ItemListUI::GetItemsPerPage() const
+{
+    return ITEMS_PER_PAGE;
+}
+
+void ItemListUI::RenderTitle(const std::string& title)
+{
+    int title_x = start_x + (width - static_cast<int>(title.length())) / 2;
+    RenderSystem::GetInstance().PrintText(title_x, start_y + 1, title);
+}
+
+void ItemListUI::RenderPage(int total_items)
+{
+    int max_page = std::max(1, (total_items + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE);
+
+    // 아이템 사용으로 페이지 감소할 때 확인
+    if (current_page >= max_page) {
+        current_page = std::max(0, max_page - 1);
+    }
+
+    //  -- 페이지 표시 --
+    int page_y = start_y + height - 2;
+    RenderSystem::GetInstance().PrintText(start_x + 2, page_y, "[Q]");
+    RenderSystem::GetInstance().PrintText(start_x + width - 5, page_y, "[E]");
+
+    std::string page_text = "[" + std::to_string(current_page + 1) + " / " +
+        std::to_string(max_page) + "]";
+    int page_x = start_x + (width - static_cast<int>(page_text.length())) / 2;
+    RenderSystem::GetInstance().PrintText(page_x, page_y, page_text);
+}
+
+int ItemListUI::GetStartIndex() const
+{
+    return current_page * ITEMS_PER_PAGE;
+}
+
+int ItemListUI::GetEndIndex(int total_items) const
+{
+    return std::min(GetStartIndex() + ITEMS_PER_PAGE, total_items);
+}
+
+
+
+InventoryUI::InventoryUI(int x, int y, int w, int h) : ItemListUI(x, y, w, h)
+{
+}
+
+void InventoryUI::Render()
 {
     BorderUI::Render();
 
-    const Character& player = Character::GetInstance();
-    const auto& inventory = player.GetInventory();
+    const auto& inventory = Character::GetInstance().GetInventory();
 
     int total_items = static_cast<int>(inventory.size());
-    int max_page = std::max(1, (total_items + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE);
 
-    // 아이템 사용해서 max_page가 줄어들면
-    if (current_page >= max_page) {
-        current_page = max_page - 1;
-    }
-
-    // 상단 타이틀 출력
-    std::string title = "Inventory";
-    int title_x = start_x + (width - static_cast<int>(title.length())) / 2;
-    int text_y = start_y + 1;
-    RenderSystem::GetInstance().PrintText(title_x, text_y++, title);
-    ++text_y;
-    
+    // 타이틀 출력
+    std::string title = (is_active) ? "[ *** Inventory *** ]" : "Inventory";
+    RenderTitle(title);
     
     // 아이템 출력
+    int text_y = start_y + 3;
     if (total_items == 0) {
         RenderSystem::GetInstance().PrintText(start_x + 2, text_y, "인벤토리가 비어있습니다.");
     }
     else {
-        int start_idx = current_page * ITEMS_PER_PAGE;
-        int end_idx = std::min(start_idx + ITEMS_PER_PAGE, total_items);
+        int start_idx = GetStartIndex();
+        int end_idx = GetEndIndex(total_items);
 
         for (int i = start_idx; i < end_idx; ++i) {
             IItem* item = inventory[i].get();
@@ -144,39 +210,141 @@ void ItemUI::Render()
             RenderSystem::GetInstance().PrintText(start_x + 2, text_y++, item_text);
         }
     }
-
-
-    //  -- 페이지 표시 --
-    int page_y = start_y + height - 2;
-
-    // 왼쪽 [Q], 오른쪽 [E]
-    RenderSystem::GetInstance().PrintText(start_x + 2, page_y, "[Q]");
-    RenderSystem::GetInstance().PrintText(start_x + width - 5, page_y, "[E]");
-
-    // 중앙 페이지 표시
-    std::string page_text = "[" + std::to_string(current_page + 1) + " / " +
-        std::to_string(max_page) + "]";
-    int page_x = start_x + (width - static_cast<int>(page_text.length())) / 2;
-    RenderSystem::GetInstance().PrintText(page_x, page_y, page_text);
-
+    
+    // 페이지 출력
+    RenderPage(total_items);
 }
 
-void ItemUI::NextPage()
+void InventoryUI::ToggleActive()
 {
-    const Character& player = Character::GetInstance();
-    int total_items = static_cast<int>(player.GetInventory().size());
-    int max_page = std::max(1, (total_items + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE);
-
-    if (current_page < max_page - 1) {
-        ++current_page;
-    }
+    is_active = !is_active;
 }
 
-void ItemUI::PrevPage()
+bool InventoryUI::IsActive() const
 {
-    if (current_page > 0) {
-        --current_page;
+    return is_active;
+}
+
+
+
+ShopUI::ShopUI(int x, int y, int w, int h) : ItemListUI(x, y, w, h)
+{
+}
+
+void ShopUI::Render()
+{
+    ClearBackGround();
+    BorderUI::Render();
+
+    const auto& inventory = Character::GetInstance().GetInventory();
+
+    // 구매 - 상점리스트 / 판매 - 인벤토리
+    int total_items = (is_buy_mode && shop_items) ?
+        static_cast<int>(shop_items->size()) :
+        static_cast<int>(inventory.size());
+
+    // 타이틀 출력
+    std::string title = (is_buy_mode) ? "- Shop (Buy) -" : "- Shop (Sell) -";
+    RenderTitle(title);
+
+    // 아이템 출력
+    int text_y = start_y + 3;
+    if (total_items == 0) {
+        RenderSystem::GetInstance().PrintText(start_x + 2, text_y, "목록이 비어있습니다.");
     }
+    else {
+        int start_idx = GetStartIndex();
+        int end_idx = GetEndIndex(total_items);
+        
+        for (int i = start_idx; i < end_idx; ++i) {
+            std::string item_text = std::to_string(i - start_idx + 1) + ". ";
+            std::string gold_text;
+
+            if (is_buy_mode) {
+                ItemID id = (*shop_items)[i];
+                const ItemData& data = ItemDataBase::GetData(id);
+                item_text += data.name;
+                gold_text = std::to_string(data.price) + " Gold";
+            }
+            else {
+                IItem* item = inventory[i].get();
+                if (!item) {
+                    continue;
+                }
+
+                // 판매는 원가의 60퍼 가격으로 책정
+                const ItemData& data = ItemDataBase::GetData(item->GetID());
+                item_text += data.name;
+                gold_text = std::to_string(ItemDataBase::GetSellPrice(item->GetID())) + " Gold";
+            }
+
+            // 좌우 여백 2칸, 텍스트 제외하고 전부 공백 개수
+            int black_count = width - 4 - static_cast<int>(item_text.length() + gold_text.length());
+            if (black_count < 1) {
+                black_count = 1;
+            }
+
+            std::string text = item_text + std::string(black_count, ' ') + gold_text;
+            RenderSystem::GetInstance().PrintText(start_x + 2, text_y++, text);
+        }
+    }
+
+    // 페이지 출력
+    RenderPage(total_items);
+}
+
+void ShopUI::SetMode(bool is_buy_mode, const std::vector<ItemID>* item_ids)
+{
+    this->is_buy_mode = is_buy_mode;
+    shop_items = item_ids;
+    current_page = 0;
+}
+
+
+
+ItemConfirmUI::ItemConfirmUI(int x, int y, int w, int h)
+    : BorderUI(x, y, w, h), action_text("")
+{
+}
+
+void ItemConfirmUI::Render()
+{
+    if (target == ItemID::None) {
+        return;
+    }
+
+    ClearBackGround();
+    BorderUI::Render();
+    
+    const ItemData& data = ItemDataBase::GetData(target);
+
+    // 질문 출력
+    int text_y = start_y + 1;
+    std::string question = data.name + "을(를) " + action_text;
+    int text_x = start_x + (width - static_cast<int>(question.length())) / 2;
+    RenderSystem::GetInstance().PrintText(text_x, text_y++, question);
+
+    // 설명 출력
+    std::string desc = data.desc;
+    text_x = start_x + (width - static_cast<int>(desc.length())) / 2;
+    RenderSystem::GetInstance().PrintText(text_x, text_y++, desc);
+    ++text_y;
+    ++text_y;
+
+    // 선택지 출력
+    std::string option = "[Y] YES  [N] NO";
+    text_x = start_x + (width - static_cast<int>(option.length())) / 2;
+    RenderSystem::GetInstance().PrintText(text_x, text_y, option);
+}
+
+void ItemConfirmUI::SetTarget(ItemID id)
+{
+    target = id;
+}
+
+void ItemConfirmUI::SetActionText(const std::string& action)
+{
+    action_text = action;
 }
 
 
@@ -194,7 +362,7 @@ void AsciiUI::Render()
 
 
 
-CharacterUI::CharacterUI(int x, int y) : AsciiUI(x, y)
+CharacterUI::CharacterUI(int x, int y) : AsciiUI(x, y), target(nullptr)
 {
 }
 
@@ -219,7 +387,7 @@ void CharacterUI::SetTarget(const Character* target)
 
    
 
-MonsterUI::MonsterUI(int x, int y) : AsciiUI(x, y)
+MonsterUI::MonsterUI(int x, int y) : AsciiUI(x, y), target(nullptr)
 {
 }
 
@@ -227,12 +395,14 @@ void MonsterUI::Render()
 {
     AsciiUI::Render();
 
-    // 체력 출력
+    // 이름 + 체력 출력
     if (target) {
+        int info_y = start_y + static_cast<int>(contents.size()) + 1;
+
+        RenderSystem::GetInstance().PrintText(start_x, info_y++, target->GetName());
+
         std::string hp_info = "HP: " + std::to_string(target->GetHealth()) +
             " / " + std::to_string(target->GetMaxHealth());
-
-        int info_y = start_y + static_cast<int>(contents.size()) + 1;
         RenderSystem::GetInstance().PrintText(start_x, info_y, hp_info);
     }
 }

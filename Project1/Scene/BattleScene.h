@@ -1,11 +1,11 @@
 #pragma once
 #include "Scene/BaseScene.h"
-#include "UI/GameUI.h"
 
 #include <memory>
 #include <vector>
 
-
+class CharacterUI;
+class MonsterUI;
 class BattleManager;
 class Monster;
 

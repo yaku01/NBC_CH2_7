@@ -1,184 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Character">
-      <UniqueIdentifier>{f0bcc55a-234e-4fd3-a0c6-1e70df574717}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Item">
-      <UniqueIdentifier>{4abbc12d-162f-4c9b-a3bb-438bb6bd3742}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="MonsterFactory.cpp" />
+    <ClCompile Include="Core\ResourceManager.cpp" />
+    <ClCompile Include="Scene\SceneFactory.cpp" />
+    <ClCompile Include="Scene\ExitPopUpScene.cpp" />
+    <ClCompile Include="Goblin.cpp" />
+    <ClCompile Include="Items\ItemFactory.cpp" />
+    <ClCompile Include="Orc.cpp" />
+    <ClCompile Include="Scene\ShopScene.cpp" />
+    <ClCompile Include="Slime.cpp" />
+    <ClCompile Include="Troll.cpp" />
+    <ClCompile Include="Items\AttackBoost.cpp" />
+    <ClCompile Include="Characters\Character.cpp" />
+    <ClCompile Include="Common\common.cpp" />
+    <ClCompile Include="Core\GameManager.cpp" />
+    <ClCompile Include="Core\RenderSystem.cpp" />
+    <ClCompile Include="GamePlay\Battle\BattleManager.cpp" />
+    <ClCompile Include="Items\HealthPotioin.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Scene\BaseScene.cpp" />
+    <ClCompile Include="Scene\BattleScene.cpp" />
+    <ClCompile Include="Scene\DungeonScene.cpp" />
+    <ClCompile Include="Scene\TitleScene.cpp" />
+    <ClCompile Include="Scene\TownScene.cpp" />
+    <ClCompile Include="UI\BaseUI.cpp" />
+    <ClCompile Include="UI\GameUI.cpp" />
+    <ClCompile Include="UI\UIManager.cpp" />
+    <ClCompile Include="Scene\ItemUsableScene.cpp" />
+    <ClCompile Include="Core\ItemDataBase.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>Character</Filter>
-    </ClCompile>
+    <ClInclude Include="DropTable.h" />
+    <ClInclude Include="MonsterFactory.h" />
+    <ClInclude Include="Core\ResourceManager.h" />
+    <ClInclude Include="Scene\SceneFactory.h" />
+    <ClInclude Include="Scene\ExitPopUpScene.h" />
+    <ClInclude Include="Goblin.h" />
+    <ClInclude Include="Monster.h" />
+    <ClInclude Include="Orc.h" />
+    <ClInclude Include="Scene\ShopScene.h" />
+    <ClInclude Include="Slime.h" />
+    <ClInclude Include="Troll.h" />
+    <ClInclude Include="Characters\Character.h" />
+    <ClInclude Include="Common\common.h" />
+    <ClInclude Include="Core\GameManager.h" />
+    <ClInclude Include="Core\RenderSystem.h" />
+    <ClInclude Include="GamePlay\Battle\BattleManager.h" />
+    <ClInclude Include="Items\AttackBoost.h" />
+    <ClInclude Include="Items\HealthPotion.h" />
+    <ClInclude Include="Items\Item.h" />
+    <ClInclude Include="Items\ItemFactory.h" />
+    <ClInclude Include="Scene\BaseScene.h" />
+    <ClInclude Include="Scene\BattleScene.h" />
+    <ClInclude Include="Scene\DungeonScene.h" />
+    <ClInclude Include="Scene\TitleScene.h" />
+    <ClInclude Include="Scene\TownScene.h" />
+    <ClInclude Include="UI\BaseUI.h" />
+    <ClInclude Include="UI\GameUI.h" />
+    <ClInclude Include="UI\UIManager.h" />
+    <ClInclude Include="Scene\ItemUsableScene.h" />
+    <ClInclude Include="Core\ItemDataBase.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Character.h">
-      <Filter>Character</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Item</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-<<<<<<< HEAD
-    <ClInclude Include="Monster.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Goblin.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Orc.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Troll.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Slime.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="DropTable.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Goblin.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Orc.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Slime.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Troll.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>리소스 파일</Filter>
-    </ClCompile>
-  </ItemGroup>
-=======
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Characters\Character.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\GameManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\RenderSystem.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GamePlay\Battle\BattleManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Items\AttackBoost.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Items\HealthPotioin.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\BaseScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\DungeonScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\TitleScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\TownScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\BaseUI.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\GameUI.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\UIManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\BattleScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\common.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Monster.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Characters\Character.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\common.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\GameManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\RenderSystem.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GamePlay\Battle\BattleManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Items\AttackBoost.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Items\HealthPotion.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Items\Item.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\BaseScene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\DungeonScene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\TitleScene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\TownScene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\BaseUI.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\GameUI.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\UIManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\BattleScene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-  </ItemGroup>
->>>>>>> bff7a7b964f8f65079d3f1612d1e57d0fc919098
 </Project>

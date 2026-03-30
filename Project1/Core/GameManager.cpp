@@ -2,15 +2,14 @@
 #include "Characters/Character.h"
 #include "GamePlay/Battle/BattleManager.h"
 #include "Scene/BaseScene.h"
-#include "Scene/TitleScene.h"
-#include "Scene/TownScene.h"
-#include "Scene/DungeonScene.h"
-#include "Scene/BattleScene.h"
+#include "Scene/ExitPopUpScene.h"
 #include "UI/UIManager.h"
 #include "Core/RenderSystem.h"
+#include "Scene/SceneFactory.h"
+#include "Items/ItemFactory.h"
+#include "ItemDataBase.h"
 #include <thread>
 #include <conio.h>
-#include <cassert>
 
 GameManager::GameManager() : scene_op(SceneOp::None), next_scene(SceneType::None),
 	is_running(true)
@@ -23,12 +22,14 @@ void GameManager::Init()
 {
 	UIManager::GetInstance().SetAllVisible(true);
 
+	ItemDataBase::Initialize();
+
+	ItemFactory::Initialize();
 	player = &Character::GetInstance();
-	
 	battle_manager = std::make_unique<BattleManager>(player);
 	
 	// 초기 씬 = 타이틀
-	scene_stack.push_back(CreateScene(SceneType::Title));
+	scene_stack.push_back(SceneFactory::CreateScene(SceneType::Title));
 	scene_stack.back()->Init();
 }
 
@@ -73,11 +74,13 @@ void GameManager::Run()
 			case EventType::ChangeScene:
 				scene_op = SceneOp::Change;
 				next_scene = ev.next_scene;
+				next_scene_data = ev.scene_data;
 				break;
 
 			case EventType::PushScene:
 				scene_op = SceneOp::Push;
-				next_scene = ev.next_scene;
+				next_scene = ev.next_scene; 
+				next_scene_data = ev.scene_data;
 				break;
 
 			case EventType::PopScene:
@@ -125,12 +128,13 @@ void GameManager::Run()
 				}
 			}
 
+			UIManager::GetInstance().Render();
+
 			// 불투명한 씬부터 렌더링, 이 아래는 어차피 안보이므로 그릴 필요 X
 			for (size_t i = static_cast<size_t>(idx); i < scene_stack.size(); ++i) {
 				scene_stack[i]->Render();
 			}
 
-			UIManager::GetInstance().Render();
 			RenderSystem::GetInstance().Draw();
 		}
 
@@ -164,20 +168,24 @@ BattleManager* GameManager::GetBattleManager() const
 
 
 // private 함수
-//void GameManager::GenerateMonsters()
-//{
-//	// 레벨 부여
-//	int level = player->GetLevel();
-//
-//	// 전투 관리에서 몬스터 생성
-//	// 몬스터는 전투할때만 필요함
-//	battle_manager->GenerateMonster(level);
-//}
-
 void GameManager::ProcessInput()
 {
 	if (_kbhit()) {
 		int key = _getch();
+
+		// 27 = ESC 키, 누를 경우 게임종료 팝업 뜨도록
+		if (key == 27) {
+			// 이미 종료팝업 떠있다면 넘기기
+			if (!scene_stack.empty() && dynamic_cast<ExitPopUpScene*>(scene_stack.back().get())) {
+			}
+			else {	// 종료팝업 없으면 팝업씬 push, 함수 빠져나가기
+				Event ev{};
+				ev.type = EventType::PushScene;
+				ev.next_scene = SceneType::Exit;
+				event_queue.push(ev);
+				return;
+			}
+		}
 
 		Event ev{};
 		ev.type = EventType::KeyDown;
@@ -188,6 +196,8 @@ void GameManager::ProcessInput()
 
 void GameManager::ProcessScene()
 {
+	UIManager::GetInstance().SetAllVisible(true);
+
 	switch (scene_op) {
 	case SceneOp::Change:
 		// 기존 씬 전부 제거
@@ -195,37 +205,29 @@ void GameManager::ProcessScene()
 		[[fallthrough]];
 
 	case SceneOp::Push:
-		// 메세지 부분만 날리기
-		UIManager::GetInstance().ClearMessage(UIType::Menu);
-
-		// 씬의 진입 직전 모든 UI 키기
-		UIManager::GetInstance().SetAllVisible(true);
-
-		scene_stack.push_back(CreateScene(next_scene));
-		scene_stack.back()->Init();
+	{
+		auto scene = SceneFactory::CreateScene(next_scene);
+		if (scene) {
+			scene->SetSceneData(next_scene_data);
+			scene->Init();
+			scene_stack.push_back(std::move(scene));
+		}
 		break;
+	}
 
 	case SceneOp::Pop:
 		if (!scene_stack.empty()) {
 			scene_stack.back()->Release();
 			scene_stack.pop_back();
 
-			// 메세지 부분만 날리기
-			UIManager::GetInstance().ClearMessage(UIType::Menu);
-
 			// 씬이 없다면 종료
 			if (!scene_stack.empty()) {
-				//scene_stack.back()->SetUI();
 				scene_stack.back()->SetMenu();
 			}
 			else {
 				is_running = false;
 			}
 		}
-		break;
-
-	case SceneOp::None:
-		// 에러
 		break;
 	}
 
@@ -238,27 +240,4 @@ void GameManager::ProcessScene()
 	while (!event_queue.empty()) {
 		event_queue.pop();
 	}
-}
-
-// 새로운 씬 생성 함수
-std::unique_ptr<BaseScene> GameManager::CreateScene(SceneType type)
-{
-	switch (type) {
-	case SceneType::Title:
-		return std::make_unique<TitleScene>();
-
-	case SceneType::Town:
-		return std::make_unique<TownScene>();
-
-	case SceneType::Dungeon:
-		return std::make_unique<DungeonScene>();
-
-	case SceneType::Battle:
-		return std::make_unique<BattleScene>();
-
-	default:
-		assert(false && "씬 생성에 오류가 있습니다!");
-		return nullptr;
-	}
-	return nullptr;
 }

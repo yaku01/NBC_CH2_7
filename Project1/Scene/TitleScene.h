@@ -10,6 +10,5 @@ public:
 	void SetMenu() override;
 	void ProcessEvent(const Event& e) override;
 	void Update(float delta_time) override;
-	void Release() override;
 };
 

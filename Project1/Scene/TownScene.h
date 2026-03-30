@@ -1,15 +1,19 @@
 #pragma once
-#include "BaseScene.h"
+#include "ItemUsableScene.h"
 
-class TownScene : public BaseScene
+class TownScene : public ItemUsableScene
 {
 public:
 	TownScene() = default;
 
 	void Init() override;
 	void SetMenu() override;
-	void ProcessEvent(const Event& e) override;
+	void ProcessNormalEvent(const Event& e) override;
 	void Update(float delta_time) override;
-	void Release() override;
+
+private:
+	int cost;
+	
+	void EnterInn();
 };
 

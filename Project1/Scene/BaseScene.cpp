@@ -41,6 +41,16 @@ void BaseScene::PushScene(SceneType scene)
 	GameManager::GetInstance().PushEvent(ev);
 }
 
+void BaseScene::PushScene(SceneType scene, const std::string& path)
+{
+	Event ev{};
+	ev.type = EventType::PushScene;
+	ev.next_scene = scene;
+	ev.scene_data = path;
+
+	GameManager::GetInstance().PushEvent(ev);
+}
+
 void BaseScene::PopScene()
 {
 	Event ev{};

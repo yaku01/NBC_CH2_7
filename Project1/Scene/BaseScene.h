@@ -2,6 +2,7 @@
 #include "Common/common.h"
 #include <vector>
 #include <memory>
+#include <string>
 
 class Character;
 class BaseUI;
@@ -18,9 +19,11 @@ public:
 	virtual void Update(float delta_time) = 0;
 	virtual void Render();		//	배경, 캐릭터 등의 render
 	virtual void Release();
+	virtual void SetSceneData(const std::string& data) {}
 
 	void ChangeScene(SceneType scene);
 	void PushScene(SceneType scene);
+	void PushScene(SceneType scene, const std::string& path);
 	void PopScene();
 	bool IsOpaque() const;
 
