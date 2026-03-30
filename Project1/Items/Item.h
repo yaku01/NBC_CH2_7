@@ -6,8 +6,18 @@ class Character;
 enum class ItemID 
 {
 	None = 0,
+
+	// 소비 아이템 ID는 100번대
 	HealthPotion = 101,
 	AttackBoost = 102,
+
+	// 무기 아이템 ID는 200번대 
+	WoodSword = 201,
+	Sword = 202,
+
+	// 방어구 아이템 ID는 300번대로 구분
+	LeatherArmor = 301,
+	Armor = 302,
 };
 
 enum class ItemType

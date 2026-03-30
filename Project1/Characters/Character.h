@@ -16,6 +16,8 @@ private:
 	int experience;
 	int gold;
 	std::vector<std::unique_ptr<IItem>> inventory;
+	std::unique_ptr<IItem> equipped_weapon;
+	std::unique_ptr<IItem> equipped_armor;
 
 	// 생성자는 private으로 선언하여 외부에서 직접 인스턴스를 생성하지 못하도록 함
 	Character(std::string name);
@@ -49,6 +51,16 @@ public:
 	void IncreaseAttack(int amount);
 
 	void RemoveItem(size_t index);
+	
+	void ModifyMaxHealth(int amount);
+
+	std::unique_ptr<IItem> EquipWeapon(std::unique_ptr<IItem> new_weapon);
+
+	std::unique_ptr<IItem> EquipArmor(std::unique_ptr<IItem> new_armor);
+
+	std::unique_ptr<IItem> UnequipWeapon();
+
+	std::unique_ptr<IItem> UnequipArmor();
 
 	// getters
 	int GetLevel() const { return level; }
@@ -66,6 +78,10 @@ public:
 	const std::string& GetName() const { return name; }
 
 	const std::vector<std::unique_ptr<IItem>>& GetInventory() const { return inventory; }
+
+	const IItem* GetEquippedWeapon() const { return equipped_weapon.get(); }
+
+	const IItem* GetEquippedArmor() const { return equipped_armor.get(); }
 
 	// setters
 	void SetLevel(int new_level) { level = new_level; }

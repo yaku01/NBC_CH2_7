@@ -6,8 +6,10 @@
 #include <memory>
 
 #include "Item.h"
+#include "Equippable/EquippableItem.h"
 
-Character::Character(std::string name) : name(name), level(1), health(200), max_health(200), attack(30), experience(0), gold(0) {}
+Character::Character(std::string name) 
+	: name(name), level(1), health(200), max_health(200), attack(30), experience(0), gold(0), equipped_weapon(nullptr), equipped_armor(nullptr) {}
 
 // 싱글톤
 Character& Character::GetInstance(const std::string& name)
@@ -65,8 +67,33 @@ void Character::UseItem(size_t index)
 		return;
 	}
 
-	inventory[index]->Use(*this);
-	inventory.erase(inventory.begin() + index); // 사용한 아이템 제거
+	if(inventory[index]->GetType() == ItemType::Consumable)
+	{
+		inventory[index]->Use(*this);
+		inventory.erase(inventory.begin() + index); // 사용한 아이템 제거
+	}
+
+	else if(inventory[index]->GetType() == ItemType::Weapon)
+	{
+		std::unique_ptr<IItem> old_weapon = EquipWeapon(std::move(inventory[index]));
+		inventory.erase(inventory.begin() + index); // 사용한 아이템 제거
+
+		if(old_weapon)
+		{
+			AddItem(std::move(old_weapon)); // 이전에 장착했던 무기를 인벤토리에 추가
+		}
+	}
+
+	else if(inventory[index]->GetType() == ItemType::Armor)
+	{
+		std::unique_ptr<IItem> old_armor = EquipArmor(std::move(inventory[index]));
+		inventory.erase(inventory.begin() + index); // 사용한 아이템 제거
+
+		if(old_armor)
+		{
+			AddItem(std::move(old_armor)); // 이전에 장착했던 방어구를 인벤토리에 추가
+		}
+	}
 }
 
 void Character::GainGold(int total_gold)
@@ -93,6 +120,19 @@ void Character::TakeDamage(int damage)
 	}
 }
 
+void Character::ModifyMaxHealth(int amount) 
+{
+	max_health += amount;
+	if (max_health < 1) 
+	{
+		max_health = 1; // 최대 체력이 1보다 작아지지 않도록 조정
+	}
+	if (health > max_health) 
+	{
+		health = max_health; // 현재 체력이 최대 체력을 초과하지 않도록 조정
+	}
+}
+
 bool Character::IsDead() const 
 {
 	return health <= 0;
@@ -114,7 +154,72 @@ void Character::IncreaseAttack(int amount)
 
 void Character::RemoveItem(size_t index)
 {
-	if (index < inventory.size()) {
+	if (index < inventory.size()) 
+	{
 		inventory.erase(inventory.begin() + index);
 	}
+}
+
+std::unique_ptr<IItem> Character::EquipWeapon(std::unique_ptr<IItem> new_weapon)
+{
+	if (new_weapon->GetType() != ItemType::Weapon) 
+	{
+		std::cout << "이 아이템은 무기가 아닙니다." << std::endl;
+		return new_weapon; // 잘못된 아이템 반환
+	}
+
+	// 장착한 무기가 존재하면
+	std::unique_ptr<IItem> old_weapon = UnequipWeapon(); // 기존 무기 제거
+
+	// 새 무기 장착
+	equipped_weapon = std::move(new_weapon);
+	if (equipped_weapon)
+	{
+		auto* weapon = static_cast<EquippableItem*>(equipped_weapon.get());
+		weapon->Equip(*this); // 새 무기 장착
+	}
+
+	return old_weapon; // 이전에 장착했던 무기 반환
+}
+
+std::unique_ptr<IItem> Character::EquipArmor(std::unique_ptr<IItem> new_armor)
+{
+	if (new_armor->GetType() != ItemType::Armor) 
+	{
+		std::cout << "이 아이템은 방어구가 아닙니다." << std::endl;
+		return new_armor; // 잘못된 아이템 반환
+	}
+	
+	// 장착한 방어구가 존재하면
+	std::unique_ptr<IItem> old_armor = UnequipArmor(); // 기존 방어구 제거
+
+	// 새 방어구 장착
+	equipped_armor = std::move(new_armor);
+	if (equipped_armor)
+	{
+		auto* armor = static_cast<EquippableItem*>(equipped_armor.get());
+		armor->Equip(*this); // 새 방어구 장착
+	}
+
+	return old_armor; // 이전에 장착했던 방어구 반환
+}
+
+std::unique_ptr<IItem> Character::UnequipWeapon()
+{
+	if (!equipped_weapon) return nullptr; // 장착된 무기가 없는 경우 nullptr 반환
+
+	auto* old_weapon = static_cast<EquippableItem*>(equipped_weapon.get());
+	old_weapon->Unequip(*this); // 무기 효과 제거
+
+	return std::move(equipped_weapon); // 이전에 장착했던 무기 반환
+}
+
+std::unique_ptr<IItem> Character::UnequipArmor()
+{
+	if (!equipped_armor) return nullptr; // 장착된 방어구가 없는 경우 nullptr 반환
+
+	auto* old_armor = static_cast<EquippableItem*>(equipped_armor.get());
+	old_armor->Unequip(*this); // 방어구 효과 제거
+
+	return std::move(equipped_armor); // 이전에 장착했던 방어구 반환
 }
