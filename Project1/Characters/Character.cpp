@@ -191,7 +191,26 @@ void Character::IncreaseAttack(int amount)
 
 void Character::RemoveItem(size_t index)
 {
-	if (index < inventory.size()) 
+	if (index >= inventory.size())	// 인벤토리에서 아이템을 제거하기 전에 유효한 인덱스인지 확인
+	{
+		std::cout << "잘못된 아이템 인덱스 입니다." << std::endl;
+		return;
+	}
+
+	if (inventory[index]->GetType() == ItemType::Consumable)
+	{
+		auto* consumable = static_cast<ConsumableItem*>(inventory[index].get());
+		consumable->AddCount(-1); // 개수 감소
+
+		// 소비 아이템은 개수가 0이 되면 인벤토리에서 제거
+		if (consumable->GetCount() <= 0)
+		{
+			inventory.erase(inventory.begin() + index);
+		}
+	}
+
+	// 무기나 방어구 아이템은 인벤토리에서 제거
+	else
 	{
 		inventory.erase(inventory.begin() + index);
 	}
