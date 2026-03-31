@@ -31,7 +31,11 @@
     <ClCompile Include="Items\Equippable\Sword.cpp" />
     <ClCompile Include="Items\Consumable\AttackBoost.cpp" />
     <ClCompile Include="Items\Consumable\HealthPotioin.cpp" />
+
     <ClCompile Include="Scene\EncounterScene.cpp" />
+
+    <ClCompile Include="SaveLoardManager.cpp" />
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DropTable.h" />
@@ -68,6 +72,13 @@
     <ClInclude Include="Items\Equippable\Sword.h" />
     <ClInclude Include="Items\Consumable\AttackBoost.h" />
     <ClInclude Include="Items\Consumable\HealthPotion.h" />
+
     <ClInclude Include="Scene\EncounterScene.h" />
+
+    <ClInclude Include="SaveLoadManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="save.txt" />
+
   </ItemGroup>
 </Project>

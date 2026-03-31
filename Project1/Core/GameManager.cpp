@@ -11,6 +11,7 @@
 #include <thread>
 #include <conio.h>
 
+
 GameManager::GameManager() : scene_op(SceneOp::None), next_scene(SceneType::None),
 	is_running(true)
 {
@@ -106,6 +107,8 @@ void GameManager::Release()
 		scene_stack.back()->Release();
 		scene_stack.pop_back();
 	}
+
+
 }
 
 void GameManager::PushEvent(const Event& ev)

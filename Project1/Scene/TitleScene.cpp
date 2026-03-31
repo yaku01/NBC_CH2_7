@@ -4,7 +4,7 @@
 #include "Characters/Character.h"
 #include "UI/UIManager.h"
 #include "UI/GameUI.h"
-
+#include "SaveLoadManager.h"
 constexpr int MAX_NAME_LENGTH = 10;
 
 void TitleScene::Init()
@@ -45,7 +45,14 @@ void TitleScene::ProcessEvent(const Event& e)
     // 엔터 입력 시 로그인 시도
     else if (e.key_code == '\r') {
        if (!name.empty()) {
-           Character::GetInstance(name);
+
+           auto& player = Character::GetInstance(name);
+
+           player.Reset();
+           player.SetName(name);
+
+           SaveLoadManager::Load(player, name);
+           
            ChangeScene(SceneType::Town);
        }
     }

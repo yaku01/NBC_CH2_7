@@ -1,6 +1,7 @@
 #include "Core/GameManager.h"
 #include <windows.h>
-
+#include "SaveLoadManager.h"
+#include"Characters/Character.h"
 void SetConsoleFont(int fontSizeX, int fontSizeY) {
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_FONT_INFOEX cfi;
@@ -26,9 +27,15 @@ int main()
 {
     SetConsoleFont(0, 20);
 
+    Character::GetInstance();
 	GameManager::GetInstance().Init();
 
 	GameManager::GetInstance().Run();
 
 	GameManager::GetInstance().Release();
+    
+    auto& player = Character::GetInstance();
+
+    SaveLoadManager::Save(player);
+
 }

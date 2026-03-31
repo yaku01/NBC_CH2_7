@@ -29,6 +29,8 @@ public:
 	Character& operator=(const Character&) = delete;
 	static Character& GetInstance(const std::string& name = "Player");
 
+	void ClearInventory();
+
 	void DisplayStatus() const;
 
 	void DisplayInventory() const;
@@ -54,6 +56,8 @@ public:
 	void RemoveItem(size_t index);
 	
 	void ModifyMaxHealth(int amount);
+
+	void Reset();
 
 	std::unique_ptr<IItem> EquipWeapon(std::unique_ptr<IItem> new_weapon);
 
@@ -104,4 +108,6 @@ public:
 	void SetExperience(int new_experience) { experience = new_experience; }
 
 	void SetGold(int new_gold) { gold = new_gold; }
+
+	void SetName(const std::string& newName) { name = newName; }
 };
