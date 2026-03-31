@@ -241,9 +241,14 @@ void BattleScene::ProcessTargetPhase(int key_code)
 				return;
 			}
 			else {	// 플레이어 승리라면
-				battle_manager->DistributedReward();
-				DungeonMapState::SetRandomBattleMap();
-				ChangeScene(SceneType::Dungeon);
+                if (is_boss_battle) {
+                    ChangeScene(SceneType::Ending);
+                }
+                else {
+                    battle_manager->DistributedReward();
+                    DungeonMapState::SetRandomBattleMap();
+                    ChangeScene(SceneType::Dungeon);
+                }
 				return;
 			}
 		}
