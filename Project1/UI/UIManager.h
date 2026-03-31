@@ -41,7 +41,7 @@ public:
         UIManager::GetInstance().AddContent(UIType::Log, msg);
 #endif
     }
-
+     
 
 private:
     std::vector<std::unique_ptr<BaseUI>> uis;
