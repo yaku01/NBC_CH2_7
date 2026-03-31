@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Monster.h"
 
 
@@ -10,4 +10,4 @@ public:
 	Troll(int level);
 	void TakeDamage(int damage) override;
 	string GetAsciiArtPath() const override;
-};
+}; 

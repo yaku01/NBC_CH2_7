@@ -1,4 +1,4 @@
-#include "TitleScene.h"
+﻿#include "TitleScene.h"
 #include "Core/GameManager.h"
 #include "Common/common.h"
 #include "Characters/Character.h"
@@ -81,4 +81,4 @@ void TitleScene::Update(float delta_time)
 bool TitleScene::IsExitable() const
 {
     return false;
-}
+} 

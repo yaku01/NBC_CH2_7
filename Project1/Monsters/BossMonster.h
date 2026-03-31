@@ -1,4 +1,4 @@
-#include "Monster.h"
+ï»¿#include "Monster.h"
 
 class BossMonster : public Monster
 {
@@ -9,7 +9,7 @@ public:
 private:
 
 
-	// MonsterÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
+	// Monsterì„(ë¥¼) í†µí•´ ìƒì†ë¨
 	void TakeDamage(int damage) override;
 
 	string GetAsciiArtPath() const override;

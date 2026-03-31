@@ -1,10 +1,10 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <memory>
 
 class IItem;
 class Monster;
-class IItem;
+class IItem; 
 
 class BattleManager
 {

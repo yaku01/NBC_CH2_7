@@ -1,11 +1,9 @@
-#include "BattleScene.h"
+﻿#include "BattleScene.h"
 #include "Core/GameManager.h"
 #include "GamePlay/Battle/BattleManager.h"
 #include "UI/UIManager.h"
 #include "UI/GameUI.h"
 #include "Characters/Character.h"
-#include "Monster.h"
-#include "MonsterFactory.h"
 #include "Core/DungeonMapState.h"
 #include "Monsters/Monster.h"
 #include "Monsters/MonsterFactory.h"
@@ -60,7 +58,7 @@ void BattleScene::Init()
 	position.reserve(MAX_MONSTER_COUNT);
 	
 	// 몬스터 마리수 별 배치
-	switch (monster_count) {
+	switch (monster_count) { 
 	case 1:
 		position = { center };
 		break;

@@ -1,4 +1,4 @@
-#include "BaseScene.h"
+﻿#include "BaseScene.h"
 #include "Core/GameManager.h"
 #include  "UI/BaseUI.h"
 
@@ -26,8 +26,8 @@ void BaseScene::PopScene()
 {
 	Event ev{};
 	ev.type = EventType::PopScene;
-
-	GameManager::GetInstance().PushEvent(ev);
+     
+	GameManager::GetInstance().PushEvent(ev); 
 }
 
 bool BaseScene::IsOpaque() const

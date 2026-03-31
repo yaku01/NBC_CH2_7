@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ItemUsableScene.h"
 
 class DungeonScene : public ItemUsableScene

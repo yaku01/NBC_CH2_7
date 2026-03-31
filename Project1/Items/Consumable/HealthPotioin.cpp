@@ -1,14 +1,14 @@
-#include "HealthPotion.h"
+ï»¿#include "HealthPotion.h"
 
 #include <string>
 
 #include "Character.h" 
 
-HealthPotion::HealthPotion() : health_restore(50), ConsumableItem("Health Potion", ItemID::HealthPotion, "Ã¼·ÂÀ»" + std::to_string(health_restore) + " È¸º¹ÇÕ´Ï´Ù", 3) {}
+HealthPotion::HealthPotion() : health_restore(50), ConsumableItem("Health Potion", ItemID::HealthPotion, "ì²´ë ¥ì„" + std::to_string(health_restore) + " íšŒë³µí•©ë‹ˆë‹¤", 3) {}
 
 
 void HealthPotion::Use(Character& target) 
 {
 	target.RestoreHealth(health_restore);
-	AddCount(-1); // »ç¿ëÇÑ °³¼ö¸¸Å­ °¨¼Ò
-}
+	AddCount(-1); // ì‚¬ìš©í•œ ê°œìˆ˜ë§Œí¼ ê°ì†Œ
+} 

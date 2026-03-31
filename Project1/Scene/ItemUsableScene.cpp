@@ -1,4 +1,4 @@
-#include "ItemUsableScene.h"
+ï»¿#include "ItemUsableScene.h"
 #include "UI/GameUI.h"
 #include "UI/UIManager.h"
 #include "Characters/Character.h"
@@ -28,7 +28,7 @@ void ItemUsableScene::ProcessEvent(const Event& e)
 
 	switch (input_state) {
 
-		// ÀÏ¹İ Á¶ÀÛ
+		// ì¼ë°˜ ì¡°ì‘
 	case InputState::Normal:
 		ProcessNormalMode(e);
 		break;
@@ -108,7 +108,7 @@ void ItemUsableScene::ProcessInventoryMode(const  Event& e)
 
 		const auto& inventory = Character::GetInstance().GetInventory();
 
-		// ÇöÀç ItemUIÀÇ ÆäÀÌÁö, ÆäÀÌÁö´ç °³¼ö °¡Á®¿À±â
+		// í˜„ì¬ ItemUIì˜ í˜ì´ì§€, í˜ì´ì§€ë‹¹ ê°œìˆ˜ ê°€ì ¸ì˜¤ê¸°
 		int current_page = UIManager::GetInstance().GetItemUICurrentPage();
 		int ITEMS_PER_PAGE = UIManager::GetInstance().GetItemUIItemsPerPage();
 		size_t target_idx = static_cast<size_t>(current_page * ITEMS_PER_PAGE + (idx - 1));
@@ -117,9 +117,9 @@ void ItemUsableScene::ProcessInventoryMode(const  Event& e)
 			item_index = target_idx;
 			input_state = InputState::ItemConfirm;
 
-			// ÆË¾÷ ¶ç¿ï ¾ÆÀÌÅÛ Å¸°ÔÆÃ
+			// íŒì—… ë„ìš¸ ì•„ì´í…œ íƒ€ê²ŒíŒ…
 			item_popup_ui->SetTarget(inventory[target_idx]->GetID());
-			item_popup_ui->SetActionText("»ç¿ëÇÏ½Ã°Ú½À´Ï±î?");
+			item_popup_ui->SetActionText("ì‚¬ìš©í•˜ì‹œê² ìŠµë‹ˆê¹Œ?");
 		}
 		
 		break;
@@ -135,9 +135,9 @@ void ItemUsableScene::ProcessItemConfirm(const  Event& e)
 	case 'Y':
 	case '\r':
 		Character::GetInstance().UseItem(item_index);
-		UIManager::GetInstance().AddContent(UIType::Log, "[»ç¿ë] ¾ÆÀÌÅÛÀ» »ç¿ëÇß½À´Ï´Ù.");
+		UIManager::GetInstance().AddContent(UIType::Log, "[ì‚¬ìš©] ì•„ì´í…œì„ ì‚¬ìš©í–ˆìŠµë‹ˆë‹¤.");
 
-		item_popup_ui->SetTarget(ItemID::None); // ÆË¾÷ ´İ±â
+		item_popup_ui->SetTarget(ItemID::None); // íŒì—… ë‹«ê¸°
 		input_state = InputState::InventoryMode;
 		break;
 

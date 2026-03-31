@@ -1,4 +1,4 @@
-#include "TownScene.h"
+ï»¿#include "TownScene.h"
 #include "Core/GameManager.h"
 #include "Common/common.h"
 #include "Characters/Character.h"
@@ -9,7 +9,7 @@ void TownScene::Init()
 {
     ItemUsableScene::Init();
 
-    // ÀÏ´Ü 1ÈŞ½Ä = 100°ñµå
+    // ì¼ë‹¨ 1íœ´ì‹ = 100ê³¨ë“œ
     cost = 100;
     SetMenu();
 }
@@ -20,11 +20,11 @@ void TownScene::SetMenu()
     bg->LoadAsciiArt("Resource/village.txt");
     scene_uis.push_back(std::move(bg));
 
-    UIManager::GetInstance().ClearContent(UIType::Menu); // ¸Ş´º ºñ¿ì±â
+    UIManager::GetInstance().ClearContent(UIType::Menu); // ë©”ë‰´ ë¹„ìš°ê¸°
 
-    std::string menu_text = "1. ¿©°ü¿¡¼­ ÈŞ½Ä(" + std::to_string(cost) + "G)   2. »óÁ¡ ÁøÀÔ   3. ´øÀü ÁøÀÔ";
+    std::string menu_text = "1. ì—¬ê´€ì—ì„œ íœ´ì‹(" + std::to_string(cost) + "G)   2. ìƒì  ì§„ì…   3. ë˜ì „ ì§„ì…";
     UIManager::GetInstance().AddContent(UIType::Menu, menu_text);
-    UIManager::GetInstance().AddContent(UIType::Menu, "¿øÇÏ´Â Çàµ¿À» ¼±ÅÃÇÏ¼¼¿ä: ");
+    UIManager::GetInstance().AddContent(UIType::Menu, "ì›í•˜ëŠ” í–‰ë™ì„ ì„ íƒí•˜ì„¸ìš”: ");
 }
 
 void TownScene::ProcessNormalEvent(const Event& e)
@@ -37,18 +37,18 @@ void TownScene::ProcessNormalEvent(const Event& e)
 
     switch (e.key_code) {
     case '1':
-        EnterInn(); // ¿©°ü¿¡¼­ ÈŞ½Ä ½Ãµµ
+        EnterInn(); // ì—¬ê´€ì—ì„œ íœ´ì‹ ì‹œë„
         break;
 
     case '2':
     {
-        UIManager::GetInstance().AddContent(UIType::Log, "[ÀÌµ¿] »óÁ¡¿¡ µé¾î°©´Ï´Ù");
+        UIManager::GetInstance().AddContent(UIType::Log, "[ì´ë™] ìƒì ì— ë“¤ì–´ê°‘ë‹ˆë‹¤");
         PushScene(SceneType::Shop, "Resource/Shop/Novice Village.txt");
         break;
     }
 
     case '3':
-        UIManager::GetInstance().AddContent(UIType::Log, "[ÀÌµ¿] ¾îµÎ¿î ´øÀüÀ¸·Î ÇâÇÕ´Ï´Ù...");
+        UIManager::GetInstance().AddContent(UIType::Log, "[ì´ë™] ì–´ë‘ìš´ ë˜ì „ìœ¼ë¡œ í–¥í•©ë‹ˆë‹¤...");
         ChangeScene(SceneType::Dungeon);
         break;
 
@@ -57,7 +57,7 @@ void TownScene::ProcessNormalEvent(const Event& e)
         break;
 
     default:
-        UIManager::GetInstance().AddContent(UIType::Menu, "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù.");
+        UIManager::GetInstance().AddContent(UIType::Menu, "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤.");
         break;
     }
     
@@ -68,19 +68,19 @@ void TownScene::Update(float delta_time)
 }
 
 
-// private ÇÔ¼ö
+// private í•¨ìˆ˜
 void TownScene::EnterInn()
 {
     auto& player = Character::GetInstance();
     if (player.GetGold() >= cost) {
-        UIManager::GetInstance().AddContent(UIType::Log, "[ÈŞ½Ä] ¿©°ü¿¡¼­ Ç« ½¬¾ú½À´Ï´Ù. (HP È¸º¹)");
+        UIManager::GetInstance().AddContent(UIType::Log, "[íœ´ì‹] ì—¬ê´€ì—ì„œ í‘¹ ì‰¬ì—ˆìŠµë‹ˆë‹¤. (HP íšŒë³µ)");
         
-        std::string inn_text = "[¼Òºñ] ¿©°ü¿¡ " + std::to_string(cost) + "G ¸¦ ÁöºÒÇÏ¿´½À´Ï´Ù.";
+        std::string inn_text = "[ì†Œë¹„] ì—¬ê´€ì— " + std::to_string(cost) + "G ë¥¼ ì§€ë¶ˆí•˜ì˜€ìŠµë‹ˆë‹¤.";
         UIManager::GetInstance().AddContent(UIType::Log, inn_text);
         player.GainGold(-cost);
         player.RestoreHealth(player.GetMaxHealth());
     }
     else {
-        UIManager::GetInstance().AddContent(UIType::Log, "[½ÇÆĞ] °ñµå°¡ ¸ğÀÚ¶ø´Ï´Ù!");
+        UIManager::GetInstance().AddContent(UIType::Log, "[ì‹¤íŒ¨] ê³¨ë“œê°€ ëª¨ìëë‹ˆë‹¤!");
     }
 }

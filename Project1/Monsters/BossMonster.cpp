@@ -1,16 +1,16 @@
-#include "BossMonster.h"
+ï»¿#include "BossMonster.h"
 #include "Common/common.h"
 
 BossMonster::BossMonster(int level) : Monster(level)
 {
-    name = "¸¶¿Õ";
+    name = "ë§ˆì™•";
     double weight = RandomUtil::GetRange(1.4, 1.6);
     maxhealth = static_cast<int>(level * 15 * weight);
     health = maxhealth;
     attack = static_cast<int>(level * 17 * weight);
 }
 
-void BossMonster::TakeDamage(int damage)
+void BossMonster::TakeDamage(int damage) 
 {
     health -= damage;
     if (health < 0)

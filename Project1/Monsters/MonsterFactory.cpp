@@ -1,4 +1,4 @@
-#include "MonsterFactory.h"
+﻿#include "MonsterFactory.h"
 #include "Orc.h"
 #include "Slime.h"
 #include "Troll.h"
@@ -6,7 +6,7 @@
 #include "BossMonster.h"
 #include <unordered_map>
 #include <functional>
-
+ 
 using Func = std::function<std::unique_ptr<Monster>(int)>;
 
 std::unique_ptr<Monster> MonsterFactory::CreateMonster(MonsterType type, int level)

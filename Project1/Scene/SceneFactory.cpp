@@ -1,4 +1,4 @@
-#include "SceneFactory.h"
+﻿#include "SceneFactory.h"
 #include "TitleScene.h"
 #include "TownScene.h"
 #include "DungeonScene.h"
@@ -30,4 +30,4 @@ std::unique_ptr<BaseScene> SceneFactory::CreateScene(SceneType type)
 		return it->second();
 	}
 	return nullptr;
-}
+} 

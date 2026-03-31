@@ -1,4 +1,4 @@
-#include "DungeonScene.h"
+﻿#include "DungeonScene.h"
 #include "UI/UIManager.h"
 #include "UI/GameUI.h"
 #include "Core/RenderSystem.h"
@@ -19,7 +19,7 @@ void DungeonScene::Init()
 
     SetMenu();
 }
-
+ 
 void DungeonScene::SetMenu()
 {
     UIManager::GetInstance().ClearContent(UIType::Menu);

@@ -61,3 +61,18 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+# 모든 텍스트 파일은 Git 저장소엔 LF로 저장하고, 
+# 내 컴퓨터(Windows)로 가져올 땐 CRLF로 자동 변환함
+* text=auto eol=crlf
+
+# 소스 코드 파일들은 명확하게 텍스트로 지정
+*.cpp text
+*.h text
+*.hpp text
+
+# 에셋이나 실행 파일은 바이너리로 취급 (줄바꿈 변환 금지)
+*.sln merge=binary
+*.vcxproj merge=binary
+*.uasset binary
+*.umap binary

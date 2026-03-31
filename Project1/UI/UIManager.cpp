@@ -1,44 +1,44 @@
-#include "UIManager.h"
+ï»¿#include "UIManager.h"
 #include "UI/GameUI.h"
 #include "Core/RenderSystem.h"
 #include "Characters/Character.h"
 
 UIManager::UIManager()
 {
-    // ÄÜ¼Ö »çÀÌÁî ±¸ÇÏ±â
+    // ì½˜ì†” ì‚¬ì´ì¦ˆ êµ¬í•˜ê¸°
     int w = RenderSystem::GetInstance().GetScreenWidth();
     int h = RenderSystem::GetInstance().GetScreenHeight();
 
-    // ¸Ş´º ÁÂÇÏ´Ü ½ÃÀÛ ±æÀÌ 0.7, ³ôÀÌ 0.2
+    // ë©”ë‰´ ì¢Œí•˜ë‹¨ ì‹œì‘ ê¸¸ì´ 0.7, ë†’ì´ 0.2
     int menu_width = static_cast<int>(w * 0.7f);
     int menu_height = static_cast<int>(h * 0.2f);
     int menu_x = 0;
     int menu_y = h - menu_height;
     uis.push_back(std::make_unique<BorderUI>(menu_x, menu_y, menu_width, menu_height));
 
-    // ¿ìÃø ¿µ¿ª º¯¼ö
+    // ìš°ì¸¡ ì˜ì—­ ë³€ìˆ˜
     int right_area_width = w - menu_width - 1;
     int right_area_x = menu_width;
 
 
-    // ÀÎÆ÷
+    // ì¸í¬
     int info_width = right_area_width / 2;
     int info_height = static_cast<int>(h * 0.2f);
     int info_y = 0;
     uis.push_back(std::make_unique<CharacterInfoUI>(right_area_x, info_y, right_area_width, info_height));
     
 
-    // ·Î±×  ³ôÀÌ 0.45
+    // ë¡œê·¸  ë†’ì´ 0.45
     int log_height = static_cast<int>(h * 0.45f);
     int log_y = h - log_height;
     uis.push_back(std::make_unique<LogUI>(right_area_x, log_y, right_area_width, log_height));
 
 
-    // ¾ÆÀÌÅÛ
+    // ì•„ì´í…œ
     int item_height = h - info_height - log_height;
     uis.push_back(std::make_unique<InventoryUI>(right_area_x, info_height, right_area_width, item_height));
 
-    // Å³º¸µå UI Ãß°¡
+    // í‚¬ë³´ë“œ UI ì¶”ê°€
     int kill_width = static_cast<int>(w * 0.15f);
     int kill_height = static_cast<int>(h * 0.5f);
     int kill_x = menu_width - kill_width;
@@ -48,7 +48,7 @@ UIManager::UIManager()
 
 UIManager::~UIManager()
 {
-}
+} 
 
 void UIManager::AddContent(UIType type, std::string_view msg)
 {
@@ -58,18 +58,18 @@ void UIManager::AddContent(UIType type, std::string_view msg)
         uis[idx]->AddContents(msg);
     }
 
-    // Ä«¿îÆ® Ãß°¡ - °ÔÀÓ ·Î±× Ä«¿îÆ® Ã¼Å©
+    // ì¹´ìš´íŠ¸ ì¶”ê°€ - ê²Œì„ ë¡œê·¸ ì¹´ìš´íŠ¸ ì²´í¬
     if (type == UIType::Log) {
         std::string s(msg);
-        if (s.find("[°ø°İ]") != std::string::npos) count_attack_++;
-        else if (s.find("[ÇÇ°İ]") != std::string::npos) count_damage_++;
-        else if (s.find("[Á¶¿ì]") != std::string::npos) count_encounter_++;
-        else if (s.find("[ÀÌµ¿]") != std::string::npos) count_move_++;
-        else if (s.find("[ÈŞ½Ä]") != std::string::npos) count_rest_++;
-        else if (s.find("[º¸»ó]") != std::string::npos) count_reward_++;
-        else if (s.find("[µµ¸Á]") != std::string::npos) count_escape_++;
-        else if (s.find("[»ç¸Á]") != std::string::npos) count_death_++;
-        else if (s.find("[»ç¿ë]") != std::string::npos) count_use_++;
+        if (s.find("[ê³µê²©]") != std::string::npos) count_attack_++;
+        else if (s.find("[í”¼ê²©]") != std::string::npos) count_damage_++;
+        else if (s.find("[ì¡°ìš°]") != std::string::npos) count_encounter_++;
+        else if (s.find("[ì´ë™]") != std::string::npos) count_move_++;
+        else if (s.find("[íœ´ì‹]") != std::string::npos) count_rest_++;
+        else if (s.find("[ë³´ìƒ]") != std::string::npos) count_reward_++;
+        else if (s.find("[ë„ë§]") != std::string::npos) count_escape_++;
+        else if (s.find("[ì‚¬ë§]") != std::string::npos) count_death_++;
+        else if (s.find("[ì‚¬ìš©]") != std::string::npos) count_use_++;
     }
 
 }
@@ -99,7 +99,7 @@ void UIManager::ClearAll(const std::vector<UIType>& ignores)
 
 void UIManager::Render()
 {
-    // ·Î±×ui, ¸Ş¼¼Áöui µî Àü¿ª ui ±×¸®±â
+    // ë¡œê·¸ui, ë©”ì„¸ì§€ui ë“± ì „ì—­ ui ê·¸ë¦¬ê¸°
     for (const auto& ui : uis) {
         if (ui->IsVisible()) {
             ui->Render();
@@ -135,7 +135,7 @@ void UIManager::PrevPageItemUI()
     item_ui->PrevPage();
 }
 
-void UIManager::OnMonsterKilled(const std::string& monster_name)    // Å³º¸µå¿¡ Å³ Ãß°¡
+void UIManager::OnMonsterKilled(const std::string& monster_name)    // í‚¬ë³´ë“œì— í‚¬ ì¶”ê°€
 {
     static_cast<KillBoardUI*>(uis[static_cast<int>(UIType::KillLog)].get())->AddKill(monster_name);
 }
@@ -158,7 +158,7 @@ int UIManager::GetItemUIItemsPerPage() const
     return item_ui->GetItemsPerPage();
 }
 
-void UIManager::SaveLogToFile(const std::string& filename) //·Î±× ¼¼ÀÌºê ±¸Çö
+void UIManager::SaveLogToFile(const std::string& filename) //ë¡œê·¸ ì„¸ì´ë¸Œ êµ¬í˜„
 {
     std::ofstream file(filename);
 
@@ -167,25 +167,25 @@ void UIManager::SaveLogToFile(const std::string& filename) //·Î±× ¼¼ÀÌºê ±¸Çö
     for (const auto& k : kill_ui->GetKillCount())
         total_kills += k.second;
 
-    file << "\n=== Åë°è ===\n";
-    file << "[°ø°İ] È½¼ö: " << count_attack_ << "\n";
-    file << "[ÇÇ°İ] È½¼ö: " << count_damage_ << "\n";
-    file << "[Á¶¿ì] È½¼ö: " << count_encounter_ << "\n";
-    file << "[ÀÌµ¿] È½¼ö: " << count_move_ << "\n";
-    file << "[ÈŞ½Ä] È½¼ö: " << count_rest_ << "\n";
-    file << "[º¸»ó] È¹µæ: " << count_reward_ << "\n";
-    file << "[µµ¸Á] È½¼ö: " << count_escape_ << "\n";
-    file << "[»ç¸Á] È½¼ö: " << count_death_ << "\n";
-    file << "[»ç¿ë] È½¼ö: " << count_use_ << "\n";
-    file << "[Ã³Ä¡] È½¼ö: " << total_kills << "\n"; //[Ã³Ä¡] È½¼ö´Â ¸â¹öº¯¼ö ´ë½Å Å³º¸µå¿¡¼­ Á÷Á¢ ÇÕ»êÇÏ¿© ÀúÀå
+    file << "\n=== í†µê³„ ===\n";
+    file << "[ê³µê²©] íšŸìˆ˜: " << count_attack_ << "\n";
+    file << "[í”¼ê²©] íšŸìˆ˜: " << count_damage_ << "\n";
+    file << "[ì¡°ìš°] íšŸìˆ˜: " << count_encounter_ << "\n";
+    file << "[ì´ë™] íšŸìˆ˜: " << count_move_ << "\n";
+    file << "[íœ´ì‹] íšŸìˆ˜: " << count_rest_ << "\n";
+    file << "[ë³´ìƒ] íšë“: " << count_reward_ << "\n";
+    file << "[ë„ë§] íšŸìˆ˜: " << count_escape_ << "\n";
+    file << "[ì‚¬ë§] íšŸìˆ˜: " << count_death_ << "\n";
+    file << "[ì‚¬ìš©] íšŸìˆ˜: " << count_use_ << "\n";
+    file << "[ì²˜ì¹˜] íšŸìˆ˜: " << total_kills << "\n"; //[ì²˜ì¹˜] íšŸìˆ˜ëŠ” ë©¤ë²„ë³€ìˆ˜ ëŒ€ì‹  í‚¬ë³´ë“œì—ì„œ ì§ì ‘ í•©ì‚°í•˜ì—¬ ì €ì¥
 
-    // Å³º¸µå ÀúÀå
-    file << "\n=== Å³ º¸µå ===\n";
+    // í‚¬ë³´ë“œ ì €ì¥
+    file << "\n=== í‚¬ ë³´ë“œ ===\n";
     for (const auto& k : kill_ui->GetKillCount())
         file << k.first << " x" << k.second << "\n";
 
-    // ÀüÅõ ·Î±× ÀúÀå
-    file << "\n=== ÀüÅõ ·Î±× ===\n";
+    // ì „íˆ¬ ë¡œê·¸ ì €ì¥
+    file << "\n=== ì „íˆ¬ ë¡œê·¸ ===\n";
     auto* log_ui = uis[static_cast<int>(UIType::Log)].get();
     for (const auto& line : log_ui->GetAllContents())
         file << line << "\n";
@@ -193,39 +193,39 @@ void UIManager::SaveLogToFile(const std::string& filename) //·Î±× ¼¼ÀÌºê ±¸Çö
     file.close();
 }
 
-void UIManager::LoadLogFromFile(const std::string& filename) //·Î±× ·Îµå ±¸Çö
+void UIManager::LoadLogFromFile(const std::string& filename) //ë¡œê·¸ ë¡œë“œ êµ¬í˜„
 {
     std::ifstream file(filename);
     if (!file.is_open()) return;
 
     std::string line;
-    bool is_log_section = false;  // ÀüÅõ ·Î±× ¼½¼Ç Ã¼Å©¿ë
+    bool is_log_section = false;  // ì „íˆ¬ ë¡œê·¸ ì„¹ì…˜ ì²´í¬ìš©
 
     while (std::getline(file, line))
     {
-        if (line.find("[°ø°İ] È½¼ö: ") != std::string::npos)
+        if (line.find("[ê³µê²©] íšŸìˆ˜: ") != std::string::npos)
             count_attack_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[ÇÇ°İ] È½¼ö: ") != std::string::npos)
+        else if (line.find("[í”¼ê²©] íšŸìˆ˜: ") != std::string::npos)
             count_damage_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[Á¶¿ì] È½¼ö: ") != std::string::npos)
+        else if (line.find("[ì¡°ìš°] íšŸìˆ˜: ") != std::string::npos)
             count_encounter_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[ÀÌµ¿] È½¼ö: ") != std::string::npos)
+        else if (line.find("[ì´ë™] íšŸìˆ˜: ") != std::string::npos)
             count_move_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[ÈŞ½Ä] È½¼ö: ") != std::string::npos)
+        else if (line.find("[íœ´ì‹] íšŸìˆ˜: ") != std::string::npos)
             count_rest_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[º¸»ó] È¹µæ: ") != std::string::npos)
+        else if (line.find("[ë³´ìƒ] íšë“: ") != std::string::npos)
             count_reward_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[µµ¸Á] È½¼ö: ") != std::string::npos)
+        else if (line.find("[ë„ë§] íšŸìˆ˜: ") != std::string::npos)
             count_escape_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[»ç¸Á] È½¼ö: ") != std::string::npos)
+        else if (line.find("[ì‚¬ë§] íšŸìˆ˜: ") != std::string::npos)
             count_death_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[»ç¿ë] È½¼ö: ") != std::string::npos)
+        else if (line.find("[ì‚¬ìš©] íšŸìˆ˜: ") != std::string::npos)
             count_use_ = std::stoi(line.substr(line.find(": ") + 2));
         
-        // Å³º¸µå ÀĞ±â
-        else if (line.find("=== Å³ º¸µå ===") != std::string::npos)
+        // í‚¬ë³´ë“œ ì½ê¸°
+        else if (line.find("=== í‚¬ ë³´ë“œ ===") != std::string::npos)
             is_log_section = false;
-        else if (line.find("=== ÀüÅõ ·Î±× ===") != std::string::npos)
+        else if (line.find("=== ì „íˆ¬ ë¡œê·¸ ===") != std::string::npos)
             is_log_section = true;
         else if (line.find(" x") != std::string::npos && !is_log_section)
         {
@@ -238,7 +238,7 @@ void UIManager::LoadLogFromFile(const std::string& filename) //·Î±× ·Îµå ±¸Çö
                 kill_ui->AddKill(name);
         }
 
-        // ÀüÅõ ·Î±× ÀĞ±â
+        // ì „íˆ¬ ë¡œê·¸ ì½ê¸°
         else if (is_log_section && !line.empty())
         {
             uis[static_cast<int>(UIType::Log)].get()->AddContents(line);
@@ -247,9 +247,9 @@ void UIManager::LoadLogFromFile(const std::string& filename) //·Î±× ·Îµå ±¸Çö
     file.close();
 }
 
-void UIManager::ResetStats() //·Î±× Åë°è ¹× ±â·Ï ÀüÃ¼ ÃÊ±âÈ­
+void UIManager::ResetStats() //ë¡œê·¸ í†µê³„ ë° ê¸°ë¡ ì „ì²´ ì´ˆê¸°í™”
 {
-    //Åë°è Ä«¿îÅÍ ÃÊ±âÈ­
+    //í†µê³„ ì¹´ìš´í„° ì´ˆê¸°í™”
     count_attack_ = 0;
     count_damage_ = 0;
     count_encounter_ = 0;
@@ -260,13 +260,13 @@ void UIManager::ResetStats() //·Î±× Åë°è ¹× ±â·Ï ÀüÃ¼ ÃÊ±âÈ­
     count_death_ = 0;
     count_use_ = 0;
 
-    // Å³º¸µå ÃÊ±âÈ­
+    // í‚¬ë³´ë“œ ì´ˆê¸°í™”
     static_cast<KillBoardUI*>(
         uis[static_cast<int>(UIType::KillLog)].get())->ClearKills();
 
-    // È­¸é¿¡ º¸ÀÌ´Â ÀüÅõ ·Î±× ÃÊ±âÈ­
+    // í™”ë©´ì— ë³´ì´ëŠ” ì „íˆ¬ ë¡œê·¸ ì´ˆê¸°í™”
     ClearContent(UIType::Log);
     
-    // ÀüÃ¼ ÀüÅõ ·Î±×(ÆÄÀÏ ÀúÀå¿ë) ÃÊ±âÈ­
+    // ì „ì²´ ì „íˆ¬ ë¡œê·¸(íŒŒì¼ ì €ì¥ìš©) ì´ˆê¸°í™”
     uis[static_cast<int>(UIType::Log)].get()->ClearAllContents();
 }

@@ -1,4 +1,4 @@
-#include "EndingScene.h"
+﻿#include "EndingScene.h"
 #include "UI/GameUI.h"
 #include "UI/UIManager.h"
 #include "Core/RenderSystem.h"

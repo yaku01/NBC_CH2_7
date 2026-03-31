@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 
 namespace DungeonMapState
@@ -6,4 +6,4 @@ namespace DungeonMapState
     void ResetToFirstMap();
     void SetRandomBattleMap();
     const std::string& GetCurrentMapPath();
-}
+} 

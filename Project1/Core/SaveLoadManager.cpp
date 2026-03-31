@@ -1,10 +1,10 @@
-#include "SaveLoadManager.h"
+﻿#include "SaveLoadManager.h"
 #include "Character.h"
 #include "ItemFactory.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
-
+ 
 using namespace std;
 
 void SaveLoadManager::Save(Character& player) {

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Common/common.h"
 #include <string_view>
 #include <windows.h>
@@ -11,22 +11,22 @@ public:
 		return instance;
 	}
 
-	// º¹»ç »ı¼ºÀÚ¿Í ´ëÀÔ ¿¬»êÀÚ »èÁ¦
+	// ë³µì‚¬ ìƒì„±ìì™€ ëŒ€ì… ì—°ì‚°ì ì‚­ì œ
 	RenderSystem(const RenderSystem&) = delete;
 	RenderSystem& operator=(const RenderSystem&) = delete;
 
-	void ClearBuffer(); // ¹öÆÛ Áö¿ì±â
-	void Draw();   // Ãâ·Â & ¹öÆÛ±³Ã¼
+	void ClearBuffer(); // ë²„í¼ ì§€ìš°ê¸°
+	void Draw();   // ì¶œë ¥ & ë²„í¼êµì²´
 	void PrintText(int x, int y, std::string_view sv);
 	int GetScreenWidth() const;
 	int GetScreenHeight() const;
 
 private:
-	// ´õºí ¹öÆÛ¸µ °ü·Ã º¯¼ö
+	// ë”ë¸” ë²„í¼ë§ ê´€ë ¨ ë³€ìˆ˜
 	HANDLE screen_buffers[2];
 	int current_buffer_idx = 0;
 
-	// ¿ÜºÎ¿¡¼­ new ¸øÇÏµµ·Ï Â÷´Ü
+	// ì™¸ë¶€ì—ì„œ new ëª»í•˜ë„ë¡ ì°¨ë‹¨
 	RenderSystem();
 	~RenderSystem();
 

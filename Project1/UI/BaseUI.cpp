@@ -1,4 +1,4 @@
-#include "BaseUI.h"
+ï»¿#include "BaseUI.h"
 #include "Core/ResourceManager.h"
 
 BaseUI::BaseUI(int x, int y, int w, int h) :
@@ -11,15 +11,15 @@ BaseUI::BaseUI(int x, int y) :
     start_x(x), start_y(y), width(0), height(0), is_visible(true), max_lines(0)
 {
 }
-
+ 
 void BaseUI::AddContents(std::string_view msg)
 {
     contents.emplace_back(msg);
     if (static_cast<int>(contents.size()) > max_lines) {
-        contents.pop_front(); // ²Ë Â÷¸é ¿À·¡µÈ °Í »èÁ¦
+        contents.pop_front(); // ê½‰ ì°¨ë©´ ì˜¤ë˜ëœ ê²ƒ ì‚­ì œ
     }
 
-    all_contents.push_back(std::string(msg));  // ÀüÃ¼ ·Î±×¿¡ Ãß°¡.
+    all_contents.push_back(std::string(msg));  // ì „ì²´ ë¡œê·¸ì— ì¶”ê°€.
 }
 
 void BaseUI::LoadAsciiArt(const std::string& path)

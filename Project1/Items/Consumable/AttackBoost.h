@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Item.h"
 #include "ConsumableItem.h"
 
@@ -15,4 +15,4 @@ public:
 	AttackBoost();
 
 	void Use(Character& target) override;
-};
+}; 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Item.h"
 #include "ConsumableItem.h"
 
@@ -14,4 +14,4 @@ private:
 public:
 	HealthPotion();
 	void Use(Character& target) override;
-};
+}; 

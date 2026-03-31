@@ -1,4 +1,4 @@
-#include "Core/GameManager.h"
+﻿#include "Core/GameManager.h"
 #include "Core/SaveLoadManager.h"
 #include "Characters/Character.h"
 

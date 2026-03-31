@@ -1,4 +1,4 @@
-#include "common.h"
+﻿#include "common.h"
 #include <random>
 #include <algorithm>
 
@@ -18,7 +18,7 @@ namespace RandomUtil{
 	{
 		std::uniform_real_distribution<double> urd(min, max);
 		return urd(gen);
-	}
+	} 
 
 	bool IsSuccess(double probability)
 	{

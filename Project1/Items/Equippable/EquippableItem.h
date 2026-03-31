@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Item.h"
 
 #include <string>
@@ -26,4 +26,4 @@ public:
 	void Use(Character& target) override = 0;
 	virtual void Equip(Character& target) = 0;
 	virtual void Unequip(Character& target) = 0;
-};
+}; 

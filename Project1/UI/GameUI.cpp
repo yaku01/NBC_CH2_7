@@ -1,4 +1,4 @@
-#include "GameUI.h"
+ï»¿#include "GameUI.h"
 #include "Core/RenderSystem.h"
 #include "Characters/Character.h"
 #include "Monsters/Monster.h"
@@ -9,35 +9,35 @@
 
 BorderUI::BorderUI(int x, int y, int w, int h) : BaseUI(x, y, w, h)
 {
-    top_border = "¦£";
-    bottom_border = "¦¦";
+    top_border = "â”Œ";
+    bottom_border = "â””";
 
     for (int i = 0; i < width - 2; ++i) {
-        top_border += "¦¡";
-        bottom_border += "¦¡";
+        top_border += "â”€";
+        bottom_border += "â”€";
     }
 
-    top_border += "¦¤";
-    bottom_border += "¦¥";
+    top_border += "â”";
+    bottom_border += "â”˜";
 }
 
 void BorderUI::Render()
 {
-    // »ó´Ü °æ°è¼±
+    // ìƒë‹¨ ê²½ê³„ì„ 
     RenderSystem::GetInstance().PrintText(start_x, start_y, top_border);
 
-    // ¼¼·Î¼±
+    // ì„¸ë¡œì„ 
     for (int i = 1; i < height - 1; ++i) {
-        RenderSystem::GetInstance().PrintText(start_x, start_y + i, "¦¢");
-        RenderSystem::GetInstance().PrintText(start_x + width - 1, start_y + i, "¦¢");
+        RenderSystem::GetInstance().PrintText(start_x, start_y + i, "â”‚");
+        RenderSystem::GetInstance().PrintText(start_x + width - 1, start_y + i, "â”‚");
     }
 
-    // ¸Ş¼¼Áö Ãâ·Â
+    // ë©”ì„¸ì§€ ì¶œë ¥
     for (int i = 0; i < static_cast<int>(contents.size()); ++i) {
         RenderSystem::GetInstance().PrintText(start_x + 2, start_y + 1 + i, contents[i]);
     }
 
-    // ÇÏ´Ü °æ°è¼±
+    // í•˜ë‹¨ ê²½ê³„ì„ 
     RenderSystem::GetInstance().PrintText(start_x, start_y + height - 1, bottom_border);
 }
 
@@ -60,7 +60,7 @@ void LogUI::AddContents(std::string_view msg)
     int length = width - 2;
     std::string_view line = msg;
 
-    // ¹®ÀÚ¿­ ÀÚ¸£±â ¹İº¹
+    // ë¬¸ìì—´ ìë¥´ê¸° ë°˜ë³µ
     while (line.size() >= length) {
         BaseUI::AddContents(line.substr(0, length));
         line = line.substr(length);
@@ -148,12 +148,12 @@ void ItemListUI::RenderPage(int total_items)
 {
     int max_page = std::max(1, (total_items + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE);
 
-    // ¾ÆÀÌÅÛ »ç¿ëÀ¸·Î ÆäÀÌÁö °¨¼ÒÇÒ ¶§ È®ÀÎ
+    // ì•„ì´í…œ ì‚¬ìš©ìœ¼ë¡œ í˜ì´ì§€ ê°ì†Œí•  ë•Œ í™•ì¸
     if (current_page >= max_page) {
         current_page = std::max(0, max_page - 1);
     }
 
-    //  -- ÆäÀÌÁö Ç¥½Ã --
+    //  -- í˜ì´ì§€ í‘œì‹œ --
     int page_y = start_y + height - 2;
     RenderSystem::GetInstance().PrintText(start_x + 2, page_y, "[Q]");
     RenderSystem::GetInstance().PrintText(start_x + width - 5, page_y, "[E]");
@@ -188,14 +188,14 @@ void InventoryUI::Render()
 
     int total_items = static_cast<int>(inventory.size());
 
-    // Å¸ÀÌÆ² Ãâ·Â
+    // íƒ€ì´í‹€ ì¶œë ¥
     std::string title = (is_active) ? "[ *** Inventory *** ]" : "Inventory";
     RenderTitle(title);
     
-    // ¾ÆÀÌÅÛ Ãâ·Â
+    // ì•„ì´í…œ ì¶œë ¥
     int text_y = start_y + 3;
     if (total_items == 0) {
-        RenderSystem::GetInstance().PrintText(start_x + 2, text_y, "ÀÎº¥Åä¸®°¡ ºñ¾îÀÖ½À´Ï´Ù.");
+        RenderSystem::GetInstance().PrintText(start_x + 2, text_y, "ì¸ë²¤í† ë¦¬ê°€ ë¹„ì–´ìˆìŠµë‹ˆë‹¤.");
     }
     else {
         int start_idx = GetStartIndex();
@@ -217,7 +217,7 @@ void InventoryUI::Render()
         }
     }
     
-    // ÆäÀÌÁö Ãâ·Â
+    // í˜ì´ì§€ ì¶œë ¥
     RenderPage(total_items);
 }
 
@@ -244,19 +244,19 @@ void ShopUI::Render()
 
     const auto& inventory = Character::GetInstance().GetInventory();
 
-    // ±¸¸Å - »óÁ¡¸®½ºÆ® / ÆÇ¸Å - ÀÎº¥Åä¸®
+    // êµ¬ë§¤ - ìƒì ë¦¬ìŠ¤íŠ¸ / íŒë§¤ - ì¸ë²¤í† ë¦¬
     int total_items = (is_buy_mode && shop_items) ?
         static_cast<int>(shop_items->size()) :
         static_cast<int>(inventory.size());
 
-    // Å¸ÀÌÆ² Ãâ·Â
+    // íƒ€ì´í‹€ ì¶œë ¥
     std::string title = (is_buy_mode) ? "- Shop (Buy) -" : "- Shop (Sell) -";
     RenderTitle(title);
 
-    // ¾ÆÀÌÅÛ Ãâ·Â
+    // ì•„ì´í…œ ì¶œë ¥
     int text_y = start_y + 3;
     if (total_items == 0) {
-        RenderSystem::GetInstance().PrintText(start_x + 2, text_y, "¸ñ·ÏÀÌ ºñ¾îÀÖ½À´Ï´Ù.");
+        RenderSystem::GetInstance().PrintText(start_x + 2, text_y, "ëª©ë¡ì´ ë¹„ì–´ìˆìŠµë‹ˆë‹¤.");
     }
     else {
         int start_idx = GetStartIndex();
@@ -278,13 +278,13 @@ void ShopUI::Render()
                     continue;
                 }
 
-                // ÆÇ¸Å´Â ¿ø°¡ÀÇ 60ÆÛ °¡°İÀ¸·Î Ã¥Á¤
+                // íŒë§¤ëŠ” ì›ê°€ì˜ 60í¼ ê°€ê²©ìœ¼ë¡œ ì±…ì •
                 const ItemData& data = ItemDataBase::GetData(item->GetID());
                 item_text += data.name;
                 gold_text = std::to_string(ItemDataBase::GetSellPrice(item->GetID())) + " Gold";
             }
 
-            // ÁÂ¿ì ¿©¹é 2Ä­, ÅØ½ºÆ® Á¦¿ÜÇÏ°í ÀüºÎ °ø¹é °³¼ö
+            // ì¢Œìš° ì—¬ë°± 2ì¹¸, í…ìŠ¤íŠ¸ ì œì™¸í•˜ê³  ì „ë¶€ ê³µë°± ê°œìˆ˜
             int black_count = width - 4 - static_cast<int>(item_text.length() + gold_text.length());
             if (black_count < 1) {
                 black_count = 1;
@@ -295,7 +295,7 @@ void ShopUI::Render()
         }
     }
 
-    // ÆäÀÌÁö Ãâ·Â
+    // í˜ì´ì§€ ì¶œë ¥
     RenderPage(total_items);
 }
 
@@ -324,20 +324,20 @@ void ItemConfirmUI::Render()
     
     const ItemData& data = ItemDataBase::GetData(target);
 
-    // Áú¹® Ãâ·Â
+    // ì§ˆë¬¸ ì¶œë ¥
     int text_y = start_y + 1;
-    std::string question = data.name + "À»(¸¦) " + action_text;
+    std::string question = data.name + "ì„(ë¥¼) " + action_text;
     int text_x = start_x + (width - static_cast<int>(question.length())) / 2;
     RenderSystem::GetInstance().PrintText(text_x, text_y++, question);
 
-    // ¼³¸í Ãâ·Â
+    // ì„¤ëª… ì¶œë ¥
     std::string desc = data.desc;
     text_x = start_x + (width - static_cast<int>(desc.length())) / 2;
     RenderSystem::GetInstance().PrintText(text_x, text_y++, desc);
     ++text_y;
     ++text_y;
 
-    // ¼±ÅÃÁö Ãâ·Â
+    // ì„ íƒì§€ ì¶œë ¥
     std::string option = "[Y] YES  [N] NO";
     text_x = start_x + (width - static_cast<int>(option.length())) / 2;
     RenderSystem::GetInstance().PrintText(text_x, text_y, option);
@@ -376,7 +376,7 @@ void CharacterUI::Render()
 {
     AsciiUI::Render();
 
-    // Ã¼·Â Ãâ·Â
+    // ì²´ë ¥ ì¶œë ¥
     if (target) {
         std::string hp_info = "HP: " + std::to_string(target->GetHealth()) +
             " / " + std::to_string(target->GetMaxHealth());
@@ -401,7 +401,7 @@ void MonsterUI::Render()
 {
     AsciiUI::Render();
 
-    // ÀÌ¸§ + Ã¼·Â Ãâ·Â
+    // ì´ë¦„ + ì²´ë ¥ ì¶œë ¥
     if (target) {
         int info_y = start_y + static_cast<int>(contents.size()) + 1;
 
@@ -418,37 +418,37 @@ void MonsterUI::SetTarget(const Monster* target)
     this->target = target;
 }
 
-// Å³º¸µå UI ÃÊ±âÈ­
+// í‚¬ë³´ë“œ UI ì´ˆê¸°í™”
 KillBoardUI::KillBoardUI(int x, int y, int w, int h) : BaseUI(x, y, w, h)
 {
-    top_border = "¦£";
-    bottom_border = "¦¦";
+    top_border = "â”Œ";
+    bottom_border = "â””";
 
     for (int i = 0; i < width - 2; ++i) {
-        top_border += "¦¡";
-        bottom_border += "¦¡";
+        top_border += "â”€";
+        bottom_border += "â”€";
     }
 
-    top_border += "¦¤";
-    bottom_border += "¦¥";
-}
+    top_border += "â”";
+    bottom_border += "â”˜";
+} 
 
-// Å³º¸µå UI ±×¸®±â
+// í‚¬ë³´ë“œ UI ê·¸ë¦¬ê¸°
 void KillBoardUI::Render()
 {
-    // »ó´Ü °æ°è¼±
+    // ìƒë‹¨ ê²½ê³„ì„ 
     RenderSystem::GetInstance().PrintText(start_x, start_y, top_border);
 
-    // ¼¼·Î¼±
+    // ì„¸ë¡œì„ 
     for (int i = 1; i < height - 1; ++i) {
-        RenderSystem::GetInstance().PrintText(start_x, start_y + i, "¦¢");
-        RenderSystem::GetInstance().PrintText(start_x + width - 1, start_y + i, "¦¢");
+        RenderSystem::GetInstance().PrintText(start_x, start_y + i, "â”‚");
+        RenderSystem::GetInstance().PrintText(start_x + width - 1, start_y + i, "â”‚");
     }
 
-    // Å³º¸µå Á¦¸ñ
-    RenderSystem::GetInstance().PrintText(start_x + 2, start_y + 1, "[ Å³ º¸µå ]");
+    // í‚¬ë³´ë“œ ì œëª©
+    RenderSystem::GetInstance().PrintText(start_x + 2, start_y + 1, "[ í‚¬ ë³´ë“œ ]");
 
-    // Å³Ä«¿îÆ® Ãâ·Â
+    // í‚¬ì¹´ìš´íŠ¸ ì¶œë ¥
     int line = 2;
     for (const auto& k : kill_count_)
     {
@@ -457,11 +457,11 @@ void KillBoardUI::Render()
         line++;
     }
 
-    // ÇÏ´Ü °æ°è¼±
+    // í•˜ë‹¨ ê²½ê³„ì„ 
     RenderSystem::GetInstance().PrintText(start_x, start_y + height - 1, bottom_border);
 }
 
-void KillBoardUI::AddKill(const std::string& monster_name)   // Å³º¸µå¿¡ Å³ Ãß°¡
+void KillBoardUI::AddKill(const std::string& monster_name)   // í‚¬ë³´ë“œì— í‚¬ ì¶”ê°€
 {
     ++kill_count_[monster_name];
 }
@@ -488,16 +488,16 @@ WipeUI::WipeUI(int x, int y, int w, int h, float max_time) : UpdateUI(x, y, w, h
 
 void WipeUI::Render()
 {
-    float progress = time / max_time;   // 0.0 ~ 1.0 À¸·Î º¯È¯
+    float progress = time / max_time;   // 0.0 ~ 1.0 ìœ¼ë¡œ ë³€í™˜
     int length = static_cast<int>(width * progress);
 
-    // È¦¼ö ÁÙ ¿Ş->¿À  >>>>
+    // í™€ìˆ˜ ì¤„ ì™¼->ì˜¤  >>>>
     std::string odd_line = std::string(length, '>');
     for (int i = 1; i < height; i += 2) {
         RenderSystem::GetInstance().PrintText(start_x, start_y + i, odd_line);
     }
 
-    // Â¦¼ö ÁÙ ¿À->¿Ş  <<<<
+    // ì§ìˆ˜ ì¤„ ì˜¤->ì™¼  <<<<
     std::string even_line = std::string(length, '<');
     for (int i = 0; i < height; i += 2) {
         RenderSystem::GetInstance().PrintText(width - length, start_y + i, even_line);
@@ -508,7 +508,7 @@ void WipeUI::Render()
 
 NoiseUI::NoiseUI(int x, int y, int w, int h, float max_time) : UpdateUI(x, y, w, h, max_time)
 {
-    // (A + B - 1) / B  -> ¿Ã¸²Ã³¸®
+    // (A + B - 1) / B  -> ì˜¬ë¦¼ì²˜ë¦¬
     grid_cols = (width + block_w - 1) / block_w;
     grid_rows = (height + block_h - 1) / block_h;
     total_blocks = grid_cols * grid_rows;
@@ -520,7 +520,7 @@ NoiseUI::NoiseUI(int x, int y, int w, int h, float max_time) : UpdateUI(x, y, w,
         indices.push_back(i);
     }
 
-    // ¹«ÀÛÀ§·Î ¼¯±â
+    // ë¬´ì‘ìœ„ë¡œ ì„ê¸°
     RandomUtil::Shuffle(indices);
 }
 
@@ -528,12 +528,12 @@ void NoiseUI::Update(float delta_time)
 {
     UpdateUI::Update(delta_time);
 
-    float progress = time / max_time;   // 0.0 ~ 1.0 À¸·Î º¯È¯
+    float progress = time / max_time;   // 0.0 ~ 1.0 ìœ¼ë¡œ ë³€í™˜
 
-    // Ã¤¿ö¾ß ÇÏ´Â °³¼ö
+    // ì±„ì›Œì•¼ í•˜ëŠ” ê°œìˆ˜
     int target_count = static_cast<int>(total_blocks * progress);
 
-    // ÇöÀç Ã¤¿î °³¼ö
+    // í˜„ì¬ ì±„ìš´ ê°œìˆ˜
     int current_count = total_blocks - static_cast<int>(indices.size());
 
     while (current_count < target_count && !indices.empty()) {
@@ -552,16 +552,16 @@ void NoiseUI::Render()
             continue;
         }
 
-        // 1Â÷¿øÀ» 2Â÷¿øÀ¸·Î º¯È¯
-        // ³Êºñ·Î ³ª¸ÓÁö ¿¬»êÀ» ÇÏ¸é ¿­, ³ª´©±â¸¦ ÇÏ¸é Çà
+        // 1ì°¨ì›ì„ 2ì°¨ì›ìœ¼ë¡œ ë³€í™˜
+        // ë„ˆë¹„ë¡œ ë‚˜ë¨¸ì§€ ì—°ì‚°ì„ í•˜ë©´ ì—´, ë‚˜ëˆ„ê¸°ë¥¼ í•˜ë©´ í–‰
         int col = i % grid_cols;
         int row = i / grid_cols;
 
-        // ½ÃÀÛ ÁÂÇ¥
+        // ì‹œì‘ ì¢Œí‘œ
         int dx = start_x + (col * block_w);
         int dy = start_y + (row * block_h);
         
-        // UI ¿µ¿ª ³¡ºÎºĞ ³Ñ¾î°¡Áö ¾Ê°Ô »çÀÌÁî Á¶Àı
+        // UI ì˜ì—­ ëë¶€ë¶„ ë„˜ì–´ê°€ì§€ ì•Šê²Œ ì‚¬ì´ì¦ˆ ì¡°ì ˆ
         int w = std::min(block_w, width - (col * block_w));
         int h = std::min(block_h, height - (row * block_h));
 

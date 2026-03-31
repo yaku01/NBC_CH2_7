@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Item.h"
 #include "Common/common.h"
 #include <vector>
@@ -11,7 +11,7 @@ struct DropItem {
     double probability;
 };
 
-class DropTable {
+class DropTable { 
 private:
     vector<DropItem> items;
 
