@@ -1,4 +1,4 @@
-#include "SaveLoadManager.h"
+﻿#include "SaveLoadManager.h"
 #include "Character.h"
 #include "ItemFactory.h"
 #include <fstream>
@@ -25,7 +25,7 @@ void SaveLoadManager::Save(Character& player) {
                 // stats + inventory + weapon + armor 읽고 무시
                 for (int i = 0; i < 4; ++i) getline(infile, line);
                 continue;
-            }
+            } 
             else {
                 buffer << "[PLAYER]\n" << name_line << "\n";
                 for (int i = 0; i < 4; ++i) {

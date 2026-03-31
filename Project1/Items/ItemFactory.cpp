@@ -1,31 +1,31 @@
-#include "ItemFactory.h"
+ï»¿#include "ItemFactory.h"
 #include "Consumable/HealthPotion.h"
 #include "Consumable/AttackBoost.h"
 #include "Equippable/Sword.h"
 #include "Equippable/Armor.h"
 
-// ¾ÆÀÌÅÛ »ı¼º ÇÔ¼ö¸¦ µî·ÏÇÏ´Â ¸Ê
+// ì•„ì´í…œ ìƒì„± í•¨ìˆ˜ë¥¼ ë“±ë¡í•˜ëŠ” ë§µ
 std::map<ItemID, std::function<std::unique_ptr<IItem>()>> ItemFactory::item_creators;
 
-// ¾ÆÀÌÅÛ »ı¼º ÇÔ¼ö¸¦ µî·Ï
-// ÇÁ·Î±×·¥ ½ÃÀÛ ½Ã ItemFactory::Initialize(); ¸¦ È£ÃâÇÏ¿© ¾ÆÀÌÅÛ »ı¼º ÇÔ¼ö¸¦ µî·ÏÇØ¾ß ÇÕ´Ï´Ù.
+// ì•„ì´í…œ ìƒì„± í•¨ìˆ˜ë¥¼ ë“±ë¡
+// í”„ë¡œê·¸ë¨ ì‹œì‘ ì‹œ ItemFactory::Initialize(); ë¥¼ í˜¸ì¶œí•˜ì—¬ ì•„ì´í…œ ìƒì„± í•¨ìˆ˜ë¥¼ ë“±ë¡í•´ì•¼ í•©ë‹ˆë‹¤.
 void ItemFactory::Initialize() 
 {
 	item_creators[ItemID::HealthPotion] = []() { return std::make_unique<HealthPotion>(); };
 	item_creators[ItemID::AttackBoost] = []() { return std::make_unique<AttackBoost>(); };
-	item_creators[ItemID::WoodSword] = []() { return std::make_unique<Sword>("Wood Sword", ItemID::WoodSword, "°ø°İ·ÂÀÌ 5 Áõ°¡ÇÕ´Ï´Ù.", 5); };
-	item_creators[ItemID::Sword] = []() { return std::make_unique<Sword>("Sword", ItemID::Sword, "°ø°İ·ÂÀÌ 15 Áõ°¡ÇÕ´Ï´Ù.", 15); };
-	item_creators[ItemID::LeatherArmor] = []() { return std::make_unique<Armor>("Leather Armor", ItemID::LeatherArmor, "ÃÖ´ë Ã¼·ÂÀÌ 20 Áõ°¡ÇÕ´Ï´Ù.", 20); };
-	item_creators[ItemID::Armor] = []() { return std::make_unique<Armor>("Armor", ItemID::Armor, "ÃÖ´ë Ã¼·ÂÀÌ 50 Áõ°¡ÇÕ´Ï´Ù.", 50); };
+	item_creators[ItemID::WoodSword] = []() { return std::make_unique<Sword>("Wood Sword", ItemID::WoodSword, "ê³µê²©ë ¥ì´ 5 ì¦ê°€í•©ë‹ˆë‹¤.", 5); }; 
+	item_creators[ItemID::Sword] = []() { return std::make_unique<Sword>("Sword", ItemID::Sword, "ê³µê²©ë ¥ì´ 15 ì¦ê°€í•©ë‹ˆë‹¤.", 15); };
+	item_creators[ItemID::LeatherArmor] = []() { return std::make_unique<Armor>("Leather Armor", ItemID::LeatherArmor, "ìµœëŒ€ ì²´ë ¥ì´ 20 ì¦ê°€í•©ë‹ˆë‹¤.", 20); };
+	item_creators[ItemID::Armor] = []() { return std::make_unique<Armor>("Armor", ItemID::Armor, "ìµœëŒ€ ì²´ë ¥ì´ 50 ì¦ê°€í•©ë‹ˆë‹¤.", 50); };
 }
 
-// ¾ÆÀÌÅÛ »ı¼º ÇÔ¼ö
+// ì•„ì´í…œ ìƒì„± í•¨ìˆ˜
 std::unique_ptr<IItem> ItemFactory::CreateItem(ItemID id) 
 {
 	auto it = item_creators.find(id);
 	if (it != item_creators.end()) 
 	{
-		return it->second(); // µî·ÏµÈ »ı¼º ÇÔ¼ö¸¦ È£ÃâÇÏ¿© ¾ÆÀÌÅÛ »ı¼º
+		return it->second(); // ë“±ë¡ëœ ìƒì„± í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ì—¬ ì•„ì´í…œ ìƒì„±
 	}
-	return nullptr; // µî·ÏµÇÁö ¾ÊÀº IDÀÎ °æ¿ì nullptr ¹İÈ¯
+	return nullptr; // ë“±ë¡ë˜ì§€ ì•Šì€ IDì¸ ê²½ìš° nullptr ë°˜í™˜
 }

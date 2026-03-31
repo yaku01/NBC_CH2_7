@@ -1,4 +1,4 @@
-#include "BaseScene.h"
+﻿#include "BaseScene.h"
 #include "Core/GameManager.h"
 #include  "UI/BaseUI.h"
 
@@ -12,7 +12,7 @@ void BaseScene::Render()
 {
 	for (const auto& ui : scene_uis) {
 		if (ui->IsVisible()) {
-			ui->Render();
+			ui->Render(); 
 		}
 	}
 }

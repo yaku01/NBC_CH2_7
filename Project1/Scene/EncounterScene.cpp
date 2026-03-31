@@ -1,4 +1,4 @@
-#include "EncounterScene.h"
+Ôªø#include "EncounterScene.h"
 #include "UI/GameUI.h"
 #include "Core/GameManager.h"
 #include "Core/RenderSystem.h"
@@ -15,7 +15,7 @@ void EncounterScene::Init()
 	int w = RenderSystem::GetInstance().GetScreenWidth();
 	int h = RenderSystem::GetInstance().GetScreenHeight();
 
-	ui = std::make_unique<NoiseUI>(0, 0, w, h, max_time);
+	ui = std::make_unique<NoiseUI>(0, 0, w, h, max_time); 
 }
 
 void EncounterScene::ProcessEvent(const Event& e)
@@ -43,7 +43,7 @@ void EncounterScene::Release()
 
 void EncounterScene::SetSceneData(const std::string& data)
 {
-	// ±‚∫ª ø¨√‚ 2√ 
+	// Í∏∞Î≥∏ Ïó∞Ï∂ú 2Ï¥à
 	max_time = 2.f;
 
 	if (!data.empty()) {

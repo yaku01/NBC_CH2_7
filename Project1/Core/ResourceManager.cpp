@@ -1,10 +1,10 @@
-#include "ResourceManager.h"
+ï»¿#include "ResourceManager.h"
 #include <fstream>
 
 
 std::optional<std::reference_wrapper<const std::deque<std::string>>> ResourceManager::GetResource(const std::string& file_path)
 {
-	// ÀÌ¹Ì ÀĞ¾î¿Â ÆÄÀÏÀÌ¸é ÇØ´ç ³»¿ë ¹İÈ¯
+	// ì´ë¯¸ ì½ì–´ì˜¨ íŒŒì¼ì´ë©´ í•´ë‹¹ ë‚´ìš© ë°˜í™˜
 	auto it = data.find(file_path);
 	if (it != data.end()) {
 		return it->second;
@@ -13,7 +13,7 @@ std::optional<std::reference_wrapper<const std::deque<std::string>>> ResourceMan
 	std::deque<std::string>& resource = data[file_path];
 	std::ifstream in(file_path);
 	
-	// ÆÄÀÏÀÌ ¾ø´Ù¸é nullopt ¹İÈ¯
+	// íŒŒì¼ì´ ì—†ë‹¤ë©´ nullopt ë°˜í™˜
 	if (!in.is_open()) {
 		return std::nullopt;
 	}
@@ -22,7 +22,7 @@ std::optional<std::reference_wrapper<const std::deque<std::string>>> ResourceMan
 		while (std::getline(in, line)) {
 			resource.push_back(line);
 		}
-	}
+	} 
 	in.close();
 
 	return resource;

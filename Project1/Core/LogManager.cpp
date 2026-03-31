@@ -1,4 +1,4 @@
-#include "LogManager.h"
+ï»¿#include "LogManager.h"
 #include "UI/UIManager.h"
 #include <fstream>
 #include <sstream>
@@ -6,15 +6,15 @@
 void LogManager::AddLog(std::string_view msg)
 {
     std::string s(msg);
-    if (s.find("[°ø°İ]") != std::string::npos) count_attack_++;
-    else if (s.find("[ÇÇ°İ]") != std::string::npos) count_damage_++;
-    else if (s.find("[Á¶¿ì]") != std::string::npos) count_encounter_++;
-    else if (s.find("[ÀÌµ¿]") != std::string::npos) count_move_++;
-    else if (s.find("[ÈŞ½Ä]") != std::string::npos) count_rest_++;
-    else if (s.find("[º¸»ó]") != std::string::npos) count_reward_++;
-    else if (s.find("[µµ¸Á]") != std::string::npos) count_escape_++;
-    else if (s.find("[»ç¸Á]") != std::string::npos) count_death_++;
-    else if (s.find("[»ç¿ë]") != std::string::npos) count_use_++;
+    if (s.find("[ê³µê²©]") != std::string::npos) count_attack_++;
+    else if (s.find("[í”¼ê²©]") != std::string::npos) count_damage_++;
+    else if (s.find("[ì¡°ìš°]") != std::string::npos) count_encounter_++;
+    else if (s.find("[ì´ë™]") != std::string::npos) count_move_++;
+    else if (s.find("[íœ´ì‹]") != std::string::npos) count_rest_++;
+    else if (s.find("[ë³´ìƒ]") != std::string::npos) count_reward_++;
+    else if (s.find("[ë„ë§]") != std::string::npos) count_escape_++;
+    else if (s.find("[ì‚¬ë§]") != std::string::npos) count_death_++;
+    else if (s.find("[ì‚¬ìš©]") != std::string::npos) count_use_++;
 
     all_logs_.push_back(s);
 
@@ -28,7 +28,7 @@ void LogManager::AddKill(const std::string& monster_name)
 
 void LogManager::SaveLogToFile(const std::string& filename, const std::string& player_name)
 {
-    // 1. ±âÁ¸ ÆÄÀÏ ÀĞ±â
+    // 1. ê¸°ì¡´ íŒŒì¼ ì½ê¸°
     std::ifstream infile(filename);
     std::stringstream buffer;
     std::string line;
@@ -41,7 +41,7 @@ void LogManager::SaveLogToFile(const std::string& filename, const std::string& p
                 std::getline(infile, name_line);
 
                 if (name_line == player_name) {
-                    skip = true; // ÇöÀç ÇÃ·¹ÀÌ¾îÀÇ ¿¹Àü ·Î±× ºí·ÏÀº µ¤¾î¾µ °ÍÀÌ¹Ç·Î ¹«½Ã(Skip)
+                    skip = true; // í˜„ì¬ í”Œë ˆì´ì–´ì˜ ì˜ˆì „ ë¡œê·¸ ë¸”ë¡ì€ ë®ì–´ì“¸ ê²ƒì´ë¯€ë¡œ ë¬´ì‹œ(Skip)
                     continue;
                 }
                 else {
@@ -53,7 +53,7 @@ void LogManager::SaveLogToFile(const std::string& filename, const std::string& p
                     buffer << line << "\n";   
                 }
                 else {
-                    skip = false; // ½ºÅµ ÈÄ ´Ù½Ã Á¤»ó ÀĞ±â
+                    skip = false; // ìŠ¤í‚µ í›„ ë‹¤ì‹œ ì •ìƒ ì½ê¸°
                 }
             }
             else if (!skip) {
@@ -64,7 +64,7 @@ void LogManager::SaveLogToFile(const std::string& filename, const std::string& p
     }
 
 
-    // ÆÄÀÏ µ¤¾î¾²±â
+    // íŒŒì¼ ë®ì–´ì“°ê¸°
     std::ofstream file(filename);
     if (!file.is_open()) return;
 
@@ -77,29 +77,29 @@ void LogManager::SaveLogToFile(const std::string& filename, const std::string& p
     for (const auto& k : kill_counts_)
         total_kills += k.second;
 
-    file << "\n=== Åë°è ===\n";
-    file << "[°ø°İ] È½¼ö: " << count_attack_ << "\n";
-    file << "[ÇÇ°İ] È½¼ö: " << count_damage_ << "\n";
-    file << "[Á¶¿ì] È½¼ö: " << count_encounter_ << "\n";
-    file << "[ÀÌµ¿] È½¼ö: " << count_move_ << "\n";
-    file << "[ÈŞ½Ä] È½¼ö: " << count_rest_ << "\n";
-    file << "[º¸»ó] È¹µæ: " << count_reward_ << "\n";
-    file << "[µµ¸Á] È½¼ö: " << count_escape_ << "\n";
-    file << "[»ç¸Á] È½¼ö: " << count_death_ << "\n";
-    file << "[»ç¿ë] È½¼ö: " << count_use_ << "\n";
-    file << "[Ã³Ä¡] È½¼ö: " << total_kills << "\n"; //[Ã³Ä¡] È½¼ö´Â ¸â¹öº¯¼ö ´ë½Å Å³º¸µå¿¡¼­ Á÷Á¢ ÇÕ»êÇÏ¿© ÀúÀå
+    file << "\n=== í†µê³„ ===\n";
+    file << "[ê³µê²©] íšŸìˆ˜: " << count_attack_ << "\n";
+    file << "[í”¼ê²©] íšŸìˆ˜: " << count_damage_ << "\n";
+    file << "[ì¡°ìš°] íšŸìˆ˜: " << count_encounter_ << "\n";
+    file << "[ì´ë™] íšŸìˆ˜: " << count_move_ << "\n";
+    file << "[íœ´ì‹] íšŸìˆ˜: " << count_rest_ << "\n";
+    file << "[ë³´ìƒ] íšë“: " << count_reward_ << "\n";
+    file << "[ë„ë§] íšŸìˆ˜: " << count_escape_ << "\n";
+    file << "[ì‚¬ë§] íšŸìˆ˜: " << count_death_ << "\n";
+    file << "[ì‚¬ìš©] íšŸìˆ˜: " << count_use_ << "\n";
+    file << "[ì²˜ì¹˜] íšŸìˆ˜: " << total_kills << "\n"; //[ì²˜ì¹˜] íšŸìˆ˜ëŠ” ë©¤ë²„ë³€ìˆ˜ ëŒ€ì‹  í‚¬ë³´ë“œì—ì„œ ì§ì ‘ í•©ì‚°í•˜ì—¬ ì €ì¥
 
-    // Å³º¸µå ÀúÀå
-    file << "\n=== Å³ º¸µå ===\n";
+    // í‚¬ë³´ë“œ ì €ì¥
+    file << "\n=== í‚¬ ë³´ë“œ ===\n";
     for (const auto& k : kill_counts_)
         file << k.first << " x" << k.second << "\n";
 
-    // ÀüÅõ ·Î±× ÀúÀå
-    file << "\n=== ÀüÅõ ·Î±× ===\n";
+    // ì „íˆ¬ ë¡œê·¸ ì €ì¥
+    file << "\n=== ì „íˆ¬ ë¡œê·¸ ===\n";
     for (const auto& line : all_logs_)
         file << line << "\n";
 
-    file << "[END_LOG]\n"; // ºí·Ï ³¡À» ¾Ë¸®´Â ÅÂ±×
+    file << "[END_LOG]\n"; // ë¸”ë¡ ëì„ ì•Œë¦¬ëŠ” íƒœê·¸
     file.close();
 }
 
@@ -112,16 +112,16 @@ void LogManager::LoadLogFromFile(const std::string& filename, const std::string&
 
     std::string line;
     bool is_target_player = false;
-    bool is_log_section = false;  // ÀüÅõ ·Î±× ¼½¼Ç Ã¼Å©¿ë
+    bool is_log_section = false;  // ì „íˆ¬ ë¡œê·¸ ì„¹ì…˜ ì²´í¬ìš©
 
     while (std::getline(file, line))
     {
-        // ·Î±× ½ÃÀÛÁ¡ÀÌ¶ó¸é ÇÃ·¹ÀÌ¾î È®ÀÎ
+        // ë¡œê·¸ ì‹œì‘ì ì´ë¼ë©´ í”Œë ˆì´ì–´ í™•ì¸
         if (line == "[LOG_DATA]") {
             std::string name;
             std::getline(file, name);
             if (name == player_name) {
-                is_target_player = true; // Ã£´ø ÇÃ·¹ÀÌ¾îÀÇ ºí·Ï ¹ß°ß!
+                is_target_player = true; // ì°¾ë˜ í”Œë ˆì´ì–´ì˜ ë¸”ë¡ ë°œê²¬!
             }
             else {
                 is_target_player = false;
@@ -129,42 +129,42 @@ void LogManager::LoadLogFromFile(const std::string& filename, const std::string&
             continue;
         }
 
-        // ·Î±× ³¡Á¡ÀÌ¶ó¸é ´Ù ÀĞÀº°ÇÁö È®ÀÎ
+        // ë¡œê·¸ ëì ì´ë¼ë©´ ë‹¤ ì½ì€ê±´ì§€ í™•ì¸
         if (line == "[END_LOG]") {
             if (is_target_player) {
-                break; // ¸ñÇ¥ ÇÃ·¹ÀÌ¾îÀÇ ·Îµå°¡ ³¡³µÀ¸¹Ç·Î ·çÇÁ Å»Ãâ
+                break; // ëª©í‘œ í”Œë ˆì´ì–´ì˜ ë¡œë“œê°€ ëë‚¬ìœ¼ë¯€ë¡œ ë£¨í”„ íƒˆì¶œ
             }
             continue;
         }
 
-        // ±â·ÏµÈ ÇÃ·¹ÀÌ¾î°¡ ¾Æ´Ï¶ó¸é ¾Æ·¡ ÆÄ½Ì ¹«È¿
+        // ê¸°ë¡ëœ í”Œë ˆì´ì–´ê°€ ì•„ë‹ˆë¼ë©´ ì•„ë˜ íŒŒì‹± ë¬´íš¨
         if (!is_target_player) {
             continue;
         }
 
-        if (line.find("[°ø°İ] È½¼ö: ") != std::string::npos)
+        if (line.find("[ê³µê²©] íšŸìˆ˜: ") != std::string::npos)
             count_attack_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[ÇÇ°İ] È½¼ö: ") != std::string::npos)
+        else if (line.find("[í”¼ê²©] íšŸìˆ˜: ") != std::string::npos)
             count_damage_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[Á¶¿ì] È½¼ö: ") != std::string::npos)
+        else if (line.find("[ì¡°ìš°] íšŸìˆ˜: ") != std::string::npos)
             count_encounter_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[ÀÌµ¿] È½¼ö: ") != std::string::npos)
+        else if (line.find("[ì´ë™] íšŸìˆ˜: ") != std::string::npos)
             count_move_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[ÈŞ½Ä] È½¼ö: ") != std::string::npos)
+        else if (line.find("[íœ´ì‹] íšŸìˆ˜: ") != std::string::npos)
             count_rest_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[º¸»ó] È¹µæ: ") != std::string::npos)
+        else if (line.find("[ë³´ìƒ] íšë“: ") != std::string::npos)
             count_reward_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[µµ¸Á] È½¼ö: ") != std::string::npos)
+        else if (line.find("[ë„ë§] íšŸìˆ˜: ") != std::string::npos)
             count_escape_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[»ç¸Á] È½¼ö: ") != std::string::npos)
+        else if (line.find("[ì‚¬ë§] íšŸìˆ˜: ") != std::string::npos)
             count_death_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[»ç¿ë] È½¼ö: ") != std::string::npos)
+        else if (line.find("[ì‚¬ìš©] íšŸìˆ˜: ") != std::string::npos)
             count_use_ = std::stoi(line.substr(line.find(": ") + 2));
 
-        // Å³º¸µå ÀĞ±â
-        else if (line.find("=== Å³ º¸µå ===") != std::string::npos)
+        // í‚¬ë³´ë“œ ì½ê¸°
+        else if (line.find("=== í‚¬ ë³´ë“œ ===") != std::string::npos)
             is_log_section = false;
-        else if (line.find("=== ÀüÅõ ·Î±× ===") != std::string::npos)
+        else if (line.find("=== ì „íˆ¬ ë¡œê·¸ ===") != std::string::npos)
             is_log_section = true;
         else if (line.find(" x") != std::string::npos && !is_log_section)
         {
@@ -175,7 +175,7 @@ void LogManager::LoadLogFromFile(const std::string& filename, const std::string&
             kill_counts_[name] = count;
         }
 
-        // ÀüÅõ ·Î±× ÀĞ±â
+        // ì „íˆ¬ ë¡œê·¸ ì½ê¸°
         else if (is_log_section && !line.empty())
         {
             all_logs_.push_back(line);
@@ -186,7 +186,7 @@ void LogManager::LoadLogFromFile(const std::string& filename, const std::string&
 
 void LogManager::ResetStats()
 {
-    //Åë°è Ä«¿îÅÍ ÃÊ±âÈ­
+    //í†µê³„ ì¹´ìš´í„° ì´ˆê¸°í™”
     count_attack_ = 0;
     count_damage_ = 0;
     count_encounter_ = 0;
@@ -197,10 +197,10 @@ void LogManager::ResetStats()
     count_death_ = 0;
     count_use_ = 0;
 
-    // Å³º¸µå ÃÊ±âÈ­
+    // í‚¬ë³´ë“œ ì´ˆê¸°í™”
     kill_counts_.clear();
 
-    // ÀüÃ¼ ÀüÅõ ·Î±×(ÆÄÀÏ ÀúÀå¿ë) ÃÊ±âÈ­
+    // ì „ì²´ ì „íˆ¬ ë¡œê·¸(íŒŒì¼ ì €ì¥ìš©) ì´ˆê¸°í™”
     all_logs_.clear();
 
 }
@@ -214,20 +214,20 @@ std::vector<std::string> LogManager::GetStatsSummary() const
 {
     std::vector<std::string> summary;
 
-    // ÃÑ Ã³Ä¡ È½¼ö °è»ê
+    // ì´ ì²˜ì¹˜ íšŸìˆ˜ ê³„ì‚°
     int total_kills = 0;
     for (const auto& k : kill_counts_) {
         total_kills += k.second;
     }
 
-    summary.push_back("ÃÑ ÀÌµ¿ È½¼ö     : " + std::to_string(count_move_));
-    summary.push_back("¸ó½ºÅÍ Á¶¿ì È½¼ö : " + std::to_string(count_encounter_));
-    summary.push_back("ÃÑ °ø°İ È½¼ö     : " + std::to_string(count_attack_));
-    summary.push_back("ÃÑ ÇÇ°İ È½¼ö     : " + std::to_string(count_damage_));
-    summary.push_back("¸ó½ºÅÍ Ã³Ä¡ È½¼ö : " + std::to_string(total_kills));
-    summary.push_back("¾ÆÀÌÅÛ »ç¿ë È½¼ö : " + std::to_string(count_use_));
-    summary.push_back("ÃÑ ÈŞ½Ä È½¼ö     : " + std::to_string(count_rest_));
-    summary.push_back("ÃÑ µµ¸Á È½¼ö     : " + std::to_string(count_escape_));
+    summary.push_back("ì´ ì´ë™ íšŸìˆ˜     : " + std::to_string(count_move_));
+    summary.push_back("ëª¬ìŠ¤í„° ì¡°ìš° íšŸìˆ˜ : " + std::to_string(count_encounter_));
+    summary.push_back("ì´ ê³µê²© íšŸìˆ˜     : " + std::to_string(count_attack_));
+    summary.push_back("ì´ í”¼ê²© íšŸìˆ˜     : " + std::to_string(count_damage_));
+    summary.push_back("ëª¬ìŠ¤í„° ì²˜ì¹˜ íšŸìˆ˜ : " + std::to_string(total_kills));
+    summary.push_back("ì•„ì´í…œ ì‚¬ìš© íšŸìˆ˜ : " + std::to_string(count_use_));
+    summary.push_back("ì´ íœ´ì‹ íšŸìˆ˜     : " + std::to_string(count_rest_));
+    summary.push_back("ì´ ë„ë§ íšŸìˆ˜     : " + std::to_string(count_escape_));
 
     return summary;
 }

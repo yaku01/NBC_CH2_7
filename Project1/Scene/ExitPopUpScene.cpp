@@ -1,4 +1,4 @@
-#include "ExitPopUpScene.h"
+ï»¿#include "ExitPopUpScene.h"
 #include "Core/GameManager.h"
 #include "UI/UIManager.h"
 #include "Core/RenderSystem.h"
@@ -11,9 +11,9 @@ ExitPopUpScene::ExitPopUpScene() : BaseScene()
 
 void ExitPopUpScene::Init()
 {
-	// ÄÜ¼Ö »çÀÌÁî ±¸ÇÏ±â
+	// ì½˜ì†” ì‚¬ì´ì¦ˆ êµ¬í•˜ê¸°
 	int w = RenderSystem::GetInstance().GetScreenWidth();
-	int h = RenderSystem::GetInstance().GetScreenHeight();
+	int h = RenderSystem::GetInstance().GetScreenHeight(); 
 
 	int x = static_cast<int>(w * 0.15);
 	int y = static_cast<int>(h * 0.15);

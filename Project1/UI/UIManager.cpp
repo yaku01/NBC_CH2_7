@@ -1,4 +1,4 @@
-#include "UIManager.h"
+ï»¿#include "UIManager.h"
 #include "UI/GameUI.h"
 #include "Core/RenderSystem.h"
 #include "Characters/Character.h"
@@ -6,40 +6,40 @@
 
 UIManager::UIManager()
 {
-    // ÄÜ¼Ö »çÀÌÁî ±¸ÇÏ±â
+    // ì½˜ì†” ì‚¬ì´ì¦ˆ êµ¬í•˜ê¸°
     int w = RenderSystem::GetInstance().GetScreenWidth();
     int h = RenderSystem::GetInstance().GetScreenHeight();
 
-    // ¸Ş´º ÁÂÇÏ´Ü ½ÃÀÛ ±æÀÌ 0.7, ³ôÀÌ 0.2
+    // ë©”ë‰´ ì¢Œí•˜ë‹¨ ì‹œì‘ ê¸¸ì´ 0.7, ë†’ì´ 0.2
     int menu_width = static_cast<int>(w * 0.7f);
     int menu_height = static_cast<int>(h * 0.2f);
     int menu_x = 0;
     int menu_y = h - menu_height;
     uis.push_back(std::make_unique<BorderUI>(menu_x, menu_y, menu_width, menu_height));
 
-    // ¿ìÃø ¿µ¿ª º¯¼ö
+    // ìš°ì¸¡ ì˜ì—­ ë³€ìˆ˜
     int right_area_width = w - menu_width - 1;
     int right_area_x = menu_width;
 
 
-    // ÀÎÆ÷
+    // ì¸í¬
     int info_width = right_area_width / 2;
     int info_height = static_cast<int>(h * 0.2f);
     int info_y = 0;
     uis.push_back(std::make_unique<CharacterInfoUI>(right_area_x, info_y, right_area_width, info_height));
     
 
-    // ·Î±×  ³ôÀÌ 0.45
+    // ë¡œê·¸  ë†’ì´ 0.45
     int log_height = static_cast<int>(h * 0.45f);
     int log_y = h - log_height;
     uis.push_back(std::make_unique<LogUI>(right_area_x, log_y, right_area_width, log_height));
 
 
-    // ¾ÆÀÌÅÛ
+    // ì•„ì´í…œ
     int item_height = h - info_height - log_height;
     uis.push_back(std::make_unique<InventoryUI>(right_area_x, info_height, right_area_width, item_height));
 
-    // Å³º¸µå UI Ãß°¡
+    // í‚¬ë³´ë“œ UI ì¶”ê°€ 
     int kill_width = static_cast<int>(w * 0.15f);
     int kill_height = static_cast<int>(h * 0.5f);
     int kill_x = menu_width - kill_width;
@@ -85,7 +85,7 @@ void UIManager::ClearAll(const std::vector<UIType>& ignores)
 
 void UIManager::Render()
 {
-    // ·Î±×ui, ¸Ş¼¼Áöui µî Àü¿ª ui ±×¸®±â
+    // ë¡œê·¸ui, ë©”ì„¸ì§€ui ë“± ì „ì—­ ui ê·¸ë¦¬ê¸°
     for (const auto& ui : uis) {
         if (ui->IsVisible()) {
             ui->Render();

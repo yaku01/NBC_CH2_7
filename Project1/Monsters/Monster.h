@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"DropTable.h"
 #include<string>
 #include<vector>
@@ -21,7 +21,7 @@ public:
     bool IsDead() const { return health <= 0; };
     bool IsActive() const { return is_active; }
 
-    //getter ÇÔ¼ö
+    //getter í•¨ìˆ˜
 
     string GetName() const {
         return name;
@@ -39,11 +39,11 @@ public:
         return level;
     }
 
-    int GetMaxHealth() const {
+    int GetMaxHealth() const { 
         return maxhealth;
     }
 
-    // setter ÇÔ¼ö
+    // setter í•¨ìˆ˜
 
     void SetActive(bool active) {
         this->is_active = active;

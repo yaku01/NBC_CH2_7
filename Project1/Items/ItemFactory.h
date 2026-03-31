@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Item.h"
 
 #include <memory>
@@ -8,13 +8,13 @@
 class ItemFactory
 {
 private:
-	// ¾ÆÀÌÅÛ ID¿Í »ı¼º ÇÔ¼ö¸¦ ¸ÅÇÎÇÏ´Â ¸Ê
+	// ì•„ì´í…œ IDì™€ ìƒì„± í•¨ìˆ˜ë¥¼ ë§¤í•‘í•˜ëŠ” ë§µ
 	static std::map<ItemID, std::function<std::unique_ptr<IItem>()>> item_creators;
 
 public:
-	// ¾ÆÀÌÅÛ »ı¼º ÇÔ¼ö¸¦ µî·Ï
+	// ì•„ì´í…œ ìƒì„± í•¨ìˆ˜ë¥¼ ë“±ë¡ 
 	static void Initialize();
 
-	// ¾ÆÀÌÅÛ »ı¼º ÇÔ¼ö
+	// ì•„ì´í…œ ìƒì„± í•¨ìˆ˜
 	static std::unique_ptr<IItem> CreateItem(ItemID id);
 };

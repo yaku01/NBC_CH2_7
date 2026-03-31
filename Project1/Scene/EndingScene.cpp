@@ -1,4 +1,4 @@
-#include "EndingScene.h"
+ï»¿#include "EndingScene.h"
 #include "UI/GameUI.h"
 #include "UI/UIManager.h"
 #include "Core/RenderSystem.h"
@@ -21,10 +21,10 @@ void EndingScene::Init()
 	ending_ui = std::make_unique<BorderUI>(x, y, w, h);
 
 	SetCenteredString("================================");
-	SetCenteredString("       [ °Ô ÀÓ Å¬ ¸® ¾î ]       ");
+	SetCenteredString("       [ ê²Œ ì„ í´ ë¦¬ ì–´ ]       ");
 	SetCenteredString("================================");
 	SetCenteredString("");
-	SetCenteredString("< ÇÃ·¹ÀÌ  ±â·Ï >");
+	SetCenteredString("< í”Œë ˆì´  ê¸°ë¡ >");
 
 
 	records = LogManager::GetInstance().GetStatsSummary();
@@ -37,7 +37,7 @@ void EndingScene::ProcessEvent(const Event& e)
 		return;
 	}
 
-	// ·Î±× ³»¿ë Ãâ·ÂÁßÀÌ¸é
+	// ë¡œê·¸ ë‚´ìš© ì¶œë ¥ì¤‘ì´ë©´
 	if (!is_finished) {
 		is_finished = true;
 
@@ -46,7 +46,7 @@ void EndingScene::ProcessEvent(const Event& e)
 		}
 		current_idx = records.size();
 	}
-	// Ãâ·ÂÀÌ ³¡³µ´Ù¸é
+	// ì¶œë ¥ì´ ëë‚¬ë‹¤ë©´
 	else {
 		Event ev{};
 		ev.type = EventType::Quit;
@@ -66,7 +66,7 @@ void EndingScene::Update(float delta_time)
 				++current_idx;
 			}
 			else {
-				is_finished = true;
+				is_finished = true; 
 			}
 		}
 	}
@@ -102,7 +102,7 @@ bool EndingScene::IsExitable() const
 }
 
 
-// private ÇÔ¼ö
+// private í•¨ìˆ˜
 void EndingScene::SetCenteredString(const std::string& text)
 {
 	if (!ending_ui) {

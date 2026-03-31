@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Item.h"
 #include <string>
 #include <unordered_map>
@@ -10,7 +10,7 @@ struct ItemData {
 };
 
 class ItemDataBase
-{
+{ 
 public:
 	static void Initialize();
 	static const ItemData& GetData(ItemID id);

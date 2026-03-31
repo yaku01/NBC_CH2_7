@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Item.h"
 #include "Common/common.h"
 #include <vector>
@@ -30,7 +30,7 @@ public:
                 droppedItems.push_back(item.item_id);
             }
         }
-
+         
         return droppedItems;
     }
 };

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Item.h"
 #include "EquippableItem.h"
 
@@ -15,4 +15,4 @@ public:
 	void Use(Character& target) override;
 	void Equip(Character& target) override;
 	void Unequip(Character& target) override;
-};
+}; 

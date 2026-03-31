@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <string_view>
 #include <map>
@@ -37,8 +37,8 @@ private:
 	int count_death_ = 0;
 	int count_use_ = 0;
 
-	std::map<std::string, int> kill_counts_;   // ¸ó½ºÅÍ Ã³Ä¡ ¼ö µ¥ÀÌÅÍ
-	std::vector<std::string> all_logs_;     // ÀüÃ¼ ÅØ½ºÆ® ·Î±× µ¥ÀÌÅÍ
+	std::map<std::string, int> kill_counts_;   // ëª¬ìŠ¤í„° ì²˜ì¹˜ ìˆ˜ ë°ì´í„°
+	std::vector<std::string> all_logs_;     // ì „ì²´ í…ìŠ¤íŠ¸ ë¡œê·¸ ë°ì´í„°
 
 	LogManager() = default;
 	~LogManager() = default;

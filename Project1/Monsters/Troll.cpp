@@ -1,4 +1,4 @@
-#include "Troll.h"
+﻿#include "Troll.h"
 #include<iostream>
 using namespace std;
 
@@ -21,7 +21,7 @@ void Troll::TakeDamage(int damage) {
 
 }
 
-string Troll::GetAsciiArtPath() const
+string Troll::GetAsciiArtPath() const 
 {
     return "Resource/Monsters/Troll.txt";
 }

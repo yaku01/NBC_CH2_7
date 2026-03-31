@@ -1,4 +1,4 @@
-#include "Goblin.h"
+﻿#include "Goblin.h"
 #include<iostream>
 #include<vector>
 
@@ -20,6 +20,6 @@ void Goblin::TakeDamage(int damage) {
 }
 
 string Goblin::GetAsciiArtPath() const
-{
+{ 
     return "Resource/Monsters/Goblin.txt";
 }

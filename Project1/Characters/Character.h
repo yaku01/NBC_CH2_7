@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <vector>
 #include <memory>
@@ -17,15 +17,15 @@ private:
 	int bonus_attack;
 	int experience;
 	int gold;
-	std::vector<std::unique_ptr<IItem>> inventory;
+	std::vector<std::unique_ptr<IItem>> inventory; 
 	std::unique_ptr<IItem> equipped_weapon;
 	std::unique_ptr<IItem> equipped_armor;
 
-	// »ı¼ºÀÚ´Â privateÀ¸·Î ¼±¾ğÇÏ¿© ¿ÜºÎ¿¡¼­ Á÷Á¢ ÀÎ½ºÅÏ½º¸¦ »ı¼ºÇÏÁö ¸øÇÏµµ·Ï ÇÔ
+	// ìƒì„±ìëŠ” privateìœ¼ë¡œ ì„ ì–¸í•˜ì—¬ ì™¸ë¶€ì—ì„œ ì§ì ‘ ì¸ìŠ¤í„´ìŠ¤ë¥¼ ìƒì„±í•˜ì§€ ëª»í•˜ë„ë¡ í•¨
 	Character(std::string name);
 
 public:
-	// ½Ì±ÛÅæ ÆĞÅÏÀ» À§ÇØ º¹»ç »ı¼ºÀÚ¿Í ´ëÀÔ ¿¬»êÀÚ »èÁ¦
+	// ì‹±ê¸€í†¤ íŒ¨í„´ì„ ìœ„í•´ ë³µì‚¬ ìƒì„±ìì™€ ëŒ€ì… ì—°ì‚°ì ì‚­ì œ
 	Character(const Character&) = delete;
 	Character& operator=(const Character&) = delete;
 	static Character& GetInstance(const std::string& name = "Player");

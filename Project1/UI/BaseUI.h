@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <deque>
 #include <string>
 
@@ -10,7 +10,7 @@ public:
 	BaseUI(int x, int y, int w, int h);
 	BaseUI(int x, int y);
 	virtual ~BaseUI() = default;
-
+     
 	virtual void AddContents(std::string_view msg);
 	void LoadAsciiArt(const std::string& path);
 	void Clear();
