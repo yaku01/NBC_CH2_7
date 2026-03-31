@@ -3,7 +3,7 @@
 #include "BaseUI.h"
 #include <vector>
 #include <memory>
-#include <fstream> //내가 추가한 부분. ofstream를 쓰기 위해
+#include <fstream>
 
 class UIManager 
 {
