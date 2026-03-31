@@ -3,7 +3,7 @@
 #include "Common/common.h"
 #include "Characters/Character.h"
 #include "UI/UIManager.h"
-
+#include "UI/GameUI.h"
 
 void TownScene::Init()
 {
@@ -16,6 +16,10 @@ void TownScene::Init()
 
 void TownScene::SetMenu()
 {
+    auto bg = std::make_unique<AsciiUI>(0, 0);
+    bg->LoadAsciiArt("Resource/village.txt");
+    scene_uis.push_back(std::move(bg));
+
     UIManager::GetInstance().ClearContent(UIType::Menu); // 메뉴 비우기
 
     std::string menu_text = "1. 여관에서 휴식(" + std::to_string(cost) + "G)   2. 상점 진입   3. 던전 진입";
@@ -46,6 +50,10 @@ void TownScene::ProcessNormalEvent(const Event& e)
     case '3':
         UIManager::GetInstance().AddContent(UIType::Log, "[이동] 어두운 던전으로 향합니다...");
         ChangeScene(SceneType::Dungeon);
+        break;
+
+    case '.':
+        Character::GetInstance().GainExp(100);
         break;
 
     default:

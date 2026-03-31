@@ -6,6 +6,7 @@
 #include "ExitPopUpScene.h"
 #include "ShopScene.h"
 #include "EncounterScene.h"
+#include "EndingScene.h"
 #include <functional>
 #include <unordered_map>
 
@@ -20,7 +21,8 @@ std::unique_ptr<BaseScene> SceneFactory::CreateScene(SceneType type)
 		{ SceneType::Battle,	[]() { return std::make_unique<BattleScene>(); }},
 		{ SceneType::Exit,		[]() { return std::make_unique<ExitPopUpScene>(); }},
 		{ SceneType::Shop,		[]() { return std::make_unique<ShopScene>(); }},
-		{ SceneType::Encounter,	[]() { return std::make_unique<EncounterScene>(); }}
+		{ SceneType::Encounter,	[]() { return std::make_unique<EncounterScene>(); }},
+		{ SceneType::Ending,	[]() { return std::make_unique<EndingScene>(); }}
 	};
 
 	auto it = scene_creator.find(type);

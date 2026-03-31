@@ -3,6 +3,7 @@
 #include "Slime.h"
 #include "Troll.h"
 #include "Goblin.h"
+#include "BossMonster.h"
 #include <unordered_map>
 #include <functional>
 
@@ -14,7 +15,8 @@ std::unique_ptr<Monster> MonsterFactory::CreateMonster(MonsterType type, int lev
 		{ MonsterType::Slime,	[](int level) { return std::make_unique<Slime>(level); }},
 		{ MonsterType::Troll,	[](int level) { return std::make_unique<Troll>(level); }},
 		{ MonsterType::Goblin,	[](int level) { return std::make_unique<Goblin>(level); }},
-		{ MonsterType::Orc,		[](int level) { return std::make_unique<Orc>(level); }}
+		{ MonsterType::Orc,		[](int level) { return std::make_unique<Orc>(level); }},
+		{ MonsterType::Boss,	[](int level) { return std::make_unique<BossMonster>(level); }}
 	};
 
 	auto it = monster_creator.find(type);
@@ -26,6 +28,6 @@ std::unique_ptr<Monster> MonsterFactory::CreateMonster(MonsterType type, int lev
 
 std::unique_ptr<Monster> MonsterFactory::RandomCreateMonster(int level)
 {
-	int type = RandomUtil::GetRange(0, static_cast<int>(MonsterType::None) - 1);
+	int type = RandomUtil::GetRange(0, static_cast<int>(MonsterType::Boss) - 1);
 	return CreateMonster(static_cast<MonsterType>(type), level);
 }

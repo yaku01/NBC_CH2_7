@@ -9,11 +9,15 @@
 using namespace std;
 
 void SaveLoadManager::Save(Character& player) {
+
     int saved_health = player.GetHealth();
     auto weapon = player.UnequipWeapon();
     auto armor = player.UnequipArmor();
 
-    ifstream infile("save.txt");
+
+    // 1. 기존 파일 읽기
+    ifstream infile("Save/save.txt");
+
     stringstream buffer;
     string line;
 
@@ -38,7 +42,10 @@ void SaveLoadManager::Save(Character& player) {
     }
     infile.close();
 
-    ofstream outfile("save.txt");
+
+    // 2. 파일 다시 열고 기존 내용 + 새 캐릭터 블록 저장
+    ofstream outfile("Save/save.txt");
+
     outfile << buffer.str();
 
 
@@ -82,7 +89,8 @@ void SaveLoadManager::Save(Character& player) {
 }
 
 bool SaveLoadManager::Load(Character& player, const std::string& targetName) {
-    ifstream file("save.txt");
+
+    std::ifstream file("Save/save.txt");
     if (!file.is_open()) return false;
 
     string line;
@@ -93,13 +101,15 @@ bool SaveLoadManager::Load(Character& player, const std::string& targetName) {
             string name;
             getline(file, name);
 
+
             // 다른 캐릭터면 스킵
             if (name != targetName) {
                 for (int i = 0; i < 4; ++i) getline(file, line);
                 continue;
             }
 
-            // ⭐ 초기화
+            // * 찾았으면 초기화
+
             player.Reset();
             player.SetName(name);
 
@@ -138,7 +148,7 @@ bool SaveLoadManager::Load(Character& player, const std::string& targetName) {
                 player.AddItem(std::move(item));
             }
 
-            // ⭐ 장비
+            // * 장비
             int weaponID, armorID;
             file >> weaponID;
             file >> armorID;

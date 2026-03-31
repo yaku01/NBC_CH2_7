@@ -18,8 +18,8 @@ public:
 	void ClearBuffer(); // 버퍼 지우기
 	void Draw();   // 출력 & 버퍼교체
 	void PrintText(int x, int y, std::string_view sv);
-	int GetScreenWidth();
-	int GetScreenHeight();
+	int GetScreenWidth() const;
+	int GetScreenHeight() const;
 
 private:
 	// 더블 버퍼링 관련 변수
@@ -29,5 +29,8 @@ private:
 	// 외부에서 new 못하도록 차단
 	RenderSystem();
 	~RenderSystem();
+
+	void SetConsoleSize(HANDLE handle, int width, int height);
+	void SetConsoleFont(int width, int height);
 };
 

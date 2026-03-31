@@ -133,6 +133,7 @@ void ItemUsableScene::ProcessItemConfirm(const  Event& e)
 	switch (e.key_code) {
 	case 'y':
 	case 'Y':
+	case '\r':
 		Character::GetInstance().UseItem(item_index);
 		UIManager::GetInstance().AddContent(UIType::Log, "[사용] 아이템을 사용했습니다.");
 

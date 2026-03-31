@@ -214,6 +214,7 @@ void ShopScene::ProcessItemConfirm(const Event& e)
 	switch (e.key_code) {
 	case 'y':
 	case 'Y':
+	case '\r':
 		TradeItem();
 		[[fallthrough]];
 

@@ -181,17 +181,21 @@ void GameManager::ProcessInput()
 	if (_kbhit()) {
 		int key = _getch();
 
-		// 27 = ESC 키, 누를 경우 게임종료 팝업 뜨도록
+		// 27 = ESC 키, 누를 경우 게임종료 팝업
 		if (key == 27) {
-			// 이미 종료팝업 떠있다면 넘기기
-			if (!scene_stack.empty() && dynamic_cast<ExitPopUpScene*>(scene_stack.back().get())) {
-			}
-			else {	// 종료팝업 없으면 팝업씬 push, 함수 빠져나가기
-				Event ev{};
-				ev.type = EventType::PushScene;
-				ev.next_scene = SceneType::Exit;
-				event_queue.push(ev);
-				return;
+			// Exit 기능이 있는 씬이면 
+			if (!scene_stack.empty() && scene_stack.back()->IsExitable()) {
+
+				// 이미 종료팝업 떠있다면 넘기기
+				if (dynamic_cast<ExitPopUpScene*>(scene_stack.back().get())) {
+				}
+				else {	// 종료팝업 없으면 팝업씬 push
+					Event ev{};
+					ev.type = EventType::PushScene;
+					ev.next_scene = SceneType::Exit;
+					event_queue.push(ev);
+					return;
+				}
 			}
 		}
 

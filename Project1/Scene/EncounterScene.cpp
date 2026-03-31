@@ -28,7 +28,7 @@ void EncounterScene::Update(float delta_time)
 	ui->Update(delta_time);
 
 	if (current_time >= max_time) {
-		ReplaceScene(next_scene);
+		ReplaceScene(next_scene, is_boss_battle);
 	}
 }
 
@@ -43,8 +43,13 @@ void EncounterScene::Release()
 
 void EncounterScene::SetSceneData(const std::string& data)
 {
-	std::stringstream ss(data);
-	int next{};
-	ss >> next >> max_time;
-	next_scene = static_cast<SceneType>(next);
+	// 기본 연출 2초
+	max_time = 2.f;
+
+	if (!data.empty()) {
+		std::stringstream ss(data);
+		int next{};
+		ss >> next >> max_time >> is_boss_battle;
+		next_scene = static_cast<SceneType>(next);
+	}
 }

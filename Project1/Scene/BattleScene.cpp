@@ -6,6 +6,9 @@
 #include "Characters/Character.h"
 #include "Monster.h"
 #include "MonsterFactory.h"
+#include "Core/DungeonMapState.h"
+#include "Monsters/Monster.h"
+#include "Monsters/MonsterFactory.h"
 
 constexpr int MIN_MONSTER_COUNT = 1;
 constexpr int MAX_MONSTER_COUNT = 3;
@@ -18,9 +21,15 @@ void BattleScene::Init()
 {
 	battle_manager = GameManager::GetInstance().GetBattleManager();
 
-	int monster_count = RandomUtil::GetRange(MIN_MONSTER_COUNT, MAX_MONSTER_COUNT);
-	for (int i = 0; i < monster_count; ++i) {
-		monsters.push_back(MonsterFactory::RandomCreateMonster(Character::GetInstance().GetLevel()));
+	int monster_count = 1;
+	if (is_boss_battle) {
+		monsters.push_back(MonsterFactory::CreateMonster(MonsterType::Boss, Character::GetInstance().GetLevel()));
+	}
+	else {
+		monster_count = RandomUtil::GetRange(MIN_MONSTER_COUNT, MAX_MONSTER_COUNT);
+		for (int i = 0; i < monster_count; ++i) {
+			monsters.push_back(MonsterFactory::RandomCreateMonster(Character::GetInstance().GetLevel()));
+		}
 	}
 
 	if (!battle_manager || monsters.empty()) {
@@ -32,29 +41,46 @@ void BattleScene::Init()
 	current_state = BattleState::Act;
 
 	// -----------
-	//¹è°æ
+	//ë°°ê²½
 	auto bg = std::make_unique<AsciiUI>(0, 0);
 	bg->LoadAsciiArt("Resource/Battle_Background.txt");
 	scene_uis.push_back(std::move(bg));
 
 
+	int center = 20;
 	// ----------------
-	// ÇÃ·¹ÀÌ¾î ¾Æ½ºÅ° ¾ÆÆ®  x : 5, y : 30
-	player_ui = std::make_unique<CharacterUI>(5, 20);
+	// í”Œë ˆì´ì–´ ì•„ìŠ¤í‚¤ ì•„íŠ¸  x : 5, y : 20
+	player_ui = std::make_unique<CharacterUI>(5, center);
 	player_ui->LoadAsciiArt("Resource/Player.txt");    
 	player_ui->SetTarget(&Character::GetInstance()); 
 
-	// ¸ó½ºÅÍ ¾Æ½ºÅ° ¾ÆÆ®  x : 45, y : 10 + (diff)
-	int monster_y = 10;
-	int diff = 10;
+	// ëª¬ìŠ¤í„° ì•„ìŠ¤í‚¤ ì•„íŠ¸
+	int diff = 15;
+	std::vector<int> position;
+	position.reserve(MAX_MONSTER_COUNT);
+	
+	// ëª¬ìŠ¤í„° ë§ˆë¦¬ìˆ˜ ë³„ ë°°ì¹˜
+	switch (monster_count) {
+	case 1:
+		position = { center };
+		break;
+
+	case 2:
+		position = { center - diff / 2 - 1, center + diff / 2 + 1 };
+		break;
+
+	case 3:
+		position = { center - diff, center, center + diff };
+		break;
+	}
+
+
 	for (int i = 0; i < monster_count; ++i) {
-		auto monster_ui = std::make_unique<MonsterUI>(45, monster_y);
+		auto monster_ui = std::make_unique<MonsterUI>(45, position[i]);
 		monster_ui->LoadAsciiArt(monsters[i]->GetAsciiArtPath());
 		monster_ui->SetTarget(monsters[i].get());
 		monster_uis.push_back(std::move(monster_ui));
-		monster_y += diff;
 	}
-
 	// ----------------
 
 	SetMenu();
@@ -66,8 +92,8 @@ void BattleScene::SetMenu()
 
 	switch (current_state) {
 	case BattleState::Act:
-		UIManager::GetInstance().AddContent(UIType::Menu, "1. °ø°İÇÑ´Ù   0. µµ¸ÁÄ£´Ù");
-		UIManager::GetInstance().AddContent(UIType::Menu, "ÀüÅõ Çàµ¿À» ¼±ÅÃÇÏ¼¼¿ä: ");
+		UIManager::GetInstance().AddContent(UIType::Menu, "1. ê³µê²©í•œë‹¤   0. ë„ë§ì¹œë‹¤");
+		UIManager::GetInstance().AddContent(UIType::Menu, "ì „íˆ¬ í–‰ë™ì„ ì„ íƒí•˜ì„¸ìš”: ");
 		break;
 
 	case BattleState::TargetEnemy:
@@ -78,15 +104,15 @@ void BattleScene::SetMenu()
 				msg += std::to_string(i + 1) + ". " + std::string(monsters[i]->GetName()) + "  ";
 			}
 		}
-		msg += "0. Ãë¼Ò";
+		msg += "0. ì·¨ì†Œ";
 
 		UIManager::GetInstance().AddContent(UIType::Menu, msg);
-		UIManager::GetInstance().AddContent(UIType::Menu, "°ø°İÇÒ ´ë»óÀ» ¼±ÅÃÇÏ¼¼¿ä: ");
+		UIManager::GetInstance().AddContent(UIType::Menu, "ê³µê²©í•  ëŒ€ìƒì„ ì„ íƒí•˜ì„¸ìš”: ");
 		break;
 	}
 
 	case BattleState::UseItem:
-		// ¾ÆÀÌÅÛ »ç¿ë µî ¾Æ±º ¼±ÅÃ
+		// ì•„ì´í…œ ì‚¬ìš© ë“± ì•„êµ° ì„ íƒ
 		break;
 	}
 }
@@ -119,15 +145,15 @@ void BattleScene::Update(float delta_time)
 
 void BattleScene::Render()
 {
-	// ¹è°æ
+	// ë°°ê²½
 	BaseScene::Render();
 
-	// ÇÃ·¹ÀÌ¾î
+	// í”Œë ˆì´ì–´
 	if (player_ui) {
 		player_ui->Render();
 	}
 
-	// ¸ó½ºÅÍ
+	// ëª¬ìŠ¤í„°
 	for (size_t i = 0; i < monsters.size(); ++i) {
 		if (!monsters[i]->IsDead()) {
 			monster_uis[i]->Render();
@@ -144,7 +170,15 @@ void BattleScene::Release()
 	Character::GetInstance().ClearBuffs();
 }
 
-// private ÇÔ¼ö
+void BattleScene::SetSceneData(const std::string& data)
+{
+	if (!data.empty()) {
+		is_boss_battle = (std::stoi(data) == 1);	// 1ì´ë©´ ë³´ìŠ¤ì „
+	}
+}
+
+
+// private í•¨ìˆ˜
 void BattleScene::ProcessActPhase(int key_code)
 {
 	switch (key_code) {
@@ -153,8 +187,9 @@ void BattleScene::ProcessActPhase(int key_code)
 		break;
 
 	case '0':
-		UIManager::GetInstance().AddContent(UIType::Log, "[µµ¸Á] ¹«»çÈ÷ µµ¸ÁÃÆ½À´Ï´Ù.");
-		PopScene(); // µµ¸Á -> ÀÌÀü ¾ÀÀ¸·Î º¹±Í!
+		UIManager::GetInstance().AddContent(UIType::Log, "[ë„ë§] ë¬´ì‚¬íˆ ë„ë§ì³¤ìŠµë‹ˆë‹¤.");
+		DungeonMapState::SetRandomBattleMap();
+		ChangeScene(SceneType::Dungeon);
 		return;
 
 	default:
@@ -172,10 +207,10 @@ void BattleScene::ProcessTargetPhase(int key_code)
 	int idx = key_code - '1';
 
 	if (idx >= 0 && idx < monsters.size() && !monsters[idx]->IsDead()) {
-		// ÇÃ·¹ÀÌ¾î °ø°İ
+		// í”Œë ˆì´ì–´ ê³µê²©
 		battle_manager->PlayerAttack(static_cast<size_t>(idx));
 
-		// ¸ó½ºÅÍ °ø°İ
+		// ëª¬ìŠ¤í„° ê³µê²©
 		if (!battle_manager->IsBattleOver()) {
 			battle_manager->MonstersAttack();
 		}
@@ -184,17 +219,18 @@ void BattleScene::ProcessTargetPhase(int key_code)
 			monster_uis[idx]->SetVisible(false);
 		}
 
-		// ÀüÅõ Á¾·á ÆÇ´Ü
+		// ì „íˆ¬ ì¢…ë£Œ íŒë‹¨
 		if (battle_manager->IsBattleOver()) {
-			// ÇÃ·¹ÀÌ¾î »ç¸ÁÀ¸·Î Á¾·á¶ó¸é
+			// í”Œë ˆì´ì–´ ì‚¬ë§ìœ¼ë¡œ ì¢…ë£Œë¼ë©´
 			if (Character::GetInstance().IsDead()) {
-				UIManager::GetInstance().AddContent(UIType::Log, "°ÔÀÓ ¿À¹ö! Å¸ÀÌÆ²·Î µ¹¾Æ°©´Ï´Ù...");
+				UIManager::GetInstance().AddContent(UIType::Log, "ê²Œì„ ì˜¤ë²„! íƒ€ì´í‹€ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤...");
 				ChangeScene(SceneType::Title);
 				return;
 			}
-			else {	// ÇÃ·¹ÀÌ¾î ½Â¸®¶ó¸é
+			else {	// í”Œë ˆì´ì–´ ìŠ¹ë¦¬ë¼ë©´
 				battle_manager->DistributedReward();
-				PopScene();
+				DungeonMapState::SetRandomBattleMap();
+				ChangeScene(SceneType::Dungeon);
 				return;
 			}
 		}

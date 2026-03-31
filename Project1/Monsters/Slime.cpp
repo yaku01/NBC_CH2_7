@@ -23,5 +23,5 @@ void Slime::TakeDamage(int damage) {
 
 string Slime::GetAsciiArtPath() const
 {
-    return "Resource/Slime.txt";
+    return "Resource/Monsters/Slime.txt";
 }

@@ -21,5 +21,5 @@ void Goblin::TakeDamage(int damage) {
 
 string Goblin::GetAsciiArtPath() const
 {
-    return "Resource/Goblin.txt";
+    return "Resource/Monsters/Goblin.txt";
 }

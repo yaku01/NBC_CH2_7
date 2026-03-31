@@ -20,6 +20,7 @@ public:
 private:
 	float current_time = 0.f;
 	float max_time = 0.f;
+	int is_boss_battle = 0;
 	std::unique_ptr<UpdateUI> ui;
 	SceneType next_scene = SceneType::None;
 };

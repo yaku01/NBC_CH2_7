@@ -4,15 +4,17 @@
 #include "Characters/Character.h"
 #include "UI/UIManager.h"
 #include "UI/GameUI.h"
-#include "SaveLoadManager.h"
+#include "Core/DungeonMapState.h"
+#include "Core/SaveLoadManager.h"
+
 constexpr int MAX_NAME_LENGTH = 10;
 
 void TitleScene::Init()
 {
     // -----------
-    //¹è°æ
+    //ë°°ê²½
     auto bg = std::make_unique<AsciiUI>(0, 0);
-    bg->LoadAsciiArt("bg.txt");
+    bg->LoadAsciiArt("Resource/title.txt");
     scene_uis.push_back(std::move(bg));
 
     UIManager::GetInstance().SetAllVisible(false);
@@ -24,7 +26,7 @@ void TitleScene::Init()
 void TitleScene::SetMenu()
 {
     UIManager::GetInstance().ClearContent(UIType::Menu);
-    UIManager::GetInstance().AddContent(UIType::Menu, "ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä : " + name);
+    UIManager::GetInstance().AddContent(UIType::Menu, "ì´ë¦„ì„ ìž…ë ¥í•˜ì„¸ìš” : " + name);
 }
 
 void TitleScene::ProcessEvent(const Event& e)
@@ -35,16 +37,20 @@ void TitleScene::ProcessEvent(const Event& e)
 
     SetMenu();
     
-    // ¾ËÆÄºª ÀÔ·Â½Ã ÀÌ¸§ ÀÔ·Â
-   if ((e.key_code >= 'a' && e.key_code <= 'z') || (e.key_code >= 'A' && e.key_code <= 'Z')) {
+    // ì•ŒíŒŒë²³ ìž…ë ¥ì‹œ ì´ë¦„ ìž…ë ¥
+   if ((e.key_code >= 'a' && e.key_code <= 'z') || (e.key_code >= 'A' && e.key_code <= 'Z') || 
+       (e.key_code >= '0' && e.key_code <= '9'))
+   {
         if (name.size() < MAX_NAME_LENGTH) {
             name += char(e.key_code);
         }
         SetMenu();
     }
-    // ¿£ÅÍ ÀÔ·Â ½Ã ·Î±×ÀÎ ½Ãµµ
+    // ì—”í„° ìž…ë ¥ ì‹œ ë¡œê·¸ì¸ ì‹œë„
     else if (e.key_code == '\r') {
        if (!name.empty()) {
+           Character::GetInstance(name);
+           DungeonMapState::ResetToFirstMap();
 
            auto& player = Character::GetInstance(name);
 
@@ -56,7 +62,7 @@ void TitleScene::ProcessEvent(const Event& e)
            ChangeScene(SceneType::Town);
        }
     }
-    // ¹é½ºÆäÀÌ½º ÀÔ·Â ½Ã ÀÌ¸§ Áö¿ì±â
+    // ë°±ìŠ¤íŽ˜ì´ìŠ¤ ìž…ë ¥ ì‹œ ì´ë¦„ ì§€ìš°ê¸°
     else if (e.key_code == '\b') {
         if (!name.empty()) {
             name.pop_back();
@@ -64,10 +70,15 @@ void TitleScene::ProcessEvent(const Event& e)
         SetMenu();
     }
     else {
-        UIManager::GetInstance().AddContent(UIType::Menu, "Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+        UIManager::GetInstance().AddContent(UIType::Menu, "ìž˜ëª» ìž…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤. ë‹¤ì‹œ ìž…ë ¥í•´ì£¼ì„¸ìš”.");
     }
 }
 
 void TitleScene::Update(float delta_time)
 {
+}
+
+bool TitleScene::IsExitable() const
+{
+    return false;
 }

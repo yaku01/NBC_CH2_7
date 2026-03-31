@@ -1,6 +1,6 @@
 #include "BattleManager.h"
 #include "Characters/Character.h"
-#include "Monster.h"
+#include "Monsters/Monster.h"
 #include "Items/Item.h"
 #include "UI/UIManager.h"
 #include "Common/common.h"

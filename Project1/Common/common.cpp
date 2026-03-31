@@ -14,6 +14,12 @@ namespace RandomUtil{
 		return uid(gen);
 	}
 
+	double GetRange(double min, double max)
+	{
+		std::uniform_real_distribution<double> urd(min, max);
+		return urd(gen);
+	}
+
 	bool IsSuccess(double probability)
 	{
 		std::uniform_real_distribution<double> urd(0.0, 1.0);

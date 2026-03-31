@@ -5,6 +5,7 @@
 
 namespace RandomUtil {
 	int GetRange(int min, int max);
+	double GetRange(double min, double max);
 	bool IsSuccess(double probability);
 	void Shuffle(std::vector<int>& v);
 }
@@ -44,6 +45,7 @@ enum class SceneType {
 	Exit,
 	Shop,
 	Encounter,
+	Ending,
 	None
 };
 
@@ -63,5 +65,6 @@ enum class MonsterType {
 	Troll,
 	Goblin,
 	Orc,
+	Boss,
 	None
 };

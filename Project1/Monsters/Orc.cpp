@@ -23,5 +23,5 @@ void Orc::TakeDamage(int damage) {
 
 string Orc::GetAsciiArtPath() const
 {
-    return "Resource/Orc.txt";
+    return "Resource/Monsters/Orc.txt";
 }

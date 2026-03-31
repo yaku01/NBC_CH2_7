@@ -9,7 +9,7 @@ using namespace std;
 
 class Monster {
 public:
-	Monster(int level) : level(level), health(1), attack(1), maxhealth(1),is_active(false){}
+	Monster(int level) : level(level), health(1), attack(1), maxhealth(1),is_active(true){}
     virtual ~Monster(){}
     virtual void TakeDamage(int damage) = 0;
     vector<ItemID> GetDropItems() {
