@@ -19,5 +19,5 @@ void BossMonster::TakeDamage(int damage)
 
 string BossMonster::GetAsciiArtPath() const
 {
-    return "Resource/Monsters/Demon Lord.txt";
+    return "Resource/Monsters/Demon Lord.txt"; 
 }

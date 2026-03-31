@@ -10,7 +10,7 @@ class Character;
 class BaseUI;
  
 
-// decltype(auto) -> 값에 맞는 타입 추출
+// decltype(auto) -> 값에 맞는 타입 추출 
 // &인지 복사본인지 추론
 // 임시객체가 들어올 수 있으므로 인자는 && 여야 함
 template <typename T>

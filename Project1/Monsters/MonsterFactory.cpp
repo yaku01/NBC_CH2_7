@@ -18,7 +18,7 @@ std::unique_ptr<Monster> MonsterFactory::CreateMonster(MonsterType type, int lev
 		{ MonsterType::Orc,		[](int level) { return std::make_unique<Orc>(level); }},
 		{ MonsterType::Boss,	[](int level) { return std::make_unique<BossMonster>(level); }}
 	};
-
+     
 	auto it = monster_creator.find(type);
 	if (it != monster_creator.end()) {
 		return it->second(level);

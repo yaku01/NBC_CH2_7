@@ -12,6 +12,6 @@ private:
 	// Monster을(를) 통해 상속됨
 	void TakeDamage(int damage) override;
 
-	string GetAsciiArtPath() const override;
+	string GetAsciiArtPath() const override; 
 
 };

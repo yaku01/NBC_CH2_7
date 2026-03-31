@@ -129,6 +129,7 @@
     <ClInclude Include="Core\SaveLoadManager.h" />
     <ClInclude Include="DropTable.h" />
     <ClInclude Include="Core\ItemDataBase.h" />
+    <ClInclude Include="Core\LogManager.h" />
     <ClInclude Include="Scene\EndingScene.h" />
     <ClInclude Include="Monsters\BossMonster.h" />
     <ClInclude Include="Scene\EncounterScene.h" />
@@ -152,6 +153,7 @@
     <ClCompile Include="Core\DungeonMapState.cpp" />
     <ClCompile Include="Core\ItemDataBase.cpp" />
     <ClCompile Include="Core\SaveLoadManager.cpp" />
+    <ClCompile Include="Core\LogManager.cpp" />
     <ClCompile Include="Scene\EndingScene.cpp" />
     <ClCompile Include="Monsters\BossMonster.cpp" />
     <ClCompile Include="Scene\EncounterScene.cpp" />

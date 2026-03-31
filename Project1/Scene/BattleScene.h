@@ -15,7 +15,7 @@ enum class BattleState {
 	UseItem
 };
 
-class BattleScene : public BaseScene
+class BattleScene : public BaseScene 
 {
 public:
 	BattleScene();

@@ -15,7 +15,7 @@ void EncounterScene::Init()
 	int w = RenderSystem::GetInstance().GetScreenWidth();
 	int h = RenderSystem::GetInstance().GetScreenHeight();
 
-	ui = std::make_unique<NoiseUI>(0, 0, w, h, max_time);
+	ui = std::make_unique<NoiseUI>(0, 0, w, h, max_time); 
 }
 
 void EncounterScene::ProcessEvent(const Event& e) 

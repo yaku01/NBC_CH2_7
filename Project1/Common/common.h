@@ -27,7 +27,7 @@ enum class EventType {
 	PopScene,		// 현재 씬 끄고 아래에 있던 씬으로 복귀
 	ReplaceScene,
 	Quit
-};
+}; 
 
 enum class SceneOp { 
 	Change,

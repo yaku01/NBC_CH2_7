@@ -27,4 +27,4 @@ public:
 	void AddCount(int amount) { count = std::min(count + amount, max_count); } // 개수 추가 (최대 개수까지)
 
 	void Use(Character& target) override = 0;
-};
+}; 

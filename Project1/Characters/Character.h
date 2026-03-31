@@ -17,7 +17,7 @@ private:
 	int bonus_attack;
 	int experience;
 	int gold;
-	std::vector<std::unique_ptr<IItem>> inventory;
+	std::vector<std::unique_ptr<IItem>> inventory; 
 	std::unique_ptr<IItem> equipped_weapon;
 	std::unique_ptr<IItem> equipped_armor;
 

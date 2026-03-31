@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
- 
+
 using namespace std;
 
 void SaveLoadManager::Save(Character& player) {
@@ -86,6 +86,8 @@ void SaveLoadManager::Save(Character& player) {
         : 0) << "\n";
     if (weapon) player.EquipWeapon(std::move(weapon));
     if (armor) player.EquipArmor(std::move(armor));
+
+    outfile.close();
 }
 
 bool SaveLoadManager::Load(Character& player, const std::string& targetName) {
@@ -163,11 +165,13 @@ bool SaveLoadManager::Load(Character& player, const std::string& targetName) {
                 player.EquipArmor(std::move(armor));
             }
 
-            player.SetHealth(std::min(hp,player.GetMaxHealth()));
+            player.SetHealth(std::min(hp, player.GetMaxHealth()));
 
+            file.close();
             return true;
         }
     }
-
+    
+    file.close();
     return false;
 }

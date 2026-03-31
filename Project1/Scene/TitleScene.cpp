@@ -6,6 +6,7 @@
 #include "UI/GameUI.h"
 #include "Core/DungeonMapState.h"
 #include "Core/SaveLoadManager.h"
+#include "Core/LogManager.h"
 
 constexpr int MAX_NAME_LENGTH = 10;
 
@@ -49,7 +50,6 @@ void TitleScene::ProcessEvent(const Event& e)
     // 엔터 입력 시 로그인 시도
     else if (e.key_code == '\r') {
        if (!name.empty()) {
-           Character::GetInstance(name);
            DungeonMapState::ResetToFirstMap();
 
            auto& player = Character::GetInstance(name);
@@ -57,12 +57,14 @@ void TitleScene::ProcessEvent(const Event& e)
            player.Reset();
            player.SetName(name);
 
-           SaveLoadManager::Load(player, name);
-           
+           if (SaveLoadManager::Load(player, name)) {
+               LogManager::GetInstance().LoadLogFromFile("Log/Log.txt", name);
+           }
+
            ChangeScene(SceneType::Town);
        }
     }
-    // 백스페이스 입력 시 이름 지우기
+    // 백스페이스 입력 시 이름 지우기 
     else if (e.key_code == '\b') {
         if (!name.empty()) {
             name.pop_back();
@@ -81,4 +83,4 @@ void TitleScene::Update(float delta_time)
 bool TitleScene::IsExitable() const
 {
     return false;
-} 
+}

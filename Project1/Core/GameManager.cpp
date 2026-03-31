@@ -13,7 +13,7 @@
 
  
 GameManager::GameManager() : scene_op(SceneOp::None), next_scene(SceneType::None),
-	is_running(true)
+	is_running(true) 
 {
 }
 

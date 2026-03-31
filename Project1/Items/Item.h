@@ -10,7 +10,7 @@ enum class ItemID
 	// 소비 아이템 ID는 100번대
 	HealthPotion = 101,
 	AttackBoost = 102,
-
+     
 	// 무기 아이템 ID는 200번대 
 	WoodSword = 201,
 	Sword = 202,

@@ -305,7 +305,7 @@ void Character::ClearInventory() {
 
 void Character::Reset() { 
 	level = 1;
-	health = 200;
+	health = 200; 
 	max_health = 200;
 	attack = 30;
 	bonus_attack = 0;

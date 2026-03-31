@@ -12,7 +12,7 @@ private:
 	static std::map<ItemID, std::function<std::unique_ptr<IItem>()>> item_creators;
 
 public:
-	// 아이템 생성 함수를 등록
+	// 아이템 생성 함수를 등록 
 	static void Initialize();
 
 	// 아이템 생성 함수

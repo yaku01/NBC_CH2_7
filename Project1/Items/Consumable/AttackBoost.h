@@ -12,7 +12,7 @@ private:
 	int attack_increase;
 
 public:
-	AttackBoost();
+	AttackBoost(); 
 
 	void Use(Character& target) override;
-}; 
+};

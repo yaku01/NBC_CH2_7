@@ -23,11 +23,11 @@ std::unique_ptr<BaseScene> SceneFactory::CreateScene(SceneType type)
 		{ SceneType::Shop,		[]() { return std::make_unique<ShopScene>(); }},
 		{ SceneType::Encounter,	[]() { return std::make_unique<EncounterScene>(); }},
 		{ SceneType::Ending,	[]() { return std::make_unique<EndingScene>(); }}
-	};
+	}; 
 
 	auto it = scene_creator.find(type);
 	if (it != scene_creator.end()) {
 		return it->second();
 	}
 	return nullptr;
-} 
+}

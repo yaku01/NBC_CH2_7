@@ -16,7 +16,7 @@ RenderSystem::RenderSystem()
     // 1600*1200 정도의 해상도
     int width = 160;
     int height = 60;
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < 2; ++i) { 
         SetConsoleSize(screen_buffers[i], width, height);
     }
 

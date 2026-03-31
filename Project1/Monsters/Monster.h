@@ -39,7 +39,7 @@ public:
         return level;
     }
 
-    int GetMaxHealth() const {
+    int GetMaxHealth() const { 
         return maxhealth;
     }
      

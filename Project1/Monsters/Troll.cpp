@@ -21,7 +21,7 @@ void Troll::TakeDamage(int damage) {
 
 }
 
-string Troll::GetAsciiArtPath() const
+string Troll::GetAsciiArtPath() const 
 {
     return "Resource/Monsters/Troll.txt";
 }

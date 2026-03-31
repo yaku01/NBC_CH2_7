@@ -20,6 +20,6 @@ void Goblin::TakeDamage(int damage) {
 }
 
 string Goblin::GetAsciiArtPath() const
-{
+{ 
     return "Resource/Monsters/Goblin.txt";
 }

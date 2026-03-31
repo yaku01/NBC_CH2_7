@@ -13,7 +13,7 @@ void ExitPopUpScene::Init()
 {
 	// 콘솔 사이즈 구하기
 	int w = RenderSystem::GetInstance().GetScreenWidth();
-	int h = RenderSystem::GetInstance().GetScreenHeight();
+	int h = RenderSystem::GetInstance().GetScreenHeight(); 
 
 	int x = static_cast<int>(w * 0.15);
 	int y = static_cast<int>(h * 0.15);

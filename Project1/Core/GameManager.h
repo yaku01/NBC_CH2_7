@@ -19,7 +19,7 @@ public:
 	GameManager& operator=(const GameManager&) = delete;
 
 	void Init();
-	void Run();
+	void Run(); 
 	void Release();
 	void PushEvent(const Event& ev);
 

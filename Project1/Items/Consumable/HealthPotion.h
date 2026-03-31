@@ -12,6 +12,6 @@ private:
 	int health_restore;
 
 public:
-	HealthPotion();
+	HealthPotion(); 
 	void Use(Character& target) override;
-}; 
+};

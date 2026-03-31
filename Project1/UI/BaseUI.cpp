@@ -8,7 +8,7 @@ BaseUI::BaseUI(int x, int y, int w, int h) :
 }
 
 BaseUI::BaseUI(int x, int y) : 
-    start_x(x), start_y(y), width(0), height(0), is_visible(true), max_lines(0)
+    start_x(x), start_y(y), width(0), height(0), is_visible(true), max_lines(0) 
 {
 }
  
@@ -18,8 +18,6 @@ void BaseUI::AddContents(std::string_view msg)
     if (static_cast<int>(contents.size()) > max_lines) {
         contents.pop_front(); // 꽉 차면 오래된 것 삭제
     }
-
-    all_contents.push_back(std::string(msg));  // 전체 로그에 추가.
 }
 
 void BaseUI::LoadAsciiArt(const std::string& path)
@@ -52,4 +50,14 @@ void BaseUI::ToggleVisible()
 bool BaseUI::IsVisible() const
 {
     return is_visible;
+}
+
+int BaseUI::GetWidth() const
+{
+    return width;
+}
+
+int BaseUI::GetHeight() const
+{
+    return height;
 }

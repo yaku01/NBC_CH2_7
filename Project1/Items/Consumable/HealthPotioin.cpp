@@ -10,5 +10,5 @@ HealthPotion::HealthPotion() : health_restore(50), ConsumableItem("Health Potion
 void HealthPotion::Use(Character& target) 
 {
 	target.RestoreHealth(health_restore);
-	AddCount(-1); // 사용한 개수만큼 감소
-} 
+	AddCount(-1); // 사용한 개수만큼 감소 
+}

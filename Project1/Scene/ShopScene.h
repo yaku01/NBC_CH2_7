@@ -23,7 +23,7 @@ public:
 	void Update(float delta_time) override;
 	void Render() override;
 	void Release() override;
-	void SetSceneData(const std::string& data) override;
+	void SetSceneData(const std::string& data) override; 
 
 private:
 	ShopState current_state = ShopState::Buy;

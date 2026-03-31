@@ -10,7 +10,7 @@ struct ItemData {
 };
 
 class ItemDataBase
-{
+{ 
 public:
 	static void Initialize();
 	static const ItemData& GetData(ItemID id);

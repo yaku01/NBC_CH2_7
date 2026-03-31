@@ -15,7 +15,7 @@ protected:
 
 public:
 	EquippableItem(std::string _name, ItemID _id, std::string _description, ItemType _type) 
-		: name(_name), id(_id), description(_description), type(_type)  {}
+		: name(_name), id(_id), description(_description), type(_type)  {} 
 	virtual ~EquippableItem() = default;
 
 	const std::string& GetName() const override { return name; }
@@ -26,4 +26,4 @@ public:
 	void Use(Character& target) override = 0;
 	virtual void Equip(Character& target) = 0;
 	virtual void Unequip(Character& target) = 0;
-}; 
+};

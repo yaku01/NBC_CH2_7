@@ -30,7 +30,7 @@ public:
                 droppedItems.push_back(item.item_id);
             }
         }
-
+         
         return droppedItems;
     }
 };

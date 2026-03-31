@@ -22,6 +22,6 @@ private:
 	std::unordered_map<std::string, std::deque<std::string>> data;
 
 	ResourceManager() = default;
-	~ResourceManager() = default;
+	~ResourceManager() = default; 
 };
 

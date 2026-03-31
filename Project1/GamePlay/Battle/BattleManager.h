@@ -14,7 +14,7 @@ public:
 
 	void Release();
 
-	void Init(const std::vector<std::unique_ptr<Monster>>& monsters);
+	void Init(const std::vector<std::unique_ptr<Monster>>& monsters); 
 	void PlayerAttack(size_t target);
 	void MonstersAttack();
 	bool IsBattleOver() const;
