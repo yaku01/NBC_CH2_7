@@ -35,6 +35,7 @@
     <ClCompile Include="Monsters\BossMonster.cpp" />
     <ClCompile Include="Scene\EndingScene.cpp" />
     <ClCompile Include="Core\SaveLoadManager.cpp" />
+    <ClCompile Include="Core\LogManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DropTable.h" />
@@ -73,6 +74,7 @@
     <ClInclude Include="Items\Consumable\HealthPotion.h" />
     <ClInclude Include="Scene\EncounterScene.h" />
     <ClInclude Include="Core\SaveLoadManager.h" />
+    <ClInclude Include="Core\LogManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Monsters\BossMonster.h" />

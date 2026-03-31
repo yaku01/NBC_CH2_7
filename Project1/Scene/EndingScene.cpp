@@ -2,6 +2,7 @@
 #include "UI/GameUI.h"
 #include "UI/UIManager.h"
 #include "Core/RenderSystem.h"
+#include "Core/LogManager.h"
 
 
 EndingScene::EndingScene() = default;
@@ -18,10 +19,15 @@ void EndingScene::Init()
 	int h = static_cast<int>(height * 0.6);
 
 	ending_ui = std::make_unique<BorderUI>(x, y, w, h);
-	ending_ui->AddContents("TEST");
-	ending_ui->AddContents("TEST");
-	ending_ui->AddContents("TEST");
 
+	SetCenteredString("================================");
+	SetCenteredString("       [ 게 임 클 리 어 ]       ");
+	SetCenteredString("================================");
+	SetCenteredString("");
+	SetCenteredString("< 플레이  기록 >");
+
+
+	records = LogManager::GetInstance().GetStatsSummary();
 	UIManager::GetInstance().SetAllVisible(false);
 }
 
@@ -31,25 +37,54 @@ void EndingScene::ProcessEvent(const Event& e)
 		return;
 	}
 
-	Event ev{};
-	ev.type = EventType::Quit;
-	GameManager::GetInstance().PushEvent(ev);
+	// 로그 내용 출력중이면
+	if (!is_finished) {
+		is_finished = true;
+
+		for (size_t i = current_idx; i < records.size(); ++i) {
+			SetCenteredString(records[i]);
+		}
+		current_idx = records.size();
+	}
+	// 출력이 끝났다면
+	else {
+		Event ev{};
+		ev.type = EventType::Quit;
+		GameManager::GetInstance().PushEvent(ev);
+	}
 }
 
 void EndingScene::Update(float delta_time)
 {
-	current_time += delta_time;
-	if (current_time >= INTERVAL) {
-		current_time = 0.f;
-		is_visible = !is_visible;
+	if (!is_finished) {
+		record_timer += delta_time;
+		if (record_timer >= RECORD_INTERVAL) {
+			record_timer = 0.f;
+			
+			if (current_idx < records.size()) {
+				SetCenteredString(records[current_idx]);
+				++current_idx;
+			}
+			else {
+				is_finished = true;
+			}
+		}
 	}
+	else {
+		blink_timer += delta_time;
+		if (blink_timer >= BLINK_INTERVAL) {
+			blink_timer = 0.f;
+			is_visible = !is_visible;
+		}
+	}
+
 }
 
 void EndingScene::Render()
 {
 	ending_ui->Render();
 
-	if (is_visible) {
+	if (is_finished && is_visible) {
 		int w = RenderSystem::GetInstance().GetScreenWidth();
 		int h = RenderSystem::GetInstance().GetScreenHeight();
 
@@ -64,4 +99,23 @@ void EndingScene::Render()
 bool EndingScene::IsExitable() const
 {
 	return false;
+}
+
+
+// private 함수
+void EndingScene::SetCenteredString(const std::string& text)
+{
+	if (!ending_ui) {
+		return;
+	}
+
+	int width = ending_ui->GetWidth();
+	int blank_count = (width - static_cast<int>(text.length())) / 2 - 2;
+
+	if (blank_count > 0) {
+		ending_ui->AddContents(std::string(blank_count, ' ') + text);
+	}
+	else {
+		ending_ui->AddContents(text);
+	}
 }

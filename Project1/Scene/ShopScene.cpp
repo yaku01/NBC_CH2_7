@@ -6,6 +6,8 @@
 #include "Core/ItemDataBase.h"
 #include "Items/ItemFactory.h"
 #include "Core/ResourceManager.h"
+#include "Core/LogManager.h"
+
 
 ShopScene::ShopScene() = default;
 ShopScene::~ShopScene() = default;
@@ -114,7 +116,7 @@ void ShopScene::LoadItemList(const std::string& path)
 	auto res = ResourceManager::GetInstance().GetResource(path);
 
 	if (!res.has_value()) {
-		UIManager::GetInstance().AddContent(UIType::Log, "[에러] 상점 파일을 찾을 수 없습니다");
+		LogManager::GetInstance().AddLog( "[에러] 상점 파일을 찾을 수 없습니다");
 		return;
 	}
 
@@ -240,10 +242,10 @@ void ShopScene::TradeItem()
 			player.AddItem(ItemFactory::CreateItem(id));
 
 			std::string text = "[구매] " + data.name + "(을)를 구매하셨습니다.";
-			UIManager::GetInstance().AddContent(UIType::Log, text);
+			LogManager::GetInstance().AddLog( text);
 		}
 		else {
-			UIManager::GetInstance().AddContent(UIType::Log, "[실패] 골드가 모자랍니다!");
+			LogManager::GetInstance().AddLog( "[실패] 골드가 모자랍니다!");
 		}
 	}
 	else {
@@ -255,6 +257,6 @@ void ShopScene::TradeItem()
 		player.RemoveItem(selected_index);
 
 		std::string text = "[판매] " + data.name + "(을)를 판매하셨습니다.";
-		UIManager::GetInstance().AddContent(UIType::Log, text);
+		LogManager::GetInstance().AddLog( text);
 	}
 }

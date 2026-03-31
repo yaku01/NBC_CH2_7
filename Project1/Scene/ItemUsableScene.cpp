@@ -3,6 +3,8 @@
 #include "UI/UIManager.h"
 #include "Characters/Character.h"
 #include "Core/RenderSystem.h"
+#include "Core/LogManager.h"
+
 
 ItemUsableScene::ItemUsableScene() = default;
 ItemUsableScene::~ItemUsableScene() = default;
@@ -135,7 +137,7 @@ void ItemUsableScene::ProcessItemConfirm(const  Event& e)
 	case 'Y':
 	case '\r':
 		Character::GetInstance().UseItem(item_index);
-		UIManager::GetInstance().AddContent(UIType::Log, "[사용] 아이템을 사용했습니다.");
+		LogManager::GetInstance().AddLog( "[사용] 아이템을 사용했습니다.");
 
 		item_popup_ui->SetTarget(ItemID::None); // 팝업 닫기
 		input_state = InputState::InventoryMode;

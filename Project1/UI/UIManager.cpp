@@ -2,6 +2,7 @@
 #include "UI/GameUI.h"
 #include "Core/RenderSystem.h"
 #include "Characters/Character.h"
+#include "Core/LogManager.h"
 
 UIManager::UIManager()
 {
@@ -57,21 +58,6 @@ void UIManager::AddContent(UIType type, std::string_view msg)
     if (idx < static_cast<size_t>(UIType::COUNT)) {
         uis[idx]->AddContents(msg);
     }
-
-    // 카운트 추가 - 게임 로그 카운트 체크
-    if (type == UIType::Log) {
-        std::string s(msg);
-        if (s.find("[공격]") != std::string::npos) count_attack_++;
-        else if (s.find("[피격]") != std::string::npos) count_damage_++;
-        else if (s.find("[조우]") != std::string::npos) count_encounter_++;
-        else if (s.find("[이동]") != std::string::npos) count_move_++;
-        else if (s.find("[휴식]") != std::string::npos) count_rest_++;
-        else if (s.find("[보상]") != std::string::npos) count_reward_++;
-        else if (s.find("[도망]") != std::string::npos) count_escape_++;
-        else if (s.find("[사망]") != std::string::npos) count_death_++;
-        else if (s.find("[사용]") != std::string::npos) count_use_++;
-    }
-
 }
 
 void UIManager::ClearContent(UIType type)
@@ -135,11 +121,6 @@ void UIManager::PrevPageItemUI()
     item_ui->PrevPage();
 }
 
-void UIManager::OnMonsterKilled(const std::string& monster_name)    // 킬보드에 킬 추가
-{
-    static_cast<KillBoardUI*>(uis[static_cast<int>(UIType::KillLog)].get())->AddKill(monster_name);
-}
-
 void UIManager::ToggleItemUI()
 {
     auto* item_ui = static_cast<InventoryUI*>(uis[static_cast<int>(UIType::Inventory)].get());
@@ -158,115 +139,3 @@ int UIManager::GetItemUIItemsPerPage() const
     return item_ui->GetItemsPerPage();
 }
 
-void UIManager::SaveLogToFile(const std::string& filename) //로그 세이브 구현
-{
-    std::ofstream file(filename);
-
-    int total_kills = 0;
-    auto* kill_ui = static_cast<KillBoardUI*>(uis[static_cast<int>(UIType::KillLog)].get());
-    for (const auto& k : kill_ui->GetKillCount())
-        total_kills += k.second;
-
-    file << "\n=== 통계 ===\n";
-    file << "[공격] 횟수: " << count_attack_ << "\n";
-    file << "[피격] 횟수: " << count_damage_ << "\n";
-    file << "[조우] 횟수: " << count_encounter_ << "\n";
-    file << "[이동] 횟수: " << count_move_ << "\n";
-    file << "[휴식] 횟수: " << count_rest_ << "\n";
-    file << "[보상] 획득: " << count_reward_ << "\n";
-    file << "[도망] 횟수: " << count_escape_ << "\n";
-    file << "[사망] 횟수: " << count_death_ << "\n";
-    file << "[사용] 횟수: " << count_use_ << "\n";
-    file << "[처치] 횟수: " << total_kills << "\n"; //[처치] 횟수는 멤버변수 대신 킬보드에서 직접 합산하여 저장
-
-    // 킬보드 저장
-    file << "\n=== 킬 보드 ===\n";
-    for (const auto& k : kill_ui->GetKillCount())
-        file << k.first << " x" << k.second << "\n";
-
-    // 전투 로그 저장
-    file << "\n=== 전투 로그 ===\n";
-    auto* log_ui = uis[static_cast<int>(UIType::Log)].get();
-    for (const auto& line : log_ui->GetAllContents())
-        file << line << "\n";
-
-    file.close();
-}
-
-void UIManager::LoadLogFromFile(const std::string& filename) //로그 로드 구현
-{
-    std::ifstream file(filename);
-    if (!file.is_open()) return;
-
-    std::string line;
-    bool is_log_section = false;  // 전투 로그 섹션 체크용
-
-    while (std::getline(file, line))
-    {
-        if (line.find("[공격] 횟수: ") != std::string::npos)
-            count_attack_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[피격] 횟수: ") != std::string::npos)
-            count_damage_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[조우] 횟수: ") != std::string::npos)
-            count_encounter_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[이동] 횟수: ") != std::string::npos)
-            count_move_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[휴식] 횟수: ") != std::string::npos)
-            count_rest_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[보상] 획득: ") != std::string::npos)
-            count_reward_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[도망] 횟수: ") != std::string::npos)
-            count_escape_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[사망] 횟수: ") != std::string::npos)
-            count_death_ = std::stoi(line.substr(line.find(": ") + 2));
-        else if (line.find("[사용] 횟수: ") != std::string::npos)
-            count_use_ = std::stoi(line.substr(line.find(": ") + 2));
-        
-        // 킬보드 읽기
-        else if (line.find("=== 킬 보드 ===") != std::string::npos)
-            is_log_section = false;
-        else if (line.find("=== 전투 로그 ===") != std::string::npos)
-            is_log_section = true;
-        else if (line.find(" x") != std::string::npos && !is_log_section)
-        {
-            size_t pos = line.find(" x");
-            std::string name = line.substr(0, pos);
-            int count = std::stoi(line.substr(pos + 2));
-            auto* kill_ui = static_cast<KillBoardUI*>(
-                uis[static_cast<int>(UIType::KillLog)].get());
-            for (int i = 0; i < count; i++)
-                kill_ui->AddKill(name);
-        }
-
-        // 전투 로그 읽기
-        else if (is_log_section && !line.empty())
-        {
-            uis[static_cast<int>(UIType::Log)].get()->AddContents(line);
-        }
-    }
-    file.close();
-}
-
-void UIManager::ResetStats() //로그 통계 및 기록 전체 초기화
-{
-    //통계 카운터 초기화
-    count_attack_ = 0;
-    count_damage_ = 0;
-    count_encounter_ = 0;
-    count_move_ = 0;
-    count_rest_ = 0;
-    count_reward_ = 0;
-    count_escape_ = 0;
-    count_death_ = 0;
-    count_use_ = 0;
-
-    // 킬보드 초기화
-    static_cast<KillBoardUI*>(
-        uis[static_cast<int>(UIType::KillLog)].get())->ClearKills();
-
-    // 화면에 보이는 전투 로그 초기화
-    ClearContent(UIType::Log);
-    
-    // 전체 전투 로그(파일 저장용) 초기화
-    uis[static_cast<int>(UIType::Log)].get()->ClearAllContents();
-}

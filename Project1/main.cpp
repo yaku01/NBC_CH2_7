@@ -1,5 +1,6 @@
 #include "Core/GameManager.h"
 #include "Core/SaveLoadManager.h"
+#include "Core/LogManager.h"
 #include "Characters/Character.h"
 
 int main()
@@ -13,4 +14,5 @@ int main()
     auto& player = Character::GetInstance();
 
     SaveLoadManager::Save(player);
+	LogManager::GetInstance().SaveLogToFile("Log/Log.txt", player.GetName());
 }

@@ -5,6 +5,7 @@
 #include "UI/UIManager.h"
 #include "Common/common.h"
 #include "Items/ItemFactory.h"
+#include "Core/LogManager.h"
 
 BattleManager::BattleManager() = default;
 BattleManager::~BattleManager() = default;
@@ -54,7 +55,7 @@ void BattleManager::PlayerAttack(size_t target)
 	int damage = player.GetTotalAttack();
 	monster->TakeDamage(damage);
 	
-	UIManager::GetInstance().AddContent(UIType::Log,
+	LogManager::GetInstance().AddLog(
 		"[공격] " + std::string(monster->GetName()) + "[" + std::to_string(target + 1) +
 		"]에게 " + std::to_string(damage) + "데미지를 입혔습니다!");
 
@@ -62,7 +63,7 @@ void BattleManager::PlayerAttack(size_t target)
 	if (monster->IsDead()) {
 		
 		// 킬보드에 킬 추가
-		UIManager::GetInstance().OnMonsterKilled(monster->GetName());  
+		LogManager::GetInstance().AddKill(monster->GetName());
 
 		// 보상 누적
 		total_exp += 20;
@@ -93,11 +94,11 @@ void BattleManager::MonstersAttack()
 			int damage = monster->GetAttack();
 			player.TakeDamage(damage);
 
-			UIManager::GetInstance().AddContent(UIType::Log,
+			LogManager::GetInstance().AddLog(
 				"[피격] " + std::string(monster->GetName()) + "에게 " + std::to_string(damage) + "의 피해를 받았습니다!");
 
 			if (player.IsDead()) {
-				UIManager::GetInstance().AddContent(UIType::Log,
+				LogManager::GetInstance().AddLog(
 					"[사망] " + std::string(monster->GetName()) + "에 의해 사망하였습니다...");
 				break;
 			}
@@ -135,12 +136,12 @@ void BattleManager::DistributedReward()
 	player.GainExp(total_exp);
 	player.GainGold(total_gold);
 
-	UIManager::GetInstance().AddContent(UIType::Log,
+	LogManager::GetInstance().AddLog(
 		"[보상] 경험치를 " + std::to_string(total_exp) + ", 골드를 " + std::to_string(total_gold) + "획득하였습니다!");
 
 
 	for (auto& item : items) {
-		UIManager::GetInstance().AddContent(UIType::Log,
+		LogManager::GetInstance().AddLog(
 			"[보상] " + item->GetName() + "을 획득하였습니다!");
 
 		player.AddItem(std::move(item));

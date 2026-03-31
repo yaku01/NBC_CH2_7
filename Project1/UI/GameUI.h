@@ -156,22 +156,12 @@ private:
 
 
 // 킬보드 UI 클래스
-class KillBoardUI : public BaseUI
+class KillBoardUI : public BorderUI
 {
 public:
 	KillBoardUI(int x, int y, int w, int h);
 
 	void Render() override;
-	void AddKill(const std::string& monster_name);
-	void ClearKills() { kill_count_.clear(); } // 킬보드 초기화 함수
-
-	// 킬보드 내용 txt 파일에 저장하기위해
-	const std::unordered_map<std::string, int>& GetKillCount() const { return kill_count_; }
-
-private:
-	std::string top_border;
-	std::string bottom_border;
-	std::unordered_map<std::string, int> kill_count_;
 };
 
 

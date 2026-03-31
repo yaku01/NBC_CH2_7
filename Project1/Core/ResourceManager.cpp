@@ -23,6 +23,7 @@ std::optional<std::reference_wrapper<const std::deque<std::string>>> ResourceMan
 			resource.push_back(line);
 		}
 	}
+	in.close();
 
 	return resource;
 }

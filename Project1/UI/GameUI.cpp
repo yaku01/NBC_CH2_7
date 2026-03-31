@@ -5,6 +5,7 @@
 #include "Items/Item.h"
 #include "Items/Consumable/ConsumableItem.h"
 #include "Core/ItemDataBase.h"
+#include "Core/LogManager.h"
 
 
 BorderUI::BorderUI(int x, int y, int w, int h) : BaseUI(x, y, w, h)
@@ -419,51 +420,27 @@ void MonsterUI::SetTarget(const Monster* target)
 }
 
 // 킬보드 UI 초기화
-KillBoardUI::KillBoardUI(int x, int y, int w, int h) : BaseUI(x, y, w, h)
+KillBoardUI::KillBoardUI(int x, int y, int w, int h) : BorderUI(x, y, w, h)
 {
-    top_border = "┌";
-    bottom_border = "└";
-
-    for (int i = 0; i < width - 2; ++i) {
-        top_border += "─";
-        bottom_border += "─";
-    }
-
-    top_border += "┐";
-    bottom_border += "┘";
 }
 
 // 킬보드 UI 그리기
 void KillBoardUI::Render()
 {
-    // 상단 경계선
-    RenderSystem::GetInstance().PrintText(start_x, start_y, top_border);
-
-    // 세로선
-    for (int i = 1; i < height - 1; ++i) {
-        RenderSystem::GetInstance().PrintText(start_x, start_y + i, "│");
-        RenderSystem::GetInstance().PrintText(start_x + width - 1, start_y + i, "│");
-    }
+    BorderUI::Render();
 
     // 킬보드 제목
     RenderSystem::GetInstance().PrintText(start_x + 2, start_y + 1, "[ 킬 보드 ]");
 
     // 킬카운트 출력
     int line = 2;
-    for (const auto& k : kill_count_)
+    for (const auto& k : LogManager::GetInstance().GetKillCounts())
     {
         RenderSystem::GetInstance().PrintText(start_x + 2, start_y + line,
             k.first + " x" + std::to_string(k.second));
         line++;
     }
 
-    // 하단 경계선
-    RenderSystem::GetInstance().PrintText(start_x, start_y + height - 1, bottom_border);
-}
-
-void KillBoardUI::AddKill(const std::string& monster_name)   // 킬보드에 킬 추가
-{
-    ++kill_count_[monster_name];
 }
 
 

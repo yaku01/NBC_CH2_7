@@ -68,6 +68,7 @@ void SaveLoadManager::Save(Character& player) {
     outfile << (player.GetEquippedWeapon() ? static_cast<int>(player.GetEquippedWeapon()->GetID()) : 0) << "\n";
     outfile << (player.GetEquippedArmor() ? static_cast<int>(player.GetEquippedArmor()->GetID()) : 0) << "\n";
 
+    outfile.close();
 }
 
 bool SaveLoadManager::Load(Character& player, const std::string& targetName) {
@@ -134,9 +135,11 @@ bool SaveLoadManager::Load(Character& player, const std::string& targetName) {
                 player.EquipArmor(std::move(armor));
             }
 
+            file.close();
             return true;
         }
     }
 
+    file.close();
     return false;
 }

@@ -3,6 +3,7 @@
 #include "UI/GameUI.h"
 #include "Core/RenderSystem.h"
 #include "Characters/Character.h"
+#include "Core/LogManager.h"
 
 
 void DungeonScene::Init()
@@ -39,7 +40,7 @@ void DungeonScene::ProcessNormalEvent(const Event& e)
 
     switch (e.key_code) {
     case '1':
-        UIManager::GetInstance().AddContent(UIType::Log, "[조우] 몬스터와 조우했습니다!");
+        LogManager::GetInstance().AddLog( "[조우] 몬스터와 조우했습니다!");
 
         // data가 1이면 보스전 진입
         if (Character::GetInstance().IsMaxLevel()) {
@@ -51,7 +52,7 @@ void DungeonScene::ProcessNormalEvent(const Event& e)
         break;
 
     case '2':
-        UIManager::GetInstance().AddContent(UIType::Log, "[이동] 마을로 귀환합니다...");
+        LogManager::GetInstance().AddLog( "[이동] 마을로 귀환합니다...");
         ChangeScene(SceneType::Town);
         break;
     

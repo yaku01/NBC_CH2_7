@@ -3,6 +3,7 @@
 #include "Common/common.h"
 #include "Characters/Character.h"
 #include "UI/UIManager.h"
+#include "Core/LogManager.h"
 
 
 void TownScene::Init()
@@ -38,13 +39,13 @@ void TownScene::ProcessNormalEvent(const Event& e)
 
     case '2':
     {
-        UIManager::GetInstance().AddContent(UIType::Log, "[이동] 상점에 들어갑니다");
+        LogManager::GetInstance().AddLog( "[이동] 상점에 들어갑니다");
         PushScene(SceneType::Shop, "Resource/Shop/Novice Village.txt");
         break;
     }
 
     case '3':
-        UIManager::GetInstance().AddContent(UIType::Log, "[이동] 어두운 던전으로 향합니다...");
+        LogManager::GetInstance().AddLog( "[이동] 어두운 던전으로 향합니다...");
         ChangeScene(SceneType::Dungeon);
         break;
 
@@ -69,14 +70,14 @@ void TownScene::EnterInn()
 {
     auto& player = Character::GetInstance();
     if (player.GetGold() >= cost) {
-        UIManager::GetInstance().AddContent(UIType::Log, "[휴식] 여관에서 푹 쉬었습니다. (HP 회복)");
+        LogManager::GetInstance().AddLog( "[휴식] 여관에서 푹 쉬었습니다. (HP 회복)");
         
         std::string inn_text = "[소비] 여관에 " + std::to_string(cost) + "G 를 지불하였습니다.";
-        UIManager::GetInstance().AddContent(UIType::Log, inn_text);
+        LogManager::GetInstance().AddLog( inn_text);
         player.GainGold(-cost);
         player.RestoreHealth(player.GetMaxHealth());
     }
     else {
-        UIManager::GetInstance().AddContent(UIType::Log, "[실패] 골드가 모자랍니다!");
+        LogManager::GetInstance().AddLog( "[실패] 골드가 모자랍니다!");
     }
 }

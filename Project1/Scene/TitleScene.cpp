@@ -5,6 +5,7 @@
 #include "UI/UIManager.h"
 #include "UI/GameUI.h"
 #include "Core/SaveLoadManager.h"
+#include "Core/LogManager.h"
 
 constexpr int MAX_NAME_LENGTH = 10;
 
@@ -54,8 +55,10 @@ void TitleScene::ProcessEvent(const Event& e)
            player.Reset();
            player.SetName(name);
 
-           SaveLoadManager::Load(player, name);
-           
+           if (SaveLoadManager::Load(player, name)) {
+               LogManager::GetInstance().LoadLogFromFile("Log/Log.txt", name);
+           }
+
            ChangeScene(SceneType::Town);
        }
     }
