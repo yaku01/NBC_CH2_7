@@ -13,6 +13,7 @@ private:
 	int health;
 	int max_health;
 	int attack;
+	int bonus_attack;
 	int experience;
 	int gold;
 	std::vector<std::unique_ptr<IItem>> inventory;
@@ -27,6 +28,8 @@ public:
 	Character(const Character&) = delete;
 	Character& operator=(const Character&) = delete;
 	static Character& GetInstance(const std::string& name = "Player");
+
+	void ClearInventory();
 
 	void DisplayStatus() const;
 
@@ -54,6 +57,8 @@ public:
 	
 	void ModifyMaxHealth(int amount);
 
+	void Reset();
+
 	std::unique_ptr<IItem> EquipWeapon(std::unique_ptr<IItem> new_weapon);
 
 	std::unique_ptr<IItem> EquipArmor(std::unique_ptr<IItem> new_armor);
@@ -62,6 +67,10 @@ public:
 
 	std::unique_ptr<IItem> UnequipArmor();
 
+	void ApplyAttackBuff(int amount);
+
+	void ClearBuffs();
+
 	// getters
 	int GetLevel() const { return level; }
 
@@ -69,7 +78,11 @@ public:
 
 	int GetMaxHealth() const { return max_health; }
 
+	int GetTotalAttack() const { return attack + bonus_attack; }
+
 	int GetAttack() const { return attack; }
+
+	int GetBonusAttack() const { return bonus_attack; }
 
 	int GetExperience() const { return experience; }
 
@@ -95,4 +108,6 @@ public:
 	void SetExperience(int new_experience) { experience = new_experience; }
 
 	void SetGold(int new_gold) { gold = new_gold; }
+
+	void SetName(const std::string& newName) { name = newName; }
 };

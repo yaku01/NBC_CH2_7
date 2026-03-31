@@ -22,14 +22,13 @@ public:
 	virtual void SetSceneData(const std::string& data) {}
 
 	void ChangeScene(SceneType scene);
-	void PushScene(SceneType scene);
-	void PushScene(SceneType scene, const std::string& path);
+	void PushScene(SceneType scene, const std::string& data = "");
 	void PopScene();
+	void ReplaceScene(SceneType scene, const std::string& data = "");
 	bool IsOpaque() const;
 
 protected:
 	std::vector<std::unique_ptr<BaseUI>> scene_uis;
 	bool is_opaque = true;
-	Character* player = nullptr;
 };
 

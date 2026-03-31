@@ -7,7 +7,6 @@
 
 class Character;
 class Monster;
-class IItem;
 
 // 테두리 있는 UI
 class BorderUI : public BaseUI
@@ -73,7 +72,7 @@ class InventoryUI : public ItemListUI
 {
 public:
 	InventoryUI(int x, int y, int w, int h);
-	~InventoryUI() = default;
+	virtual ~InventoryUI() = default;
 
 	void Render() override;
 	void ToggleActive();
@@ -120,7 +119,7 @@ class AsciiUI : public BaseUI
 {
 public:
 	AsciiUI(int x, int y);
-	~AsciiUI() = default;
+	virtual ~AsciiUI() = default;
 
 	virtual void Render() override;
 };
@@ -172,4 +171,54 @@ private:
 	std::string top_border;
 	std::string bottom_border;
 	std::unordered_map<std::string, int> kill_count_;
+};
+
+
+class UpdateUI : public BaseUI
+{
+public:
+	UpdateUI(int x, int y, int w, int h, float max_time);
+	virtual ~UpdateUI() = default;
+
+	virtual void Update(float delta_time) override;
+	virtual void Render() = 0;
+
+protected:
+	float time;
+	float max_time;
+};
+
+
+
+// 연출을 위한 ui
+class WipeUI : public UpdateUI
+{
+public:
+	WipeUI(int x, int y, int w, int h, float max_time);
+	~WipeUI() = default;
+
+	void Render() override;
+};
+
+
+
+class NoiseUI : public UpdateUI
+{
+public:
+	NoiseUI(int x, int y, int w, int h, float max_time);
+	~NoiseUI() = default;
+
+	void Update(float delta_time) override;
+	void Render() override;
+
+private:
+	const int block_w = 12;	// 블록의 가로 크기
+	const int block_h = 6;  // 블록의 세로 크기
+
+	int grid_cols;			// 가로 블록 개수
+	int grid_rows;			// 세로 블록 개수
+	int total_blocks;		// 총 블록 개수
+
+	std::vector<int> indices;		// 화면내 그리드를 1차원 index로 봄
+	std::vector<bool> is_filled;	// index가 채워졌는지 확인
 };

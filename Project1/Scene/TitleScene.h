@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseScene.h"
+#include <string>
 
 class TitleScene : public BaseScene
 {
@@ -10,5 +11,8 @@ public:
 	void SetMenu() override;
 	void ProcessEvent(const Event& e) override;
 	void Update(float delta_time) override;
+
+private:
+	std::string name;
 };
 

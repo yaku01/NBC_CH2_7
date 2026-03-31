@@ -9,5 +9,5 @@ AttackBoost::AttackBoost() : attack_increase(10), ConsumableItem("Attack Boost",
 
 void AttackBoost::Use(Character& target) 
 {
-	target.IncreaseAttack(attack_increase);
+	target.ApplyAttackBuff(attack_increase);
 }

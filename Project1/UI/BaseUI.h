@@ -20,6 +20,7 @@ public:
 	bool IsVisible() const;
 
 	virtual void Render() = 0;
+	virtual void Update(float delta_time) {}
 
 	//전체 로그 저장용 
 	std::deque<std::string> all_contents; 

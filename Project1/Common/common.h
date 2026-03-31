@@ -1,10 +1,12 @@
 #pragma once
 #define NOMINMAX
 #include <string>
+#include <vector>
 
 namespace RandomUtil {
 	int GetRange(int min, int max);
 	bool IsSuccess(double probability);
+	void Shuffle(std::vector<int>& v);
 }
 
 enum class UIType {
@@ -22,10 +24,17 @@ enum class EventType {
 	ChangeScene,	// »õ·Î¿î ¾ÀÀ¸·Î ÀüÈ¯
 	PushScene,		// ÇöÀç ¾ÀÀ» ¸ØÃß°í »õ·Î¿î ¾À ¶ç¿ò
 	PopScene,		// ÇöÀç ¾À ²ô°í ¾Æ·¡¿¡ ÀÖ´ø ¾ÀÀ¸·Î º¹±Í
+	ReplaceScene,
 	Quit
 };
 
-enum class SceneOp { Change, Push, Pop, None };
+enum class SceneOp { 
+	Change,
+	Push, 
+	Pop, 
+	Replace,
+	None 
+};
 
 enum class SceneType {
 	Title,
@@ -34,6 +43,7 @@ enum class SceneType {
 	Battle,
 	Exit,
 	Shop,
+	Encounter,
 	None
 };
 

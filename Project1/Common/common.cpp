@@ -1,5 +1,6 @@
 #include "common.h"
 #include <random>
+#include <algorithm>
 
 namespace {
 	std::random_device rd;
@@ -17,6 +18,11 @@ namespace RandomUtil{
 	{
 		std::uniform_real_distribution<double> urd(0.0, 1.0);
 		return urd(gen) < probability;
+	}
+
+	void Shuffle(std::vector<int>& v)
+	{
+		std::shuffle(v.begin(), v.end(), gen);
 	}
 }
 

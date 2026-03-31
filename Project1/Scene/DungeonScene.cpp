@@ -35,10 +35,15 @@ void DungeonScene::ProcessNormalEvent(const Event& e)
 
     switch (e.key_code) {
     case '1':
+    {
         UIManager::GetInstance().AddContent(UIType::Log, "[조우] 몬스터와 조우했습니다!");
-        PushScene(SceneType::Battle);
+        int next_scene = static_cast<int>(SceneType::Battle);
+        float max_time = 3.f;
+
+        PushScene(SceneType::Encounter, std::to_string(next_scene) + " " + std::to_string(max_time));
         break;
-    
+    }
+
     case '2':
         UIManager::GetInstance().AddContent(UIType::Log, "[이동] 마을로 귀환합니다...");
         ChangeScene(SceneType::Town);

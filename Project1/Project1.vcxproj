@@ -127,10 +127,12 @@
   <ItemGroup>
     <ClInclude Include="DropTable.h" />
     <ClInclude Include="Core\ItemDataBase.h" />
+    <ClInclude Include="Scene\EncounterScene.h" />
     <ClInclude Include="Items\Equippable\Armor.h" />
     <ClInclude Include="Items\Consumable\ConsumableItem.h" />
     <ClInclude Include="Items\Equippable\EquippableItem.h" />
     <ClInclude Include="Items\Equippable\Sword.h" />
+    <ClInclude Include="SaveLoadManager.h" />
     <ClInclude Include="Scene\ItemUsableScene.h" />
     <ClInclude Include="MonsterFactory.h" />
     <ClInclude Include="Core\ResourceManager.h" />
@@ -145,8 +147,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\ItemDataBase.cpp" />
+    <ClCompile Include="Scene\EncounterScene.cpp" />
     <ClCompile Include="Items\Equippable\Armor.cpp" />
     <ClCompile Include="Items\Equippable\Sword.cpp" />
+    <ClCompile Include="SaveLoardManager.cpp" />
     <ClCompile Include="Scene\ItemUsableScene.cpp" />
     <ClCompile Include="MonsterFactory.cpp" />
     <ClCompile Include="Core\ResourceManager.cpp" />
@@ -193,6 +197,9 @@
     <ClInclude Include="UI\BaseUI.h" />
     <ClInclude Include="UI\GameUI.h" />
     <ClInclude Include="UI\UIManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="save.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

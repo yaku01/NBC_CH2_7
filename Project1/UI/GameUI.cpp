@@ -85,9 +85,11 @@ void CharacterInfoUI::Render()
     std::string level_text = "Level : " + std::to_string(player.GetLevel());
     std::string exp_text = "Exp : " + std::to_string(player.GetExperience()) + " / " + std::to_string(100);
 
-    // GetStatus()가 Status 객체를 반환하고 내부에서 operator[]를 오버로딩했으므로 바로 사용 가능합니다.
     std::string hp_text = "Hp : " + std::to_string(player.GetHealth()) + " / " + std::to_string(player.GetMaxHealth());
     std::string atk_text = "Atk : " + std::to_string(player.GetAttack());
+    if (player.GetBonusAttack() > 0) {
+        atk_text += (" + " + std::to_string(player.GetBonusAttack()));
+    }
     std::string gold_text = "Gold : " + std::to_string(player.GetGold());
 
     int text_x = start_x + 2;
@@ -458,4 +460,111 @@ void KillBoardUI::Render()
 void KillBoardUI::AddKill(const std::string& monster_name)   // 킬보드에 킬 추가
 {
     ++kill_count_[monster_name];
+}
+
+
+
+UpdateUI::UpdateUI(int x, int y, int w, int h, float max_time) : BaseUI(x, y, w, h), time(0.f), max_time(max_time)
+{
+}
+
+void UpdateUI::Update(float delta_time)
+{
+    time += delta_time;
+    if (time >= max_time) {
+        time = max_time;
+    }
+}
+
+
+
+WipeUI::WipeUI(int x, int y, int w, int h, float max_time) : UpdateUI(x, y, w, h, max_time)
+{
+}
+
+void WipeUI::Render()
+{
+    float progress = time / max_time;   // 0.0 ~ 1.0 으로 변환
+    int length = static_cast<int>(width * progress);
+
+    // 홀수 줄 왼->오  >>>>
+    std::string odd_line = std::string(length, '>');
+    for (int i = 1; i < height; i += 2) {
+        RenderSystem::GetInstance().PrintText(start_x, start_y + i, odd_line);
+    }
+
+    // 짝수 줄 오->왼  <<<<
+    std::string even_line = std::string(length, '<');
+    for (int i = 0; i < height; i += 2) {
+        RenderSystem::GetInstance().PrintText(width - length, start_y + i, even_line);
+    }
+}
+
+
+
+NoiseUI::NoiseUI(int x, int y, int w, int h, float max_time) : UpdateUI(x, y, w, h, max_time)
+{
+    // (A + B - 1) / B  -> 올림처리
+    grid_cols = (width + block_w - 1) / block_w;
+    grid_rows = (height + block_h - 1) / block_h;
+    total_blocks = grid_cols * grid_rows;
+
+    is_filled.assign(total_blocks, false);
+    indices.reserve(total_blocks);
+
+    for (int i = 0; i < total_blocks; ++i) {
+        indices.push_back(i);
+    }
+
+    // 무작위로 섞기
+    RandomUtil::Shuffle(indices);
+}
+
+void NoiseUI::Update(float delta_time)
+{
+    UpdateUI::Update(delta_time);
+
+    float progress = time / max_time;   // 0.0 ~ 1.0 으로 변환
+
+    // 채워야 하는 개수
+    int target_count = static_cast<int>(total_blocks * progress);
+
+    // 현재 채운 개수
+    int current_count = total_blocks - static_cast<int>(indices.size());
+
+    while (current_count < target_count && !indices.empty()) {
+        int idx = indices.back();
+        indices.pop_back();
+
+        is_filled[idx] = true;
+        ++current_count;
+    }
+}
+
+void NoiseUI::Render()
+{
+    for (int i = 0; i < total_blocks; ++i) {
+        if (!is_filled[i]) {
+            continue;
+        }
+
+        // 1차원을 2차원으로 변환
+        // 너비로 나머지 연산을 하면 열, 나누기를 하면 행
+        int col = i % grid_cols;
+        int row = i / grid_cols;
+
+        // 시작 좌표
+        int dx = start_x + (col * block_w);
+        int dy = start_y + (row * block_h);
+        
+        // UI 영역 끝부분 넘어가지 않게 사이즈 조절
+        int w = std::min(block_w, width - (col * block_w));
+        int h = std::min(block_h, height - (row * block_h));
+
+        std::string block_text(w, '#');
+
+        for (int cy = 0; cy < h; ++cy) {
+            RenderSystem::GetInstance().PrintText(dx, dy + cy, block_text);
+        }
+    }
 }

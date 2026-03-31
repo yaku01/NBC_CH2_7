@@ -20,7 +20,7 @@ void BattleScene::Init()
 
 	int monster_count = RandomUtil::GetRange(MIN_MONSTER_COUNT, MAX_MONSTER_COUNT);
 	for (int i = 0; i < monster_count; ++i) {
-		monsters.push_back(MonsterFactory::RandomCreateMonster(player->GetLevel()));
+		monsters.push_back(MonsterFactory::RandomCreateMonster(Character::GetInstance().GetLevel()));
 	}
 
 	if (!battle_manager || monsters.empty()) {
@@ -141,6 +141,7 @@ void BattleScene::Release()
 	BaseScene::Release();
 	monsters.clear();
 	monster_uis.clear();
+	Character::GetInstance().ClearBuffs();
 }
 
 // private 함수
@@ -186,7 +187,7 @@ void BattleScene::ProcessTargetPhase(int key_code)
 		// 전투 종료 판단
 		if (battle_manager->IsBattleOver()) {
 			// 플레이어 사망으로 종료라면
-			if (player->IsDead()) {
+			if (Character::GetInstance().IsDead()) {
 				UIManager::GetInstance().AddContent(UIType::Log, "게임 오버! 타이틀로 돌아갑니다...");
 				ChangeScene(SceneType::Title);
 				return;

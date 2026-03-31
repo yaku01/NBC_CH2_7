@@ -11,13 +11,11 @@
     <ClCompile Include="Scene\ShopScene.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="Troll.cpp" />
-    <ClCompile Include="Items\AttackBoost.cpp" />
     <ClCompile Include="Characters\Character.cpp" />
     <ClCompile Include="Common\common.cpp" />
     <ClCompile Include="Core\GameManager.cpp" />
     <ClCompile Include="Core\RenderSystem.cpp" />
     <ClCompile Include="GamePlay\Battle\BattleManager.cpp" />
-    <ClCompile Include="Items\HealthPotioin.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scene\BaseScene.cpp" />
     <ClCompile Include="Scene\BattleScene.cpp" />
@@ -29,6 +27,15 @@
     <ClCompile Include="UI\UIManager.cpp" />
     <ClCompile Include="Scene\ItemUsableScene.cpp" />
     <ClCompile Include="Core\ItemDataBase.cpp" />
+    <ClCompile Include="Items\Equippable\Armor.cpp" />
+    <ClCompile Include="Items\Equippable\Sword.cpp" />
+    <ClCompile Include="Items\Consumable\AttackBoost.cpp" />
+    <ClCompile Include="Items\Consumable\HealthPotioin.cpp" />
+
+    <ClCompile Include="Scene\EncounterScene.cpp" />
+
+    <ClCompile Include="SaveLoardManager.cpp" />
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DropTable.h" />
@@ -47,8 +54,6 @@
     <ClInclude Include="Core\GameManager.h" />
     <ClInclude Include="Core\RenderSystem.h" />
     <ClInclude Include="GamePlay\Battle\BattleManager.h" />
-    <ClInclude Include="Items\AttackBoost.h" />
-    <ClInclude Include="Items\HealthPotion.h" />
     <ClInclude Include="Items\Item.h" />
     <ClInclude Include="Items\ItemFactory.h" />
     <ClInclude Include="Scene\BaseScene.h" />
@@ -61,5 +66,19 @@
     <ClInclude Include="UI\UIManager.h" />
     <ClInclude Include="Scene\ItemUsableScene.h" />
     <ClInclude Include="Core\ItemDataBase.h" />
+    <ClInclude Include="Items\Equippable\Armor.h" />
+    <ClInclude Include="Items\Consumable\ConsumableItem.h" />
+    <ClInclude Include="Items\Equippable\EquippableItem.h" />
+    <ClInclude Include="Items\Equippable\Sword.h" />
+    <ClInclude Include="Items\Consumable\AttackBoost.h" />
+    <ClInclude Include="Items\Consumable\HealthPotion.h" />
+
+    <ClInclude Include="Scene\EncounterScene.h" />
+
+    <ClInclude Include="SaveLoadManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="save.txt" />
+
   </ItemGroup>
 </Project>

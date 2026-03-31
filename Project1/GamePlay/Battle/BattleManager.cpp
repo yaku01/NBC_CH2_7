@@ -6,11 +6,7 @@
 #include "Common/common.h"
 #include "Items/ItemFactory.h"
 
-
-BattleManager::BattleManager(Character* p) : player(p)
-{
-}
-
+BattleManager::BattleManager() = default;
 BattleManager::~BattleManager() = default;
 
 void BattleManager::Release()
@@ -38,7 +34,8 @@ void BattleManager::Init(const std::vector<std::unique_ptr<Monster>>& monsters)
 
 void BattleManager::PlayerAttack(size_t target)
 {
-	if (!player || player->IsDead()) {
+	auto& player = Character::GetInstance();
+	if (player.IsDead()) {
 		return;
 	}
 
@@ -54,7 +51,7 @@ void BattleManager::PlayerAttack(size_t target)
 		return;
 	}
 
-	int damage = player->GetAttack();
+	int damage = player.GetTotalAttack();
 	monster->TakeDamage(damage);
 	
 	UIManager::GetInstance().AddContent(UIType::Log,
@@ -86,19 +83,20 @@ void BattleManager::PlayerAttack(size_t target)
 
 void BattleManager::MonstersAttack()
 {
-	if (!player || player->IsDead()) {
+	auto& player = Character::GetInstance();
+	if (player.IsDead()) {
 		return;
 	}
 
 	for (Monster* monster : monsters) {
 		if (monster && !monster->IsDead()) {
 			int damage = monster->GetAttack();
-			player->TakeDamage(damage);
+			player.TakeDamage(damage);
 
 			UIManager::GetInstance().AddContent(UIType::Log,
 				"[피격] " + std::string(monster->GetName()) + "에게 " + std::to_string(damage) + "의 피해를 받았습니다!");
 
-			if (player->IsDead()) {
+			if (player.IsDead()) {
 				UIManager::GetInstance().AddContent(UIType::Log,
 					"[사망] " + std::string(monster->GetName()) + "에 의해 사망하였습니다...");
 				break;
@@ -109,7 +107,8 @@ void BattleManager::MonstersAttack()
 
 bool BattleManager::IsBattleOver() const
 {
-	if (!player || player->IsDead()) {
+	auto& player = Character::GetInstance();
+	if (player.IsDead()) {
 		return true;
 	}
 
@@ -128,12 +127,13 @@ bool BattleManager::IsPlayerWin() const
 
 void BattleManager::DistributedReward()
 {
-	if (!player || player->IsDead()) {
+	auto& player = Character::GetInstance();
+	if (player.IsDead()) {
 		return;
 	}
 
-	player->GainExp(total_exp);
-	player->GainGold(total_gold);
+	player.GainExp(total_exp);
+	player.GainGold(total_gold);
 
 	UIManager::GetInstance().AddContent(UIType::Log,
 		"[보상] 경험치를 " + std::to_string(total_exp) + ", 골드를 " + std::to_string(total_gold) + "획득하였습니다!");
@@ -143,7 +143,7 @@ void BattleManager::DistributedReward()
 		UIManager::GetInstance().AddContent(UIType::Log,
 			"[보상] " + item->GetName() + "을 획득하였습니다!");
 
-		player->AddItem(std::move(item));
+		player.AddItem(std::move(item));
 	}
 	items.clear();
 }
