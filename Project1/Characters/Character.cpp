@@ -247,7 +247,10 @@ std::unique_ptr<IItem> Character::EquipArmor(std::unique_ptr<IItem> new_armor)
 		std::cout << "이 아이템은 방어구가 아닙니다." << std::endl;
 		return new_armor; // 잘못된 아이템 반환
 	}
-	
+
+    // 방어구 장착 전 체력 저장
+    int prev_health = health;
+  
 	// 장착한 방어구가 존재하면
 	std::unique_ptr<IItem> old_armor = UnequipArmor(); // 기존 방어구 제거
 
@@ -258,6 +261,12 @@ std::unique_ptr<IItem> Character::EquipArmor(std::unique_ptr<IItem> new_armor)
 		auto* armor = static_cast<EquippableItem*>(equipped_armor.get());
 		armor->Equip(*this); // 새 방어구 장착
 	}
+
+    // 방어구 장착으로 최대 체력이 감소했을 때, 현재 체력을 최대 체력에 맞게 조정
+    if(prev_health > health)
+    {
+        health = (prev_health > max_health) ? max_health : prev_health;
+    }
 
 	return old_armor; // 이전에 장착했던 방어구 반환
 }
