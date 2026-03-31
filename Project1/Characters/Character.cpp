@@ -7,6 +7,7 @@
 
 #include "Item.h"
 #include "Equippable/EquippableItem.h"
+#include "Consumable/ConsumableItem.h"
 
 Character::Character(std::string name) 
 	: name(name), level(1), health(200), max_health(200), attack(30), bonus_attack(0), experience(0),
@@ -57,6 +58,35 @@ void Character::AddItem(std::unique_ptr<IItem> item)
 		std::cout << "잘못된 아이템 아이디 입니다." << std::endl;
 		return;
 	}
+	
+	// 소비 아이템인 경우
+	if(item->GetType () == ItemType::Consumable)
+	{
+		auto* new_item = static_cast<ConsumableItem*>(item.get());
+
+		// 이미 인벤토리에 같은 소비 아이템이 있는지 확인
+		for (auto& inv_item : inventory)
+		{
+			if (inv_item->GetID() == item->GetID() && inv_item->GetType() == ItemType::Consumable)
+			{
+				auto* existing_item = static_cast<ConsumableItem*>(inv_item.get());
+				int available_space = existing_item->GetMaxCount() - existing_item->GetCount();	
+
+				// 기존 아이템에 추가할 수 있는 공간이 있다면 새 아이템에서 개수를 옮겨 담음
+				if (available_space > 0)
+				{
+					int transfer_count = std::min(available_space, new_item->GetCount());
+					existing_item->AddCount(transfer_count);
+					new_item->AddCount(-transfer_count); // 새 아이템에서 사용한 개수만큼 감소
+
+					if (new_item->GetCount() <= 0)
+					{
+						return; // 모든 아이템이 기존 아이템에 합쳐졌으므로 추가할 필요 없음
+					}
+				}
+			}
+		}
+	}
 	inventory.push_back(std::move(item));
 }
 
@@ -70,8 +100,14 @@ void Character::UseItem(size_t index)
 
 	if(inventory[index]->GetType() == ItemType::Consumable)
 	{
-		inventory[index]->Use(*this);
-		inventory.erase(inventory.begin() + index); // 사용한 아이템 제거
+		auto* consumable = static_cast<ConsumableItem*>(inventory[index].get());
+		consumable->Use(*this);
+
+		// 소비 아이템은 개수가 0이 되면 인벤토리에서 제거
+		if (consumable->GetCount() <= 0) 
+		{
+			inventory.erase(inventory.begin() + index);
+		}
 	}
 
 	else if(inventory[index]->GetType() == ItemType::Weapon)
