@@ -12,7 +12,7 @@
 Character::Character(std::string name) 
 
 	: name(name), level(1), health(200), max_health(200), attack(30), bonus_attack(0), experience(0),
-	gold(0), equipped_weapon(nullptr), equipped_armor(nullptr) {}
+	gold(0), equipped_weapon(nullptr), equipped_armor(nullptr), speed(1.f) {}
 
 
 // 싱글톤
@@ -51,6 +51,7 @@ void Character::LevelUp()
 	max_health += level * 20;		// 레벨에 비례하여 상승
 	health = max_health;			// 체력을 최대치로 회복
 	attack += level * 5;			// 공격력 증가
+    speed += 0.2f;
 }
 
 void Character::AddItem(std::unique_ptr<IItem> item)

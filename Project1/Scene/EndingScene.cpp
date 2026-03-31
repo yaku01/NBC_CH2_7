@@ -103,6 +103,31 @@ bool EndingScene::IsExitable() const
 
 
 // private 함수
+int EndingScene::GetVisualWidth(const std::string& str)
+{
+    if (str.empty()) {
+        return 0;
+    }
+
+    int wlen = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
+    if (wlen <= 0) {
+        return 0;
+    }
+
+    std::wstring wstr(wlen, 0);
+    MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, &wstr[0], wlen);
+
+    int visual_width = 0;
+    for (wchar_t wc : wstr) {
+        if (wc == L'\0') {
+            break;
+        }
+        // 영어(ASCII)는 1칸, 한글 등 그 외의 문자는 2칸으로 계산
+        visual_width += (wc <= 127) ? 1 : 2;
+    }
+    return visual_width;
+}
+
 void EndingScene::SetCenteredString(const std::string& text)
 {
 	if (!ending_ui) {
@@ -110,7 +135,7 @@ void EndingScene::SetCenteredString(const std::string& text)
 	}
 
 	int width = ending_ui->GetWidth();
-	int blank_count = (width - static_cast<int>(text.length())) / 2 - 2;
+	int blank_count = (width - GetVisualWidth(text)) / 2 - 2;
 
 	if (blank_count > 0) {
 		ending_ui->AddContents(std::string(blank_count, ' ') + text);

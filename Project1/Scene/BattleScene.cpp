@@ -13,6 +13,8 @@
 
 constexpr int MIN_MONSTER_COUNT = 1;
 constexpr int MAX_MONSTER_COUNT = 3;
+constexpr int INTENSITY = 1;
+constexpr float DURATION = 0.3f;
 
 
 BattleScene::BattleScene() = default;
@@ -21,6 +23,8 @@ BattleScene::~BattleScene() = default;
 void BattleScene::Init()
 {
 	battle_manager = GameManager::GetInstance().GetBattleManager();
+    player_turn = false;
+    monster_turn_idx = -1;
 
 	int monster_count = 1;
 	if (is_boss_battle) {
@@ -39,7 +43,7 @@ void BattleScene::Init()
 	}
 
 	battle_manager->Init(monsters);
-	current_state = BattleState::Act;
+	current_state = BattleState::Wait;
 
 	// -----------
 	//배경
@@ -51,9 +55,8 @@ void BattleScene::Init()
 	int center = 20;
 	// ----------------
 	// 플레이어 아스키 아트  x : 5, y : 20
-	player_ui = std::make_unique<CharacterUI>(5, center);
-	player_ui->LoadAsciiArt("Resource/Player.txt");    
-	player_ui->SetTarget(&Character::GetInstance()); 
+	player_ui = std::make_unique<BattleUnitUI>(5, center);
+	player_ui->LoadAsciiArt("Resource/Player.txt"); 
 
 	// 몬스터 아스키 아트
 	int diff = 15;
@@ -77,9 +80,8 @@ void BattleScene::Init()
 
 
 	for (int i = 0; i < monster_count; ++i) {
-		auto monster_ui = std::make_unique<MonsterUI>(45, position[i]);
+		auto monster_ui = std::make_unique<BattleUnitUI>(45, position[i]);
 		monster_ui->LoadAsciiArt(monsters[i]->GetAsciiArtPath());
-		monster_ui->SetTarget(monsters[i].get());
 		monster_uis.push_back(std::move(monster_ui));
 	}
 	// ----------------
@@ -92,6 +94,10 @@ void BattleScene::SetMenu()
 	UIManager::GetInstance().ClearContent(UIType::Menu);
 
 	switch (current_state) {
+    case BattleState::Wait:
+        UIManager::GetInstance().AddContent(UIType::Menu, "턴을 기다리는 중입니다...");
+        break;
+
 	case BattleState::Act:
 		UIManager::GetInstance().AddContent(UIType::Menu, "1. 공격한다   0. 도망친다");
 		UIManager::GetInstance().AddContent(UIType::Menu, "전투 행동을 선택하세요: ");
@@ -112,9 +118,6 @@ void BattleScene::SetMenu()
 		break;
 	}
 
-	case BattleState::UseItem:
-		// 아이템 사용 등 아군 선택
-		break;
 	}
 }
 
@@ -132,16 +135,73 @@ void BattleScene::ProcessEvent(const Event& e)
 	case BattleState::TargetEnemy:
 		ProcessTargetPhase(e.key_code);
 		break;
-
-	case BattleState::UseItem:
-		ProcessItemPhase(e.key_code);
-		break;
 	}
 	SetMenu();
 }
 
 void BattleScene::Update(float delta_time)
 {
+    if (player_ui) {
+        player_ui->Update(delta_time);
+    }
+    
+    for (auto& ui : monster_uis) {
+        if (ui) {
+            ui->Update(delta_time);
+        }
+    }
+    
+    bool is_hit_stop = false;
+    if (player_ui && player_ui->IsShake()) {
+        is_hit_stop = true;
+    }
+    for (auto& ui : monster_uis) {
+        if (ui && ui->IsShake()) {
+            is_hit_stop = true;
+        }
+    }
+
+    if (is_hit_stop) {
+        return;
+    }
+
+    // 행동력 갱신은 Wait일때만
+    if (current_state != BattleState::Wait) {
+        return;
+    }
+
+    // 행동력 갱신
+    battle_manager->UpdateGauge(delta_time, player_turn, monster_turn_idx);
+
+    // UI 갱신
+    if (player_ui) {
+        player_ui->SetStatus(Character::GetInstance().GetHealth(),
+            Character::GetInstance().GetMaxHealth(), battle_manager->GetPlayerGauge());
+    }
+    for (size_t i = 0; i < monsters.size(); ++i) {
+        if (monsters[i] && !monsters[i]->IsDead()) {
+            monster_uis[i]->SetStatus(monsters[i]->GetHealth(),
+                monsters[i]->GetMaxHealth(), battle_manager->GetMonsterGauge(i));
+        }
+    }
+
+    // 플레이어 턴이면
+    if (player_turn) {
+        current_state = BattleState::Act;
+        SetMenu();
+    }
+    // -1이 아니면 idx에 해당하는 몬스터 턴
+    else if (monster_turn_idx != -1) {
+        battle_manager->SingleMonsterAttck(monster_turn_idx);
+        player_ui->Shake(DURATION, INTENSITY);
+
+        if (battle_manager->IsBattleOver()) {
+            if (Character::GetInstance().IsDead()) {
+                ChangeScene(SceneType::Title);
+                return;
+            }
+        }
+    }
 }
 
 void BattleScene::Render()
@@ -219,10 +279,11 @@ void BattleScene::ProcessTargetPhase(int key_code)
 		// 플레이어 공격
 		battle_manager->PlayerAttack(static_cast<size_t>(idx));
 
-		// 몬스터 공격
-		if (!battle_manager->IsBattleOver()) {
-			battle_manager->MonstersAttack();
-		}
+        // 몬스터 흔들기
+        monster_uis[idx]->Shake(DURATION, INTENSITY);
+
+        // 플레이어 행동력 초기화
+        battle_manager->ResetPlayerGauge();
 
 		if (monsters[idx]->IsDead()) {
 			monster_uis[idx]->SetVisible(false);
@@ -230,34 +291,17 @@ void BattleScene::ProcessTargetPhase(int key_code)
 
 		// 전투 종료 판단
 		if (battle_manager->IsBattleOver()) {
-			// 플레이어 사망으로 종료라면
-			if (Character::GetInstance().IsDead()) {
-				LogManager::GetInstance().AddLog( "게임 오버! 타이틀로 돌아갑니다...");
-
-				auto& player = Character::GetInstance();
-				SaveLoadManager::Save(player);
-				LogManager::GetInstance().SaveLogToFile("Log/Log.txt", player.GetName());
-				ChangeScene(SceneType::Title);
-				return;
-			}
-			else {	// 플레이어 승리라면
-                if (is_boss_battle) {
-                    ChangeScene(SceneType::Ending);
-                }
-                else {
-                    battle_manager->DistributedReward();
-                    DungeonMapState::SetRandomBattleMap();
-                    ChangeScene(SceneType::Dungeon);
-                }
-				return;
-			}
+            if (is_boss_battle) {
+                ChangeScene(SceneType::Ending);
+            }
+            else {
+                battle_manager->DistributedReward();
+                DungeonMapState::SetRandomBattleMap();
+                ChangeScene(SceneType::Dungeon);
+            }
 		}
 		else {
-			current_state = BattleState::Act;
+			current_state = BattleState::Wait;
 		}
 	}
-}
-
-void BattleScene::ProcessItemPhase(int key_code)
-{
 }

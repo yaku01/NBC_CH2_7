@@ -20,6 +20,7 @@ void TitleScene::Init()
 
     UIManager::GetInstance().SetAllVisible(false);
     UIManager::GetInstance().SetVisible(UIType::Menu, true);
+    UIManager::GetInstance().ClearAll();
 
     SetMenu();
 }

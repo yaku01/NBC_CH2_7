@@ -7,6 +7,7 @@ Troll::Troll(int level) : Monster(level) {
     maxhealth = level * 80;
     health = maxhealth;
     attack = level * 10;
+    speed = 1.f;
 
     droptable.addItem(ItemID::HealthPotion, 0.3);
     droptable.addItem(ItemID::AttackBoost, 0.3);

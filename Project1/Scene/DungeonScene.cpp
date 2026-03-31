@@ -45,10 +45,10 @@ void DungeonScene::ProcessNormalEvent(const Event& e)
 
         // data가 1이면 보스전 진입
         if (Character::GetInstance().IsMaxLevel()) {
-            PushScene(SceneType::Encounter, SceneType::Battle, 2.f, 1);
+            PushScene(SceneType::Encounter, SceneType::Battle, 1.5f, 1);
         }
         else {
-            PushScene(SceneType::Encounter, SceneType::Battle, 2.f, 0);
+            PushScene(SceneType::Encounter, SceneType::Battle, 1.5f, 0);
         }
         break;
 

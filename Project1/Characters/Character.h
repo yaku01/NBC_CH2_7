@@ -17,6 +17,7 @@ private:
 	int bonus_attack;
 	int experience;
 	int gold;
+    float speed;
 	std::vector<std::unique_ptr<IItem>> inventory; 
 	std::unique_ptr<IItem> equipped_weapon;
 	std::unique_ptr<IItem> equipped_armor;
@@ -98,6 +99,8 @@ public:
 	const IItem* GetEquippedWeapon() const { return equipped_weapon.get(); }
 
 	const IItem* GetEquippedArmor() const { return equipped_armor.get(); }
+
+    float GetSpeed() const { return speed; }
 
 	// setters
 	void SetLevel(int new_level) { level = new_level; }

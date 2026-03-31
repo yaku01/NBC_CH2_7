@@ -55,6 +55,7 @@ void TownScene::ProcessNormalEvent(const Event& e)
 
     case '.':
         Character::GetInstance().GainExp(100);
+        Character::GetInstance().GainGold(555);
         break;
          
     default:

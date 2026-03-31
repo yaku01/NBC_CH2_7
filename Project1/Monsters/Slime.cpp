@@ -7,6 +7,7 @@ Slime::Slime(int level) : Monster(level) {
     maxhealth = level * 30;
     health = maxhealth;
     attack = level * 5;
+    speed = 1.2f;
 
     droptable.addItem(ItemID::HealthPotion, 0.3);
     droptable.addItem(ItemID::AttackBoost, 0.3);

@@ -9,6 +9,7 @@ Goblin::Goblin(int level) : Monster(level) {
     maxhealth = level * 100;
     health = maxhealth;
     attack = level * 15;
+    speed = 0.8f;
 
     droptable.addItem(ItemID::HealthPotion, 0.3);
     droptable.addItem(ItemID::AttackBoost, 0.3);

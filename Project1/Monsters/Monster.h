@@ -9,7 +9,7 @@ using namespace std;
 
 class Monster {
 public:
-	Monster(int level) : level(level), health(1), attack(1), maxhealth(1),is_active(true){}
+    Monster(int level) : level(level), health(1), attack(1), maxhealth(1), is_active(true), speed(1.f) {}
     virtual ~Monster(){}
     virtual void TakeDamage(int damage) = 0;
     vector<ItemID> GetDropItems() {
@@ -41,6 +41,10 @@ public:
 
     int GetMaxHealth() const { 
         return maxhealth;
+    }
+
+    float GetSpeed() const {
+        return speed;
     }
      
     // setter 함수
@@ -75,6 +79,6 @@ protected:
     DropTable droptable;
     bool is_active;
     int maxhealth;
-    string file_path;
+    float speed;
 };
 

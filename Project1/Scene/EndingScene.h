@@ -33,6 +33,7 @@ private:
 	const float BLINK_INTERVAL = 0.5f;
 	float blink_timer = 0.f;
 
+    int GetVisualWidth(const std::string& str);
 	void SetCenteredString(const std::string& text);
 };
 

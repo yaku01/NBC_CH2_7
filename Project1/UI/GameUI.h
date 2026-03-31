@@ -125,33 +125,29 @@ public:
 };
 
 
-// 아스키아트 + info 출력하는 UI
-// Character와 Monster의 상위 클래스가 있다면 아래 두 클래스 합치기 가능
-class CharacterUI : public AsciiUI
+// 전투 UI
+class BattleUnitUI : public AsciiUI
 {
 public:
-	CharacterUI(int x, int y);
-	~CharacterUI() = default;
+    BattleUnitUI(int x, int y);
+	~BattleUnitUI() = default;
 
+    void Update(float delta_time) override;
 	void Render() override;
-	void SetTarget(const Character* target);
+    void SetStatus(int hp, int max_hp, float gauge);
+    void Shake(float duration, int intensity);
+    bool IsShake() const;
 
 private:
-	const Character* target = nullptr;
-};
+    int hp = 0;
+    int max_hp = 0;
+    float gauge = 0.f;
 
-
-class MonsterUI : public AsciiUI
-{
-public:
-	MonsterUI(int x, int y);
-	~MonsterUI() = default;
-
-	void Render() override;
-	void SetTarget(const Monster* target);
-
-private:
-	const Monster* target = nullptr;
+    // 떨림 관련 변수
+    float shake_timer = 0.f;        // 지속시간
+    int offset_x = 0;               // x offset
+    int offset_y = 0;               // y offset
+    int intensity = 0;              // 강도
 };
 
 

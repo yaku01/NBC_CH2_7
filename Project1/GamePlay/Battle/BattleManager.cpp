@@ -31,6 +31,9 @@ void BattleManager::Init(const std::vector<std::unique_ptr<Monster>>& monsters)
 	total_exp = 0;
 	total_gold = 0;
 	items.clear();
+
+    player_gauge = 0.f;
+    monster_gauges.assign(monsters.size(), 0.f);
 }
 
 void BattleManager::PlayerAttack(size_t target)
@@ -147,4 +150,75 @@ void BattleManager::DistributedReward()
 		player.AddItem(std::move(item));
 	}
 	items.clear();
+}
+
+void BattleManager::UpdateGauge(float delta_time, bool& player_turn, int& monster_turn_idx)
+{
+    player_turn = false;
+    monster_turn_idx = -1;
+
+    Character& player = Character::GetInstance();
+
+    // 플레이어 행동력 가득차면 플레이어 턴 부여
+    // Update 중지
+    player_gauge += player.GetSpeed() * delta_time;
+    if (player_gauge >= 1.f) {
+        player_turn = true;
+        return;
+    }
+
+    for (size_t i = 0; i < monster_gauges.size(); ++i) {
+        if (monsters[i] && !monsters[i]->IsDead()) {
+            monster_gauges[i] += monsters[i]->GetSpeed() * delta_time;
+
+            // 몬스터 행동력이 가득차면 즉시 공격
+            // 한프레임에 한마리씩 공격
+            if (monster_gauges[i] >= 1.f) {
+                monster_turn_idx = static_cast<int>(i);
+                monster_gauges[i] = 0.f;
+                return;
+            }
+        }
+    }
+}
+
+void BattleManager::ResetPlayerGauge()
+{
+    player_gauge = 0.f;
+}
+
+void BattleManager::SingleMonsterAttck(size_t idx)
+{
+    Character& player = Character::GetInstance();
+
+    if (player.IsDead()) {
+        return;
+    }
+
+    Monster* monster = monsters[idx];
+    if (monster && !monster->IsDead()) {
+        int damage = monster->GetAttack();
+        player.TakeDamage(damage);
+    
+        LogManager::GetInstance().AddLog(
+            "[피격] " + std::string(monster->GetName()) + "에게 " + std::to_string(damage) + "의 피해를 받았습니다!");
+    
+        if (player.IsDead()) {
+            LogManager::GetInstance().AddLog(
+                "[사망] " + std::string(monster->GetName()) + "에 의해 사망하였습니다...");
+        }
+    }
+}
+
+float BattleManager::GetPlayerGauge() const
+{
+    return player_gauge;
+}
+
+float BattleManager::GetMonsterGauge(size_t idx) const
+{
+    if (idx < monsters.size()) {
+        return monster_gauges[idx];
+    }
+    return 0.f;
 }

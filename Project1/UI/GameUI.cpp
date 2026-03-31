@@ -6,7 +6,33 @@
 #include "Items/Consumable/ConsumableItem.h"
 #include "Core/ItemDataBase.h"
 #include "Core/LogManager.h"
+#include <windows.h>
 
+
+int GetVisualWidth(const std::string& str)
+{
+    if (str.empty()) {
+        return 0;
+    }
+
+    int wlen = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
+    if (wlen <= 0) {
+        return 0;
+    }
+
+    std::wstring wstr(wlen, 0);
+    MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, &wstr[0], wlen);
+
+    int visual_width = 0;
+    for (wchar_t wc : wstr) {
+        if (wc == L'\0') {
+            break;
+        }
+        // 영어(ASCII)는 1칸, 한글 등 그 외의 문자는 2칸으로 계산
+        visual_width += (wc <= 127) ? 1 : 2;
+    }
+    return visual_width;
+}
 
 BorderUI::BorderUI(int x, int y, int w, int h) : BaseUI(x, y, w, h)
 {
@@ -175,7 +201,7 @@ int ItemListUI::GetItemsPerPage() const
 
 void ItemListUI::RenderTitle(const std::string& title)
 {
-    int title_x = start_x + (width - static_cast<int>(title.length())) / 2;
+    int title_x = start_x + (width - GetVisualWidth(title)) / 2;
     RenderSystem::GetInstance().PrintText(title_x, start_y + 1, title);
 }
 
@@ -315,12 +341,16 @@ void ShopUI::Render()
 
                 // 판매는 원가의 60퍼 가격으로 책정
                 const ItemData& data = ItemDataBase::GetData(item->GetID());
-                item_text += data.name;
+
+                std::string stack_text = (item->GetType() == ItemType::Consumable) ?
+                    " x" + std::to_string(static_cast<ConsumableItem*>(item)->GetCount()) :
+                    "";
+                item_text += (data.name + stack_text);
                 gold_text = std::to_string(ItemDataBase::GetSellPrice(item->GetID())) + " Gold";
             }
 
             // 좌우 여백 2칸, 텍스트 제외하고 전부 공백 개수
-            int black_count = width - 4 - static_cast<int>(item_text.length() + gold_text.length());
+            int black_count = width - 4 - (GetVisualWidth(item_text) + GetVisualWidth(gold_text));
             if (black_count < 1) {
                 black_count = 1;
             }
@@ -362,19 +392,19 @@ void ItemConfirmUI::Render()
     // 질문 출력
     int text_y = start_y + 1;
     std::string question = data.name + "을(를) " + action_text;
-    int text_x = start_x + (width - static_cast<int>(question.length())) / 2;
+    int text_x = start_x + (width - GetVisualWidth(question)) / 2;
     RenderSystem::GetInstance().PrintText(text_x, text_y++, question);
 
     // 설명 출력
     std::string desc = data.desc;
-    text_x = start_x + (width - static_cast<int>(desc.length())) / 2;
+    text_x = start_x + (width - GetVisualWidth(desc)) / 2;
     RenderSystem::GetInstance().PrintText(text_x, text_y++, desc);
     ++text_y;
     ++text_y;
 
     // 선택지 출력
     std::string option = "[Y] YES  [N] NO";
-    text_x = start_x + (width - static_cast<int>(option.length())) / 2;
+    text_x = start_x + (width - GetVisualWidth(option)) / 2;
     RenderSystem::GetInstance().PrintText(text_x, text_y, option);
 }
 
@@ -403,55 +433,67 @@ void AsciiUI::Render()
 
 
 
-CharacterUI::CharacterUI(int x, int y) : AsciiUI(x, y), target(nullptr)
+BattleUnitUI::BattleUnitUI(int x, int y) : AsciiUI(x, y)
 {
 }
 
-void CharacterUI::Render()
+void BattleUnitUI::Update(float delta_time)
 {
-    AsciiUI::Render();
+    if (shake_timer > 0.f) {
+        shake_timer -= delta_time;;
 
-    // 체력 출력
-    if (target) {
-        std::string hp_info = "HP: " + std::to_string(target->GetHealth()) +
-            " / " + std::to_string(target->GetMaxHealth());
-
-        int info_y = start_y + static_cast<int>(contents.size()) + 1;
-        RenderSystem::GetInstance().PrintText(start_x, info_y, hp_info);
+        // 0 이하로 떨어지면 초기화
+        if (shake_timer <= 0.f) {
+            offset_x = 0;
+            offset_y = 0;
+        }
+        // 진행중이라면
+        else {
+            offset_x = RandomUtil::GetRange(-intensity, intensity);
+            offset_y = RandomUtil::GetRange(-intensity, intensity);
+        }
     }
 }
 
-void CharacterUI::SetTarget(const Character* target)
+void BattleUnitUI::Render()
 {
-    this->target = target;
-}
+    int draw_x = start_x + offset_x;
+    int draw_y = start_y + offset_y;
 
-   
-
-MonsterUI::MonsterUI(int x, int y) : AsciiUI(x, y), target(nullptr)
-{
-}
-
-void MonsterUI::Render()
-{
-    AsciiUI::Render();
-
-    // 이름 + 체력 출력
-    if (target) {
-        int info_y = start_y + static_cast<int>(contents.size()) + 1;
-
-        RenderSystem::GetInstance().PrintText(start_x, info_y++, target->GetName());
-
-        std::string hp_info = "HP: " + std::to_string(target->GetHealth()) +
-            " / " + std::to_string(target->GetMaxHealth());
-        RenderSystem::GetInstance().PrintText(start_x, info_y, hp_info);
+    for (int i = 0; i < static_cast<int>(contents.size()); ++i) {
+        RenderSystem::GetInstance().PrintText(draw_x, draw_y + i, contents[i]);
     }
+
+    int info_y = draw_y + static_cast<int>(contents.size()) + 1;
+
+    std::string hp_text = "HP: " + std::to_string(hp) +
+        " / " + std::to_string(max_hp);
+    int percent = std::min(100, static_cast<int>(gauge * 100));
+    std::string gauge_text = "ATB : " + std::to_string(percent) + "%";
+
+    RenderSystem::GetInstance().PrintText(draw_x, info_y++, hp_text);
+    RenderSystem::GetInstance().PrintText(draw_x, info_y, gauge_text);
 }
 
-void MonsterUI::SetTarget(const Monster* target)
+void BattleUnitUI::SetStatus(int hp, int max_hp, float gauge)
 {
-    this->target = target;
+    this->hp = hp;
+    this->max_hp = max_hp;
+    this->gauge = gauge;
 }
+
+void BattleUnitUI::Shake(float duration, int intensity)
+{
+    shake_timer = duration;
+    this->intensity = intensity;
+}
+
+bool BattleUnitUI::IsShake() const
+{
+    return (shake_timer > 0.f);
+}
+
+
 
 // 킬보드 UI 초기화
 KillBoardUI::KillBoardUI(int x, int y, int w, int h) : BorderUI(x, y, w, h)
