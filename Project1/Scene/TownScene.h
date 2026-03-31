@@ -1,6 +1,7 @@
 #pragma once
 #include "ItemUsableScene.h"
 
+
 class TownScene : public ItemUsableScene
 {
 public:

@@ -6,6 +6,7 @@
 #include "Characters/Character.h"
 #include "Monster.h"
 #include "MonsterFactory.h"
+#include "Core/DungeonMapState.h"
 
 constexpr int MIN_MONSTER_COUNT = 1;
 constexpr int MAX_MONSTER_COUNT = 3;
@@ -154,7 +155,8 @@ void BattleScene::ProcessActPhase(int key_code)
 
 	case '0':
 		UIManager::GetInstance().AddContent(UIType::Log, "[µµ¸Á] ¹«»çÈ÷ µµ¸ÁÃÆ½À´Ï´Ù.");
-		PopScene(); // µµ¸Á -> ÀÌÀü ¾ÀÀ¸·Î º¹±Í!
+		DungeonMapState::SetRandomBattleMap();
+		ChangeScene(SceneType::Dungeon);
 		return;
 
 	default:
@@ -194,7 +196,8 @@ void BattleScene::ProcessTargetPhase(int key_code)
 			}
 			else {	// ÇÃ·¹ÀÌ¾î ½Â¸®¶ó¸é
 				battle_manager->DistributedReward();
-				PopScene();
+				DungeonMapState::SetRandomBattleMap();
+				ChangeScene(SceneType::Dungeon);
 				return;
 			}
 		}

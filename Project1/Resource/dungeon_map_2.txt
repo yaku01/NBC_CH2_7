@@ -1,0 +1,14 @@
+||       xx            xxxxxxxx||
+||      xxxx          xxxxxxxxx||
+||      xx xx          xxxxxxxx||
+||      xxxxx           xxxxxxx||
+||       xxx             xxxxxx||
+||                        xxxxx||
+||     xxxx              xxxxx||
+||   xxxxxx            xxxxxx||
+||  xxx   xx          xxxxxxx||
+|| xxx     xx        xxxxxxxx||
+|| xx      xx      xxxxxxxxxx||
+|| xxx    xxx    xxxxxxxxxxxx||
+||  xxxxxxxx   xxxxxxxxxxxxxx||
+================================

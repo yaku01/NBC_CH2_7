@@ -32,6 +32,7 @@
     <ClCompile Include="Items\Consumable\AttackBoost.cpp" />
     <ClCompile Include="Items\Consumable\HealthPotioin.cpp" />
     <ClCompile Include="Scene\EncounterScene.cpp" />
+    <ClCompile Include="Core\DungeonMapState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DropTable.h" />
@@ -69,5 +70,6 @@
     <ClInclude Include="Items\Consumable\AttackBoost.h" />
     <ClInclude Include="Items\Consumable\HealthPotion.h" />
     <ClInclude Include="Scene\EncounterScene.h" />
+    <ClInclude Include="Core\DungeonMapState.h" />
   </ItemGroup>
 </Project>

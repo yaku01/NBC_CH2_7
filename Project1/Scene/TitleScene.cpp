@@ -4,6 +4,7 @@
 #include "Characters/Character.h"
 #include "UI/UIManager.h"
 #include "UI/GameUI.h"
+#include "Core/DungeonMapState.h"
 
 constexpr int MAX_NAME_LENGTH = 10;
 
@@ -12,7 +13,7 @@ void TitleScene::Init()
     // -----------
     //¹è°æ
     auto bg = std::make_unique<AsciiUI>(0, 0);
-    bg->LoadAsciiArt("bg.txt");
+    bg->LoadAsciiArt("Resource/title.txt");
     scene_uis.push_back(std::move(bg));
 
     UIManager::GetInstance().SetAllVisible(false);
@@ -46,6 +47,7 @@ void TitleScene::ProcessEvent(const Event& e)
     else if (e.key_code == '\r') {
        if (!name.empty()) {
            Character::GetInstance(name);
+           DungeonMapState::ResetToFirstMap();
            ChangeScene(SceneType::Town);
        }
     }

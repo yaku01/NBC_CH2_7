@@ -2,7 +2,7 @@
 #include "UI/UIManager.h"
 #include "UI/GameUI.h"
 #include "Core/RenderSystem.h"
-
+#include "Core/DungeonMapState.h"
 
 void DungeonScene::Init()
 {
@@ -11,7 +11,7 @@ void DungeonScene::Init()
     // -----------
     //¹è°æ
     auto bg = std::make_unique<AsciiUI>(0, 0);
-    bg->LoadAsciiArt("bg.txt");
+    bg->LoadAsciiArt(DungeonMapState::GetCurrentMapPath());
     scene_uis.push_back(std::move(bg));
 
 

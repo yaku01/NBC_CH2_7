@@ -125,6 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Core\DungeonMapState.h" />
     <ClInclude Include="DropTable.h" />
     <ClInclude Include="Core\ItemDataBase.h" />
     <ClInclude Include="Scene\EncounterScene.h" />
@@ -145,6 +146,7 @@
     <ClInclude Include="Troll.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Core\DungeonMapState.cpp" />
     <ClCompile Include="Core\ItemDataBase.cpp" />
     <ClCompile Include="Scene\EncounterScene.cpp" />
     <ClCompile Include="Items\Equippable\Armor.cpp" />
