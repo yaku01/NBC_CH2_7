@@ -55,7 +55,7 @@ void BattleScene::Init()
 	int center = 20;
 	// ----------------
 	// 플레이어 아스키 아트  x : 5, y : 20
-	player_ui = std::make_unique<BattleUnitUI>(5, center);
+	player_ui = std::make_unique<BattleUnitUI>(5, 5);
 	player_ui->LoadAsciiArt("Resource/Player.txt"); 
 
 	// 몬스터 아스키 아트
@@ -67,15 +67,15 @@ void BattleScene::Init()
 	// 몬스터 마리수 별 배치
 	switch (monster_count) { 
 	case 1:
-        position = { {monster_x + 20,  center} };
+        position = { {monster_x + 20,  5} };
 		break;
 
 	case 2:
-        position = { {monster_x + 20, center - diff}, {monster_x + 20, center + diff / 2} };
+        position = { {monster_x + 20, center - diff}, {monster_x + 20, center + diff / 4} };
 		break;
 
 	case 3:
-        position = { { monster_x + 10, center - diff }, {monster_x + 10, center + diff / 2}, {monster_x + 50, center - diff} };
+        position = { { monster_x + 10, center - diff }, {monster_x + 10, center + diff / 4}, {monster_x + 50, center - diff} };
 		break;
 	}
 
