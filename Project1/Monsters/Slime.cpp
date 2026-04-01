@@ -11,6 +11,7 @@ Slime::Slime(int level) : Monster(level) {
 
     droptable.addItem(ItemID::HealthPotion, 0.3);
     droptable.addItem(ItemID::AttackBoost, 0.3);
+
 }
 
 

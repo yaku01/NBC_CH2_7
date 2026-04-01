@@ -4,13 +4,15 @@ using namespace std;
 
 Troll::Troll(int level) : Monster(level) {
     name = "Troll";
-    maxhealth = level * 80;
+    maxhealth = level * 60;
     health = maxhealth;
     attack = level * 10;
     speed = 1.f;
 
     droptable.addItem(ItemID::HealthPotion, 0.3);
     droptable.addItem(ItemID::AttackBoost, 0.3);
+    droptable.addItem(ItemID::LeatherArmor, 0.1);
+    droptable.addItem(ItemID::WoodSword, 0.1);
 }
 
 

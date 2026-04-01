@@ -4,13 +4,15 @@ using namespace std;
 
 Orc::Orc(int level) : Monster(level) {
     name = "Orc";
-    maxhealth = level * 150;
+    maxhealth = level * 100;
     health = maxhealth;
-    attack = level * 17;
+    attack = level * 15;
     speed = 0.5f;
 
-    droptable.addItem(ItemID::HealthPotion, 0.3);
-    droptable.addItem(ItemID::AttackBoost, 0.3);
+    droptable.addItem(ItemID::HealthPotion, 0.5);
+    droptable.addItem(ItemID::AttackBoost, 0.5);
+    droptable.addItem(ItemID::Armor, 0.15);
+    droptable.addItem(ItemID::Sword, 0.15);
 }
 
 
