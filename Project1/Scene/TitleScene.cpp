@@ -14,7 +14,7 @@ void TitleScene::Init()
 {
     // -----------
     //배경
-    auto bg = std::make_unique<AsciiUI>(0, 0);
+    auto bg = std::make_unique<AsciiUI>(40, 15);
     bg->LoadAsciiArt("Resource/title.txt");
     scene_uis.push_back(std::move(bg));
 
