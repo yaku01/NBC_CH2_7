@@ -1,5 +1,5 @@
+#ASCII Dungeon RPG 
 
-#ASCII Dungeon RPG (콘솔 기반 텍스트 게임)
 📌 프로젝트 소개
 
 ASCII 아트를 활용한 콘솔 기반 RPG 게임입니다.
